@@ -11,7 +11,7 @@ class BeneficiariesTable extends Component
 
     public function render()
     {
-        return view('livewire.beneficiaries-table', [
+        return view('livewire.beneficiaries.beneficiaries-table', [
             'beneficiaries' => DB::table('beneficiaries')
                 ->where('name', 'LIKE', "%{$this->search}%")
                 ->get(),

@@ -14,7 +14,7 @@ class BeneficiaryController extends Controller
      */
     public function index()
     {
-        return view('beneficiary.list', ['beneficiaries' => Beneficiary::paginate(2)]);
+        return view('beneficiary.list');
     }
 
     /**

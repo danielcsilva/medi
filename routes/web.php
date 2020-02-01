@@ -20,4 +20,3 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('beneficiaries', 'BeneficiaryController');
-Route::get('beneficiaries-list', 'BeneficiaryController@beneficiaryList');
