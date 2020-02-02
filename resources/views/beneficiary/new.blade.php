@@ -2,13 +2,15 @@
 
 @section('content')
 
+    {{ Breadcrumbs::render('beneficiaries') }}
+
     <div class="row">
         <div class="col">
             <h2>Beneficiários</h2>
         </div>
         <div class="col">
             <div class="float-right">
-                <button type="button" class="btn btn-secondary">Voltar</button> <button type="button" class="btn btn-info">Salvar</button>
+               <button type="button" class="btn btn-info">Salvar</button>
             </div>
         </div>
     </div>
