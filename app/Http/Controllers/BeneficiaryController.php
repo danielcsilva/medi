@@ -29,7 +29,7 @@ class BeneficiaryController extends Controller
      */
     public function create()
     {
-        return view('beneficiary.new');
+        return view('beneficiaries.new');
     }
 
     /**

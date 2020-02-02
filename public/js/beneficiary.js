@@ -10705,7 +10705,8 @@ return jQuery;
 
 window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function () {
-  $('#addTelephone').on('click', function () {
+  $('#addTelephone').on('click', function (e) {
+    e.preventDefault();
     var item = $('.repeat-telephone:first').clone();
     item.find('.remove-telephone').show();
     $('#telephone-repeater').append(item);

@@ -1,15 +1,12 @@
-<div class="form-row mb-4 mt-4">
-    <div class="col">
-        <input type="text" name="name" class="form-control" placeholder="Nome">
+<div class="form-row mb-4 mt-4 repeater-colaborator">
+    <div class="col-4">
+        <input type="text" name="name" class="form-control" placeholder="Nome do colaborador">
     </div>
-    <div class="col">
+    <div class="col-3">
         <input type="text" name="email" class="form-control" placeholder="Email">
     </div>
-</div>
-
-<div class="form-row mb-4 mt-4">
     <div class="col">
-        <input type="text" name="birth_date" class="form-control" placeholder="Data de Nascimento">
+        <input type="text" name="birth_date" class="form-control" placeholder="Data de Nasc.">
     </div>
     <div class="col">
         <input type="text" name="height" class="form-control" placeholder="Altura">
@@ -17,19 +14,21 @@
     <div class="col">
         <input type="text" name="weight" class="form-control" placeholder="Peso">
     </div>
+    <div class="col">        
+        <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+            <option value="">Sexo</option>
+            <option value="M">Masculino</option>
+            <option value="F">Feminino</option>
+        </select>
+    </div>
 </div>
 
+
 <div class="form-row">
-
-    <div class="col-md-3">
-        
-    </div>
-
     <div class="col-md-3">
 
-        <div class="form-group" id="telephone-repeater">
-            <button class="btn btn-info float-right mb-2" type="button" id="addTelephone">Adicionar</button>
-            <label for="telephone">Telefones</label>
+        <div class="form-group" id="telephone-repeater">            
+            <label for="telephone">Telefones <a href="#" id="addTelephone">(+)</a></label>
             <div class="input-group repeat-telephone mb-2 mt-2">
                 <input type="text" class="form-control"
                        name="telephone[]" aria-describedby="telephonelHelp"
@@ -39,15 +38,17 @@
                 </div>
             </div>
         </div>
+    
     </div>
 
 </div>
 
-<div class="form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+
+<div class="form-row mb-4 mt-4">
+    <div class="col">
+        <a href="#" id="addColaborator">Adicionar Dependente</a>
+    </div>
 </div>
-<button type="submit" class="btn btn-primary">Submit</button>
 
 @section('jscontent')
 

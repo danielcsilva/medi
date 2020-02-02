@@ -20,7 +20,7 @@
             <form method="post" action="{{ route('beneficiaries.store')  }}">
                 @csrf
 
-                @include('beneficiary._form')
+                @include('beneficiaries._form')
 
             </form>
         </div>
