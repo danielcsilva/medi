@@ -23,4 +23,9 @@
         </tbody>
     </table>
 
+    <div class="row">
+        <div class="col">
+            {{ $beneficiaries->links() }}
+        </div>
+    </div>
 </div>

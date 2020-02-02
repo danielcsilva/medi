@@ -18,7 +18,6 @@
     </div>
 </div>
 
-
 @livewire('beneficiaries-table')
 
 @endsection
