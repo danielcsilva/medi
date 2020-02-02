@@ -91,5 +91,7 @@
             </div>
         </main>
     </div>
+
+    @yield('jscontent')
 </body>
 </html>
