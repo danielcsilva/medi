@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Beneficiary;
+use App\Company;
 use Illuminate\Http\Request;
 
-class BeneficiaryController extends Controller
+class CompanyController extends Controller
 {
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -18,8 +19,8 @@ class BeneficiaryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {       
-        return view('beneficiaries.list');
+    {
+        return view('companies.list');
     }
 
     /**
@@ -29,7 +30,7 @@ class BeneficiaryController extends Controller
      */
     public function create()
     {
-        return view('beneficiary.new');
+        //
     }
 
     /**
@@ -46,10 +47,10 @@ class BeneficiaryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Beneficiary  $beneficiary
+     * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function show(Beneficiary $beneficiary)
+    public function show(Company $company)
     {
         //
     }
@@ -57,10 +58,10 @@ class BeneficiaryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Beneficiary  $beneficiary
+     * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function edit(Beneficiary $beneficiary)
+    public function edit(Company $company)
     {
         //
     }
@@ -69,10 +70,10 @@ class BeneficiaryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Beneficiary  $beneficiary
+     * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Beneficiary $beneficiary)
+    public function update(Request $request, Company $company)
     {
         //
     }
@@ -80,10 +81,10 @@ class BeneficiaryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Beneficiary  $beneficiary
+     * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Beneficiary $beneficiary)
+    public function destroy(Company $company)
     {
         //
     }

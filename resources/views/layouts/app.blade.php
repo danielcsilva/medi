@@ -60,6 +60,8 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('beneficiaries.index') }}">Beneficiários</a>
+                                    <a class="dropdown-item" href="{{ route('companies.index') }}">Empresas</a>
+                                    <a class="dropdown-item" href="{{ route('companies.index') }}">Questionários</a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">

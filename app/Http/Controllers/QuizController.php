@@ -2,24 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Beneficiary;
+use App\Quiz;
 use Illuminate\Http\Request;
 
-class BeneficiaryController extends Controller
+class QuizController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {       
-        return view('beneficiaries.list');
+    {
+        //
     }
 
     /**
@@ -29,7 +24,7 @@ class BeneficiaryController extends Controller
      */
     public function create()
     {
-        return view('beneficiary.new');
+        //
     }
 
     /**
@@ -46,10 +41,10 @@ class BeneficiaryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Beneficiary  $beneficiary
+     * @param  \App\Quiz  $quiz
      * @return \Illuminate\Http\Response
      */
-    public function show(Beneficiary $beneficiary)
+    public function show(Quiz $quiz)
     {
         //
     }
@@ -57,10 +52,10 @@ class BeneficiaryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Beneficiary  $beneficiary
+     * @param  \App\Quiz  $quiz
      * @return \Illuminate\Http\Response
      */
-    public function edit(Beneficiary $beneficiary)
+    public function edit(Quiz $quiz)
     {
         //
     }
@@ -69,10 +64,10 @@ class BeneficiaryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Beneficiary  $beneficiary
+     * @param  \App\Quiz  $quiz
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Beneficiary $beneficiary)
+    public function update(Request $request, Quiz $quiz)
     {
         //
     }
@@ -80,10 +75,10 @@ class BeneficiaryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Beneficiary  $beneficiary
+     * @param  \App\Quiz  $quiz
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Beneficiary $beneficiary)
+    public function destroy(Quiz $quiz)
     {
         //
     }
