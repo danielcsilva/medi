@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Quiz;
+use App\HealthQuestion;
 use Illuminate\Http\Request;
 
 class QuizController extends Controller
@@ -24,7 +25,8 @@ class QuizController extends Controller
      */
     public function create()
     {
-        //
+        $questions = HealthQuestion::all();
+        return view('quizzes.new', ['questions' => $questions]);
     }
 
     /**
