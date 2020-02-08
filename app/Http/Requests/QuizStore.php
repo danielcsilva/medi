@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreBeneficiary extends FormRequest
+class QuizStore extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,7 @@ class StoreBeneficiary extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'email' => '',
-            'birth_date' => 'required',
-            'height' => 'required',
-            'weight' => 'required',
-            'imc' => 'required',
-            'gender' => 'required'
+            'name' => 'required'
         ];
     }
-
 }
