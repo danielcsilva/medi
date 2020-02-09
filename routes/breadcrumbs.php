@@ -3,7 +3,7 @@
 /* Beneficiaries */
 Breadcrumbs::for('beneficiaries', function ($trail, $content) {
 
-    $trail->push('Home', route('home'));
+    $trail->push('Dashboard', route('home'));
 
     if ($content == 'list'){
         $trail->push('Beneficiários');
@@ -20,7 +20,7 @@ Breadcrumbs::for('beneficiaries', function ($trail, $content) {
 /* Companies */
 Breadcrumbs::for('companies', function ($trail, $content = null) {
 
-    $trail->push('Home', route('home'));
+    $trail->push('Dashboard', route('home'));
     
     if ($content == 'list'){
         $trail->push('Empresas');
