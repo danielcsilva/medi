@@ -24,6 +24,8 @@ Breadcrumbs::for('companies', function ($trail, $content = null) {
     
     if ($content == 'list'){
         $trail->push('Empresas');
+    } else {
+        $trail->push('Empresas', route('companies.index'));
     }
 
     if ($content == null) {

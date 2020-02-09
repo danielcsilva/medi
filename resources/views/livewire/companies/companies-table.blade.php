@@ -17,7 +17,9 @@
         <tbody>
             @foreach($companies as $company)
             <tr>
-                <th scope="row"><a href="@"><input type="hidden" value="{{ $company->id }}" id="{{ $company->id }}"> <i class="material-icons">edit</i></a></th>
+                <th scope="row"><a href="{{ route('companies.edit', ['company' => $company->id]) }}">
+                    <input type="hidden" value="{{ $company->id }}" id="{{ $company->id }}"> <i class="material-icons">edit</i></a>
+                </th>
                 <td>{{ $company->name }}</td>
                 <td>{{ $company->contract }}</td>
                 <td>{{ $company->cnpj }}</td>

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
+    protected $fillable = ['name', 'email', 'cnpj', 'telephone', 'contract'];
+
     public function beneficiaries()
     {
         $this->hasMany('App\Beneficiary', 'beneficiary_id');
@@ -20,4 +22,10 @@ class Company extends Model
     {
         return substr($value, 0, 2) . '.' . substr($value, 2, 3) . '.' . substr($value, 5, 3) . '/' . substr($value, 8, 4). '-' . substr($value, 12, 2);
     }
+
+    public function setCnpjAttribute($value)
+    {        
+        return $this->attributes['cnpj'] = str_replace(['.', '-', '/'], '', $value);
+    }
+
 }

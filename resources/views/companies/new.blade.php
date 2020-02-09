@@ -2,11 +2,9 @@
 
 @section('content')
 
-    {{ Breadcrumbs::render('companies') }}
-
     <div class="row">
         <div class="col">
-            <h2>Empresas</h2>
+            {{ Breadcrumbs::render('companies') }}
         </div>  
     </div>
 

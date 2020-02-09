@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Http\Requests\CompanyStore;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -39,9 +40,13 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CompanyStore $request)
     {
-        //
+        $validationData = $request->validated();
+        
+        Company::create($validationData);
+
+        return redirect()->route('companies.index')->with('success', 'Empresa adicionada!');
     }
 
     /**
@@ -61,9 +66,9 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function edit(Company $company)
+    public function edit($company)
     {
-        //
+        return view('companies.edit', ['company' => Company::findOrFail($company)]);
     }
 
     /**
@@ -73,9 +78,16 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Company $company)
+    public function update(CompanyStore $request, $company)
     {
-        //
+        $companyModel = Company::findOrFail($company);
+        $validationData = $request->validated();        
+        
+        $companyModel->fill($validationData);
+        $companyModel->save();
+
+        return redirect()->route('companies.index')->with('success', 'Empresa editada com sucesso!');
+
     }
 
     /**
@@ -84,8 +96,12 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Company $company)
+    public function destroy($company)
     {
-        //
+        $companyModel = Company::findOrFail($company);
+        $companyModel->delete();
+
+        return redirect()->route('companies.index')->with('success', 'Empresa excluída com sucesso!');
+
     }
 }
