@@ -27,8 +27,15 @@ class CompanyStore extends FormRequest
             'name' => 'required',
             'telephone' => '',
             'contract' => 'required',
-            'email' => '',
+            'email' => 'email',
             'cnpj' => ''
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'contract.required' => 'O contrato é obrigatório!'
         ];
     }
 }
