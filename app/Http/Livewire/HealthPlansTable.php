@@ -6,9 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
 
-use App\Beneficiary;
-
-class BeneficiariesTable extends Component
+class HealthPlansTable extends Component
 {
     use WithPagination;
 
@@ -18,8 +16,9 @@ class BeneficiariesTable extends Component
 
     public function render()
     {
-        return view('livewire.beneficiaries.beneficiaries-table', [
-            'beneficiaries' => Beneficiary::whereLike(['name', 'email', 'birth_date'], $this->search)
+        return view('livewire.health-plans-table', [
+            'healthplans' => DB::table('health_plans')
+                ->where('name', 'LIKE', "%{$this->search}%")
                 ->paginate($this->perPage),
         ]);
     }

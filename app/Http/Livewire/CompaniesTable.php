@@ -6,6 +6,8 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
 
+use App\Company;
+
 class CompaniesTable extends Component
 {
     use WithPagination;
@@ -17,10 +19,8 @@ class CompaniesTable extends Component
     public function render()
     {
         return view('livewire.companies.companies-table', [
-            'companies' => DB::table('companies')
-                ->where('name', 'LIKE', "%{$this->search}%")
-                ->orWhere('contract', 'LIKE', "%{$this->search}%")
-                ->paginate($this->perPage),
+            'companies' => Company::whereLike(['name', 'contract', 'cnpj', 'email', 'telephone'], $this->search)
+            ->paginate($this->perPage),
         ]);
     }
 }

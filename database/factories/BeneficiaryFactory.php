@@ -5,7 +5,6 @@
 use App\Beneficiary;
 
 use Faker\Generator as Faker;
-use Illuminate\Support\Str;
 
 $factory->define(Beneficiary::class, function (Faker $faker) {
     

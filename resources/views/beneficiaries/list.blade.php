@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col">
-        <h2>Beneficiários</h2>
+        {{ Breadcrumbs::render('beneficiaries', 'list') }}
     </div>
     <div class="col">
         <div class="btn-group float-right">

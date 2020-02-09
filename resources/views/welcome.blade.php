@@ -80,7 +80,7 @@
             @endif
 
             <div class="content">
-                <div class="title">
+                <div class="title" style="margin-top: -120px;">
                     <img src="/images/logo-medi-retina.png" alt="">
                 </div>
                 <h2>SGS - Sistema de Gerenciamento em Saúde</h2>
