@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
-@section('content')
-
-    {{ Breadcrumbs::render('beneficiaries') }}
+@section('content')    
 
     <div class="row">
         <div class="col">
-            <h2>Beneficiários</h2>
+            {{ Breadcrumbs::render('beneficiaries') }}
         </div>
         <div class="col">
             <div class="float-right">

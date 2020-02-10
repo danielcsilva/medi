@@ -1,12 +1,14 @@
 <?php
 
 /* Beneficiaries */
-Breadcrumbs::for('beneficiaries', function ($trail, $content) {
+Breadcrumbs::for('beneficiaries', function ($trail, $content = null) {
 
     $trail->push('Dashboard', route('home'));
 
     if ($content == 'list'){
         $trail->push('Beneficiários');
+    } else {
+        $trail->push('Beneficiários', route('beneficiaries.index'));
     }
 
     if ($content == null) {
