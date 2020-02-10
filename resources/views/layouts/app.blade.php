@@ -73,6 +73,8 @@
                                     <a class="dropdown-item" href="{{ route('beneficiaries.index') }}">Beneficiários</a>
                                     <a class="dropdown-item" href="{{ route('companies.index') }}">Empresas</a>
                                     <a class="dropdown-item" href="{{ route('companies.index') }}">Questionários</a>
+                                    <a class="dropdown-item" href="{{ route('healthplans.index') }}">Operadoras</a>
+
                                 </div>
                             </li>
                             <li class="nav-item dropdown">

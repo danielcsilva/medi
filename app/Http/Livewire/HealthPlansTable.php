@@ -6,6 +6,8 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
 
+use App\HealthPlan;
+
 class HealthPlansTable extends Component
 {
     use WithPagination;
@@ -16,9 +18,8 @@ class HealthPlansTable extends Component
 
     public function render()
     {
-        return view('livewire.health-plans-table', [
-            'healthplans' => DB::table('health_plans')
-                ->where('name', 'LIKE', "%{$this->search}%")
+        return view('livewire.health_plans.health-plans-table', [
+            'health_plans' => HealthPlan::whereLike(['name'], $this->search)
                 ->paginate($this->perPage),
         ]);
     }

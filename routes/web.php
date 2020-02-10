@@ -22,3 +22,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('beneficiaries', 'BeneficiaryController');
 Route::resource('companies', 'CompanyController');
 Route::resource('quiz', 'QuizController');
+Route::resource('healthplans', 'HealthPlanController');

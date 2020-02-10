@@ -37,3 +37,22 @@ Breadcrumbs::for('companies', function ($trail, $content = null) {
     }
 
 });
+
+/* Health Plan */
+Breadcrumbs::for('healthplans', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    
+    if ($content == 'list'){
+        $trail->push('Operadoras de Saúde');
+    } else {
+        $trail->push('Operadoras de Saúde', route('healthplans.index'));
+    }
+
+    if ($content == null) {
+        $trail->push('Nova Operadora de Saúde');
+    } else if(is_object($content)){
+        $trail->push($content->name);
+    }
+
+});
