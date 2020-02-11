@@ -12,7 +12,7 @@
         <tbody>
             @foreach($health_plans as $health_plan)
             <tr>
-                <th scope="row"><a href="{{ route('health_plans.edit', ['health_plan' => $health_plan->id]) }}">
+                <th scope="row"><a href="{{ route('healthplans.edit', ['healthplan' => $health_plan->id]) }}">
                     <input type="hidden" value="{{ $health_plan->id }}" id="{{ $health_plan->id }}"> <i class="material-icons">edit</i></a>
                 </th>
                 <td>{{ $health_plan->name }}</td>

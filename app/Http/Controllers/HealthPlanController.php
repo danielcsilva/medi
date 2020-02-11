@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\HealthPlan;
+use App\Http\Requests\HealthPlanStore;
 use Illuminate\Http\Request;
 
 class HealthPlanController extends Controller
@@ -29,7 +30,7 @@ class HealthPlanController extends Controller
      */
     public function create()
     {
-        //
+        return view('health_plans.new');
     }
 
     /**
@@ -38,9 +39,13 @@ class HealthPlanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(HealthPlanStore $request)
     {
-        //
+        $validationData = $request->validated();
+        
+        HealthPlan::create($validationData);
+
+        return redirect()->route('healthplans.index')->with('success', 'Operadora adicionada!');
     }
 
     /**
@@ -49,9 +54,10 @@ class HealthPlanController extends Controller
      * @param  \App\HealthPlan  $healthPlan
      * @return \Illuminate\Http\Response
      */
-    public function show(HealthPlan $healthPlan)
+    public function show($healthplan)
     {
-        //
+       
+        
     }
 
     /**
@@ -60,9 +66,10 @@ class HealthPlanController extends Controller
      * @param  \App\HealthPlan  $healthPlan
      * @return \Illuminate\Http\Response
      */
-    public function edit(HealthPlan $healthPlan)
+    public function edit($healthplan)
     {
-        //
+        return view('health_plans.edit', ['healthplan' => HealthPlan::findOrFail($healthplan)]);
+        
     }
 
     /**
@@ -72,9 +79,15 @@ class HealthPlanController extends Controller
      * @param  \App\HealthPlan  $healthPlan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, HealthPlan $healthPlan)
+    public function update(HealthPlanStore $request, $healthplan)
     {
-        //
+        $healthplanModel = HealthPlan::findOrFail($healthplan);
+        $validationData = $request->validated();        
+        
+        $healthplanModel->fill($validationData);
+        $healthplanModel->save();
+
+        return redirect()->route('healthplans.index')->with('success', 'Operadora editada com sucesso!');
     }
 
     /**
@@ -83,8 +96,11 @@ class HealthPlanController extends Controller
      * @param  \App\HealthPlan  $healthPlan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HealthPlan $healthPlan)
+    public function destroy($healthplan)
     {
-        //
+        $healthplanModel = Company::findOrFail($healthplan);
+        $healthplanModel->delete();
+
+        return redirect()->route('healthplans.index')->with('success', 'Operadora excluída com sucesso!');
     }
 }
