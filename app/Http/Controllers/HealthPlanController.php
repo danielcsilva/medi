@@ -20,7 +20,7 @@ class HealthPlanController extends Controller
      */
     public function index()
     {
-        return view('health_plans.list');
+        return view('health_plans.list', ['model' => '\App\\HealthPlan']);
     }
 
     /**

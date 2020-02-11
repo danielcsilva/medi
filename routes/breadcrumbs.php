@@ -56,3 +56,21 @@ Breadcrumbs::for('healthplans', function ($trail, $content = null) {
     }
 
 });
+
+Breadcrumbs::for('inconsistencies', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    
+    if ($content == 'list'){
+        $trail->push('Inconsistências');
+    } else {
+        $trail->push('Inconsistências', route('inconsistencies.index'));
+    }
+
+    if ($content == null) {
+        $trail->push('Nova Inconsistência');
+    } else if(is_object($content)){
+        $trail->push($content->name);
+    }
+
+});

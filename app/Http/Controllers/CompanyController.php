@@ -21,7 +21,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return view('companies.list');
+        return view('companies.list', ['model' => '\App\\Company']);
     }
 
     /**

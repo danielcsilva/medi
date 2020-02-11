@@ -18,6 +18,6 @@
     </div>
 </div>
 
-@livewire('beneficiaries-table')
+@livewire('data-tables', 'beneficiaries', 'beneficiary', '\App\\Beneficiary', ['name', 'email', 'cpf', 'birth_date', 'height', 'weight'], ['Nome', 'Email', 'CPF', 'Nasc.', 'ALtura', 'Peso'])
 
 @endsection

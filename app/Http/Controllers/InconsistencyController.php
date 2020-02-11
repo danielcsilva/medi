@@ -14,7 +14,7 @@ class InconsistencyController extends Controller
      */
     public function index()
     {
-        //
+        return view('inconsistencies.list', ['model' => '\App\\Inconsistency']);        
     }
 
     /**

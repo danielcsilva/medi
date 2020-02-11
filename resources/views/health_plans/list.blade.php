@@ -18,6 +18,6 @@
     </div>
 </div>
 
-@livewire('health-plans-table')
+@livewire('data-tables', 'healthplans', 'healthplan', $model, ['name'], ['name'])
 
 @endsection
