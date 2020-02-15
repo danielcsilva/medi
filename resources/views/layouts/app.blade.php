@@ -57,12 +57,12 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    Adesões <span class="caret"></span>
+                                    Processos <span class="caret"></span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('beneficiaries.index') }}">Nova</a>
+                                    <a class="dropdown-item" href="{{ route('beneficiaries.index') }}">Novo</a>
                                     <a class="dropdown-item" href="{{ route('companies.index') }}">Em andamento</a>
-                                    <a class="dropdown-item" href="{{ route('companies.index') }}">Finalizadas</a>
+                                    <a class="dropdown-item" href="{{ route('companies.index') }}">Finalizados</a>
                                 </div>
                             </li>    
                             <li class="nav-item dropdown">
@@ -71,9 +71,11 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('beneficiaries.index') }}">Beneficiários</a>
-                                    <a class="dropdown-item" href="{{ route('companies.index') }}">Empresas</a>
+                                    <a class="dropdown-item" href="{{ route('companies.index') }}">Clientes</a>
                                     <a class="dropdown-item" href="{{ route('companies.index') }}">Questionários</a>
                                     <a class="dropdown-item" href="{{ route('healthplans.index') }}">Operadoras</a>
+                                    <a class="dropdown-item" href="{{ route('inconsistencies.index') }}">Inconsistências</a>
+
 
                                 </div>
                             </li>

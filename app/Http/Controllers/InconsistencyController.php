@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InconsistencyStore;
 use App\Inconsistency;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,8 @@ class InconsistencyController extends Controller
      */
     public function create()
     {
-        //
+        return view('inconsistencies.new');
+        
     }
 
     /**
@@ -33,9 +35,13 @@ class InconsistencyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InconsistencyStore $request)
     {
-        //
+        $validationData = $request->validated();
+        
+        Inconsistency::create($validationData);
+
+        return redirect()->route('inconsistencies.index')->with('success', 'Inconsistência adicionada!');
     }
 
     /**
@@ -55,9 +61,9 @@ class InconsistencyController extends Controller
      * @param  \App\Inconsistency  $inconsistency
      * @return \Illuminate\Http\Response
      */
-    public function edit(Inconsistency $inconsistency)
+    public function edit($inconsistency)
     {
-        //
+        return view('inconsistencies.edit', ['inconsistency' => Inconsistency::findOrFail($inconsistency)]);
     }
 
     /**
@@ -67,9 +73,15 @@ class InconsistencyController extends Controller
      * @param  \App\Inconsistency  $inconsistency
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Inconsistency $inconsistency)
+    public function update(InconsistencyStore $request, $inconsistency)
     {
-        //
+        $inconsistencyModel = inconsistency::findOrFail($inconsistency);
+        $validationData = $request->validated();        
+        
+        $inconsistencyModel->fill($validationData);
+        $inconsistencyModel->save();
+
+        return redirect()->route('inconsistencies.index')->with('success', 'Inconsistência editada com sucesso!');
     }
 
     /**
@@ -80,6 +92,9 @@ class InconsistencyController extends Controller
      */
     public function destroy(Inconsistency $inconsistency)
     {
-        //
+        $inconsistencyModel = Inconsistency::findOrFail($inconsistency);
+        $inconsistencyModel->delete();
+
+        return redirect()->route('inconsistencies.index')->with('success', 'Inconsistência excluída com sucesso!');
     }
 }

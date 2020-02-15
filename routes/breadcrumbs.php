@@ -25,9 +25,9 @@ Breadcrumbs::for('companies', function ($trail, $content = null) {
     $trail->push('Dashboard', route('home'));
     
     if ($content == 'list'){
-        $trail->push('Empresas');
+        $trail->push('Clientes');
     } else {
-        $trail->push('Empresas', route('companies.index'));
+        $trail->push('Clientes', route('companies.index'));
     }
 
     if ($content == null) {

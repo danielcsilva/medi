@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col">
-        {{ Breadcrumbs::render('inconsistencies', 'list') }}
+        {{ Breadcrumbs::render('accessions', 'list') }}
     </div>
     <div class="col">
         <div class="btn-group float-right">
@@ -12,12 +12,12 @@
                 Opções
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{ route('inconsistencies.create') }}">Nova</a>
+                <a class="dropdown-item" href="{{ route('healthplans.create') }}">Nova</a>
             </div>
         </div>
     </div>
 </div>
 
-@livewire('data-tables', 'inconsistencies', 'inconsistency', $model, ['name'], ['name'])
+@livewire('data-tables', 'accessions', 'accession', $model, ['name'], ['name'])
 
 @endsection
