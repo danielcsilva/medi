@@ -98,7 +98,7 @@ class HealthPlanController extends Controller
      */
     public function destroy($healthplan)
     {
-        $healthplanModel = Company::findOrFail($healthplan);
+        $healthplanModel = HealthPlan::findOrFail($healthplan);
         $healthplanModel->delete();
 
         return redirect()->route('healthplans.index')->with('success', 'Operadora excluída com sucesso!');

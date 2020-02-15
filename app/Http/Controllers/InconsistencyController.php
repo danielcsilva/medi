@@ -90,7 +90,7 @@ class InconsistencyController extends Controller
      * @param  \App\Inconsistency  $inconsistency
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Inconsistency $inconsistency)
+    public function destroy($inconsistency)
     {
         $inconsistencyModel = Inconsistency::findOrFail($inconsistency);
         $inconsistencyModel->delete();
