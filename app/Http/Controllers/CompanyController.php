@@ -101,7 +101,7 @@ class CompanyController extends Controller
         $companyModel = Company::findOrFail($company);
         $companyModel->delete();
 
-        return redirect()->route('companies.index')->with('success', 'Empresa excluída com sucesso!');
+        return redirect()->route('companies.index')->with('success', 'Cliente excluído com sucesso!');
 
     }
 }
