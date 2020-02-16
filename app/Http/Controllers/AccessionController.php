@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Accession;
+use App\Company;
 use Illuminate\Http\Request;
 
 class AccessionController extends Controller
@@ -30,7 +31,9 @@ class AccessionController extends Controller
      */
     public function create()
     {
-        return view('accessions.new');
+        $customers = Company::all();
+        
+        return view('accessions.new', ['customers' => $customers]);
     }
 
     /**

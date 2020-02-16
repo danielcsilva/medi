@@ -60,9 +60,9 @@
                                     Processos <span class="caret"></span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('beneficiaries.index') }}">Novo</a>
-                                    <a class="dropdown-item" href="{{ route('companies.index') }}">Em andamento</a>
-                                    <a class="dropdown-item" href="{{ route('companies.index') }}">Finalizados</a>
+                                    <a class="dropdown-item" href="{{ route('accessions.create') }}">Novo</a>
+                                    <a class="dropdown-item" href="{{ route('accessions.index') }}">Em andamento</a>
+                                    <a class="dropdown-item" href="{{ route('accessions.index') }}">Finalizados</a>
                                 </div>
                             </li>    
                             <li class="nav-item dropdown">

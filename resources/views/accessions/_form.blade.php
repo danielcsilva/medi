@@ -1,3 +1,24 @@
+<div class="form-row mb-4 mt-4">
+    <div class="col-3">
+        <input type="text" name="proposal_number" class="form-control" placeholder="Nº da Proposta" value="">
+    </div>
+    <div class="col-3">
+        <input type="text" name="received_at" class="form-control" placeholder="Data de Recebimento" value="{{ date('d/m/Y') }}">
+    </div>
+    <div class="col-6">
+        
+        <select id="inputState" class="form-control">
+            <option>Cliente</option>
+            @foreach($customers as $customer)
+                <option value="{{ $customer->id }}"> {{ $customer->name }}</option>
+            @endforeach
+        </select>
+        
+    </div>
+</div>
+
+
+
 <div id="repeater-colaborator">
 
     <div class="form-row mb-4 mt-4">
@@ -64,6 +85,12 @@
 <div id="dependents">
 </div>
 
+
+<div class="form-row mb-4 mt-4">
+    <div class="col">
+        <button type="submit" class="btn btn-primary">Salvar Processo</button>
+    </div>
+</div>
 
 <input type="hidden" id="toDelete" value="" />
 
