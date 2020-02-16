@@ -20,8 +20,13 @@
                 @if(key($rows) == 0)                    
                     <th scope="row"><a href="{{ route( $editRoute . '.edit', [$modelEditParam => $row->id]) }}"><i class="material-icons">edit</i></a></th>
                 @endif
+
                 @foreach($columns as $col)
-                    <td>{{ $row->$col }}</td>
+                    @if(strpos($col, '.') !== false)
+                        <td>{{ $row[explode('.', $col)[0]][explode('.', $col)[1]] }}</td>
+                    @else 
+                        <td>{{ $row[$col] }}</td>
+                    @endif
                 @endforeach
 
                 <td><a href="#" data-toggle="modal" data-target="#deleteModal" onclick="setDeleteRoute('{{ route( $editRoute . '.destroy', [$modelEditParam => $row->id]) }}')"><i class="material-icons">delete_forever</i></a></td>
@@ -63,17 +68,19 @@
 
 </form>
 
-<script>
+@push('scripts')
+    <script>
 
-function setDeleteRoute(route)
-{
-    document.getElementById('delete-form').action = route;
-}
+    function setDeleteRoute(route)
+    {
+        document.getElementById('delete-form').action = route;
+    }
 
-function submitDeleteForm()
-{
-    document.getElementById('delete-form').submit();
-}
+    function submitDeleteForm()
+    {
+        document.getElementById('delete-form').submit();
+    }
 
 
-</script>
+    </script>
+@endpush

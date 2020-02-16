@@ -17,9 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(DataTablesList::class, function($app) {
 
-        });
     }
 
     /**

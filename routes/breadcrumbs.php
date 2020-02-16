@@ -74,3 +74,21 @@ Breadcrumbs::for('inconsistencies', function ($trail, $content = null) {
     }
 
 });
+
+Breadcrumbs::for('accessions', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    
+    if ($content == 'list'){
+        $trail->push('Processos');
+    } else {
+        $trail->push('Processos', route('accessions.index'));
+    }
+
+    if ($content == null) {
+        $trail->push('Novo Processo');
+    } else if(is_object($content)){
+        $trail->push($content->proposal_number);
+    }
+
+});

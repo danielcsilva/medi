@@ -123,6 +123,11 @@
         </main>
     </div>
 
+        
     @yield('jscontent')
+
+    <!-- Livewire scripts -->
+    @stack('scripts')
+
 </body>
 </html>

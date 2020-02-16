@@ -8,9 +8,9 @@ class Company extends Model
 {
     protected $fillable = ['name', 'email', 'cnpj', 'telephone', 'contract'];
 
-    public function beneficiaries()
+    public function accessions()
     {
-        $this->hasMany('App\Beneficiary', 'beneficiary_id');
+        return $this->hasMany('App\Accession', 'company_id');
     }
 
     public function healthplans()

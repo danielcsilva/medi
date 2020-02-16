@@ -11,7 +11,23 @@ class Accession extends Model
 
     public function inconsistency()
     {
-        $this->belongsTo('App\Inconsistency', 'inconsistency_id');
+        return $this->belongsTo('App\Inconsistency', 'inconsistency_id');
     }
 
+    public function financier()
+    {
+        return $this->belongsTo('App\Beneficiary', 'beneficiary_id');
+    }
+
+    public function beneficiary()
+    {
+        return $this->belongsTo('App\Beneficiary', 'beneficiary_id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo('App\Company', 'company_id');
+    }
+
+    
 }

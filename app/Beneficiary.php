@@ -10,4 +10,9 @@ class Beneficiary extends Model
     {
         $this->hasMany('App\Beneficiary', 'beneficiary_id');
     }
+
+    public function accession()
+    {
+        return $this->hasMany('App\Accession', 'beneficiary_id');
+    }
 }
