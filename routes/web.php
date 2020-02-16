@@ -21,7 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('beneficiaries', 'BeneficiaryController');
 Route::resource('companies', 'CompanyController');
-Route::resource('quiz', 'QuizController');
+Route::resource('quizzes', 'QuizController');
 Route::resource('healthplans', 'HealthPlanController');
 Route::resource('inconsistencies', 'InconsistencyController');
 Route::resource('accessions', 'AccessionController');
