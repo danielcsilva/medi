@@ -72,7 +72,8 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('beneficiaries.index') }}">Beneficiários</a>
                                     <a class="dropdown-item" href="{{ route('companies.index') }}">Clientes</a>
-                                    <a class="dropdown-item" href="{{ route('companies.index') }}">Questionários</a>
+                                    <a class="dropdown-item" href="{{ route('quizzes.index') }}">Questionários</a>
+                                    <a class="dropdown-item" href="{{ route('healthquestions.index') }}">Questões</a>
                                     <a class="dropdown-item" href="{{ route('healthplans.index') }}">Operadoras</a>
                                     <a class="dropdown-item" href="{{ route('inconsistencies.index') }}">Inconsistências</a>
 

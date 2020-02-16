@@ -92,3 +92,40 @@ Breadcrumbs::for('accessions', function ($trail, $content = null) {
     }
 
 });
+
+Breadcrumbs::for('quizzes', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    
+    if ($content == 'list'){
+        $trail->push('Questionários');
+    } else {
+        $trail->push('Questionários', route('quizzes.index'));
+    }
+
+    if ($content == null) {
+        $trail->push('Novo Questionário');
+    } else if(is_object($content)){
+        $trail->push($content->name);
+    }
+
+});
+
+
+Breadcrumbs::for('healthquestions', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    
+    if ($content == 'list'){
+        $trail->push('Questões');
+    } else {
+        $trail->push('Questões', route('healthquestions.index'));
+    }
+
+    if ($content == null) {
+        $trail->push('Nova Questão');
+    } else if(is_object($content)){
+        $trail->push($content->question);
+    }
+
+});

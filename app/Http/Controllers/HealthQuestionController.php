@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Quiz;
 use App\HealthQuestion;
-use App\Http\Requests\QuizStore;
 use Illuminate\Http\Request;
 
-class QuizController extends Controller
+class HealthQuestionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +14,7 @@ class QuizController extends Controller
      */
     public function index()
     {
-        return view('quizzes.list', ['model' => '\App\\Quiz']);                
+        return view('health_questions.list', ['model' => '\App\\HealthQuestion']);                        
     }
 
     /**
@@ -26,9 +24,7 @@ class QuizController extends Controller
      */
     public function create()
     {
-        $questions = HealthQuestion::all();
-        
-        return view('quizzes.new', ['questions' => $questions, 'modelAutoComplete' => '\App\HealthQuestion']);
+        //
     }
 
     /**
@@ -37,25 +33,18 @@ class QuizController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(QuizStore $request)
+    public function store(Request $request)
     {
-        
-        $validationData = $request->validated();
-        
-        HealthQuestion::create($validationData);
-
-
-
-        return redirect()->route('quizzes.index')->with('success', 'Questionário adicionado!');
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Quiz  $quiz
+     * @param  \App\HealthQuestion  $healthQuestion
      * @return \Illuminate\Http\Response
      */
-    public function show(Quiz $quiz)
+    public function show(HealthQuestion $healthQuestion)
     {
         //
     }
@@ -63,10 +52,10 @@ class QuizController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Quiz  $quiz
+     * @param  \App\HealthQuestion  $healthQuestion
      * @return \Illuminate\Http\Response
      */
-    public function edit(Quiz $quiz)
+    public function edit(HealthQuestion $healthQuestion)
     {
         //
     }
@@ -75,10 +64,10 @@ class QuizController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Quiz  $quiz
+     * @param  \App\HealthQuestion  $healthQuestion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Quiz $quiz)
+    public function update(Request $request, HealthQuestion $healthQuestion)
     {
         //
     }
@@ -86,10 +75,10 @@ class QuizController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Quiz  $quiz
+     * @param  \App\HealthQuestion  $healthQuestion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Quiz $quiz)
+    public function destroy(HealthQuestion $healthQuestion)
     {
         //
     }

@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col">
-        {{ Breadcrumbs::render('quizzes', 'list') }}
+        {{ Breadcrumbs::render('healthquestions', 'list') }}
     </div>
     <div class="col">
         <div class="btn-group float-right">
@@ -12,12 +12,12 @@
                 Opções
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{ route('quizzes.create') }}">Novo</a>
+                <a class="dropdown-item" href="{{ route('healthquestions.create') }}">Nova</a>
             </div>
         </div>
     </div>
 </div>
 
-@livewire('data-tables', 'quizzes', 'quiz', $model, ['name'], ['Nome'])
+@livewire('data-tables', 'healthquestions', 'healthquestion', $model, ['question', 'description', 'required'], ['Questão', 'Descrição', 'Obrigatório?'])
 
 @endsection

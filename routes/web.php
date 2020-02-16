@@ -25,4 +25,6 @@ Route::resource('quizzes', 'QuizController');
 Route::resource('healthplans', 'HealthPlanController');
 Route::resource('inconsistencies', 'InconsistencyController');
 Route::resource('accessions', 'AccessionController');
+Route::resource('healthquestions', 'HealthQuestionController');
+
 

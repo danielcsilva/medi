@@ -4,17 +4,17 @@
 
     <div class="row">
         <div class="col">
-            {{ Breadcrumbs::render('quizzes', $inconsistency) }}
+            {{ Breadcrumbs::render('inconsistencies', $inconsistency) }}
         </div>  
     </div>
 
     <div class="row">
         <div class="col">
-            <form method="post" action="{{ route('quizzes.update', ['inconsistency' => $inconsistency->id])  }}">
+            <form method="post" action="{{ route('inconsistencies.update', ['inconsistency' => $inconsistency->id])  }}">
                 @csrf
                 @method('PUT')
 
-                @include('quizzes._form')
+                @include('inconsistencies._form')
 
             </form>
         </div>
