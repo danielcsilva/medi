@@ -24,7 +24,15 @@ class QuizStore extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required'
+            'name' => 'required',
+            'questions' => 'required'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'questions' => 'Você precisa escolher uma pergunta para a DS!'
         ];
     }
 }

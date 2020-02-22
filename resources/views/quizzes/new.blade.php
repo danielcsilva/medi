@@ -10,12 +10,9 @@
 
     <div class="row">
         <div class="col">
-            <form method="post" action="{{ route('quizzes.store')  }}">
-                @csrf
+            
+            @livewire('quiz-form',  'healthquestions', 'healthquestion', $modelAutoComplete, ['question'], ['Questão'], null)
 
-                @include('quizzes._form')
-
-            </form>
         </div>
     </div>
 

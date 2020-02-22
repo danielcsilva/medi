@@ -11335,7 +11335,7 @@ $(document).ready(function ($) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\Guilherme\Documents\trabalho\mediconsultoria.com.br\medi2\resources\js\forms\company\company.js */"./resources/js/forms/company/company.js");
+module.exports = __webpack_require__(/*! /var/www/mediconsultoria.com.br/medi/resources/js/forms/company/company.js */"./resources/js/forms/company/company.js");
 
 
 /***/ })

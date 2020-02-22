@@ -39,14 +39,7 @@ class QuizController extends Controller
      */
     public function store(QuizStore $request)
     {
-        
-        $validationData = $request->validated();
-        
-        HealthQuestion::create($validationData);
-
-
-
-        return redirect()->route('quizzes.index')->with('success', 'Questionário adicionado!');
+    
     }
 
     /**
@@ -68,7 +61,8 @@ class QuizController extends Controller
      */
     public function edit(Quiz $quiz)
     {
-        //
+        $questions = HealthQuestion::all();
+        return view('quizzes.edit', ['questions' => $questions, 'modelAutoComplete' => '\App\HealthQuestion', 'quiz' => $quiz]);
     }
 
     /**
@@ -78,9 +72,9 @@ class QuizController extends Controller
      * @param  \App\Quiz  $quiz
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Quiz $quiz)
+    public function update(Request $request, $quiz)
     {
-        //
+        
     }
 
     /**

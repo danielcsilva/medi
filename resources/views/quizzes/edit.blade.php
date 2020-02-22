@@ -4,19 +4,15 @@
 
     <div class="row">
         <div class="col">
-            {{ Breadcrumbs::render('quizzes', $inconsistency) }}
+            {{ Breadcrumbs::render('quizzes', $quiz) }}
         </div>  
     </div>
 
     <div class="row">
-        <div class="col">
-            <form method="post" action="{{ route('quizzes.update', ['inconsistency' => $inconsistency->id])  }}">
-                @csrf
-                @method('PUT')
+        <div class="col">            
+                
+            @livewire('quiz-form',  'healthquestions', 'healthquestion', $modelAutoComplete, ['question'], ['Questão'], $quiz->id)
 
-                @include('quizzes._form')
-
-            </form>
         </div>
     </div>
 
