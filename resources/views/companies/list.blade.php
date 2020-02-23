@@ -12,7 +12,7 @@
                 Opções
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{ route('companies.create') }}">Nova</a>
+                <a class="dropdown-item" href="{{ route('companies.create') }}">Novo</a>
             </div>
         </div>
     </div>
