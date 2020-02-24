@@ -98,13 +98,13 @@ Breadcrumbs::for('quizzes', function ($trail, $content = null) {
     $trail->push('Dashboard', route('home'));
     
     if ($content == 'list'){
-        $trail->push('Questionários');
+        $trail->push('Declarações de Saúde');
     } else {
-        $trail->push('Questionários', route('quizzes.index'));
+        $trail->push('Declarações de Saúde', route('quizzes.index'));
     }
 
     if ($content == null) {
-        $trail->push('Novo Questionário');
+        $trail->push('Nova Declaração de Saúde');
     } else if(is_object($content)){
         $trail->push($content->name);
     }

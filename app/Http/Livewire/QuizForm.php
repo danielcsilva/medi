@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\HealthQuestion;
 use App\Quiz;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -25,10 +27,50 @@ class QuizForm extends Component
 
     public $selectedItems = [];
     public $name;
+    public $rowsHas;
+
+    public function mount($editRoute, $modelEditParam, $model, $columns, $labels, $QuizId = null)
+    {
+        
+        $this->editRoute = $editRoute;
+        $this->modelEditParam = $modelEditParam;
+        $this->model = $model;
+        $this->columns = $columns;
+        $this->labels = $labels;
+
+        if ($QuizId !== null) {
+
+            $this->QuizId = $QuizId;
+            $quiz = Quiz::findOrFail($this->QuizId);
+            $this->name = $quiz->name;
+
+            foreach($quiz->questions as $question) {
+                $this->selectedItems[] = $question->id;
+            }
+
+            $this->loadQuestions();
+
+        }
+
+    }
+
+    public function loadQuestions()
+    {
+        if ($this->QuizId !== null) {
+
+            $this->rowsHas = HealthQuestion::whereHas('quizzes', function(Builder $query){
+                $query->where('quiz_id', '=', $this->QuizId);
+            })->get()->toArray();
+
+        } else {
+
+            $this->rowsHas = HealthQuestion::find($this->selectedItems)->toArray();
+        }
+    }
 
     public function submit()
     {
-        // dd(request()->all());
+
         $rules = [
             'name' => 'required|min:6',
             'selectedItems' => 'required'
@@ -44,6 +86,7 @@ class QuizForm extends Component
         ], $rules, $messages)->validated();
         
         $this->saveQuiz();
+
     }
 
 
@@ -53,54 +96,54 @@ class QuizForm extends Component
             $quiz = new Quiz();
             request()->session()->flash('success', 'Declaração de Saúde adicionada!');
         } else {
-            request()->session()->flash('success', 'Declaração de Saúde alterada com sucesso!');
             $quiz = Quiz::findOrFail($this->QuizId);
+            request()->session()->flash('success', 'Declaração de Saúde alterada com sucesso!');
         }
 
         $quiz->name = $this->name;
         $quiz->save();
-        $quiz->questions()->sync($this->selectedItems);
+        
+        if ($this->QuizId === null) {
+            $quiz->questions()->sync($this->selectedItems);
+        }
 
         return redirect()->route('quizzes.index');
     }
     
 
-    public function mount($editRoute, $modelEditParam, $model, $columns, $labels, $QuizId = null)
+    public function removeSelected($remove_id)
     {
-        
-        $this->editRoute = $editRoute;
-        $this->modelEditParam = $modelEditParam;
-        $this->model = $model;
-        $this->columns = $columns;
-        $this->labels = $labels;
-
-        if ($QuizId !== null) {
-            $this->QuizId = $QuizId;
-            $quiz = Quiz::findOrFail($this->QuizId);
-            $this->name = $quiz->name;
-
-            foreach($quiz->questions as $question) {
-                $this->selectedItems[] = $question->id;
-            }
-        }
-
+        $this->selectItem($remove_id);
     }
     
     public function selectItem($question_id)
     {
         
-        $key = array_search($question_id, $this->selectedItems);
-        if ($key === false) {
+        if (!in_array($question_id, $this->selectedItems)) {
             $this->selectedItems[] = $question_id;
         } else {
+            $key = array_search($question_id, $this->selectedItems, true);
             unset($this->selectedItems[$key]);
         } 
+        
+        if ($this->QuizId !== null) {
+            
+            $quiz = Quiz::findOrFail($this->QuizId);
+            $hq = HealthQuestion::find($question_id);
 
+            if (in_array($question_id, $this->selectedItems)) {
+                $quiz->questions()->attach($hq);
+            } else {
+                $quiz->questions()->detach($hq);
+            }            
+        }
+        
+        $this->loadQuestions();
     }
 
     public function render()
     {
-        
+              
         return view('livewire.quiz-form', [
             'rows' => $this->model::whereLike($this->columns, $this->search)
             ->paginate($this->perPage),
@@ -108,8 +151,10 @@ class QuizForm extends Component
             'modelEditParam' => $this->modelEditParam,
             'editRoute' => $this->editRoute,
             'columns' => $this->columns,
-            'selectedItems' => $this->selectedItems,
-            'name' => $this->name
+            'selectedItems' => (array)$this->selectedItems,
+            'name' => $this->name,
+            'selectedQuestions' => $this->rowsHas
         ]);
+
     }
 }

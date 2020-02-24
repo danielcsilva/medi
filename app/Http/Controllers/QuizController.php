@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -83,8 +88,12 @@ class QuizController extends Controller
      * @param  \App\Quiz  $quiz
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Quiz $quiz)
+    public function destroy($quiz)
     {
-        //
+        $quizModel = Quiz::findOrFail($quiz);
+        $quizModel->questions()->sync([]);
+        $quizModel->delete();
+
+        return redirect()->route('quizzes.index')->with('success', 'Declaração de Saúde excluída com sucesso!');
     }
 }
