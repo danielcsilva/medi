@@ -24,7 +24,7 @@ class HealthQuestionController extends Controller
      */
     public function create()
     {
-        //
+        return view('health_questions.new');
     }
 
     /**
@@ -55,9 +55,9 @@ class HealthQuestionController extends Controller
      * @param  \App\HealthQuestion  $healthQuestion
      * @return \Illuminate\Http\Response
      */
-    public function edit(HealthQuestion $healthQuestion)
+    public function edit($healthQuestion)
     {
-        //
+        return view('health_questions.edit', ['healthquestion' => HealthQuestion::find($healthQuestion)]);
     }
 
     /**
