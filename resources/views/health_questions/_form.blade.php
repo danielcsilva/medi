@@ -10,9 +10,9 @@
 </div>
 
 <div class="form-row mb-2 mt-4">
-    <div class="col-6">
+    <div class="col-8">
         <label for="description">Descrição da Pergunta</label>
-        <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" cols="30" rows="10">
+        <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" cols="30" rows="5">
             {{ old('description', $healthquestion->description ?? null) }}
         </textarea>
         @error('description')

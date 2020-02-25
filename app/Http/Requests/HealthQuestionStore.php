@@ -29,4 +29,11 @@ class HealthQuestionStore extends FormRequest
             'required' => 'required'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'question.required' => 'O campo da Pergunta é necessário!' 
+        ];
+    }
 }

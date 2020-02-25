@@ -90,8 +90,11 @@ class HealthQuestionController extends Controller
      * @param  \App\HealthQuestion  $healthQuestion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HealthQuestion $healthQuestion)
+    public function destroy($healthquestion)
     {
-        //
+        $healthquestionModel = healthquestion::findOrFail($healthquestion);
+        $healthquestionModel->delete();
+
+        return redirect()->route('healthquestions.index')->with('success', 'Questão excluída com sucesso!');
     }
 }
