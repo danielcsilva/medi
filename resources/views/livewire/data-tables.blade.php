@@ -23,9 +23,9 @@
 
                 @foreach($columns as $col)
                     @if(strpos($col, '.') !== false)
-                        <td>{{ $row[explode('.', $col)[0]][explode('.', $col)[1]] }}</td>
+                        <td class="@if(in_array($col, $booleans)) boolean-value @endif">{{ $row[explode('.', $col)[0]][explode('.', $col)[1]] }}</td>
                     @else 
-                        <td>{{ $row[$col] }}</td>
+                        <td class="@if(in_array($col, $booleans)) boolean-value @endif">{{ $row[$col] }}</td>
                     @endif
                 @endforeach
 
@@ -40,47 +40,63 @@
             {{ $rows->links() }}
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Excluir</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            Deseja realmente excluir o registro?
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-            <button type="button" class="btn btn-primary" onclick="submitDeleteForm()">Sim</button>
-        </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Excluir</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Deseja realmente excluir o registro?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" onclick="submitDeleteForm()">Sim</button>
+            </div>
+            </div>
         </div>
     </div>
+    
+    <form action="" method="post" id="delete-form">
+        @csrf
+        @method('DELETE')
+    
+    </form>
+    
+    @push('scripts')
+        <script>
+    
+        function setDeleteRoute(route)
+        {
+            document.getElementById('delete-form').action = route;
+        }
+    
+        function submitDeleteForm()
+        {
+            document.getElementById('delete-form').submit();
+        }
+    
+        window.livewire.on('rewriteTable', param => {
+            
+            var elems = document.getElementsByClassName('boolean-value');
+            for(i in elems) {
+                if (elems[i].innerHTML == '0') {
+                    elems[i].innerHTML = 'Não';
+                } else if(elems[i].innerHTML == '1') {
+                    elems[i].innerHTML = 'Sim';
+                }
+            }
+        })
+
+
+        window.livewire.emit('rewriteTable', 'rewrite');
+    
+        </script>
+    @endpush
+
+
 </div>
-
-<form action="" method="post" id="delete-form">
-    @csrf
-    @method('DELETE')
-
-</form>
-
-@push('scripts')
-    <script>
-
-    function setDeleteRoute(route)
-    {
-        document.getElementById('delete-form').action = route;
-    }
-
-    function submitDeleteForm()
-    {
-        document.getElementById('delete-form').submit();
-    }
-
-
-    </script>
-@endpush

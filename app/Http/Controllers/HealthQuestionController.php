@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\HealthQuestion;
+use App\Http\Requests\HealthQuestionStore;
 use Illuminate\Http\Request;
 
 class HealthQuestionController extends Controller
@@ -33,9 +34,14 @@ class HealthQuestionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(HealthQuestionStore $request)
     {
-        //
+        $validationData = $request->validated();
+
+        HealthQuestion::create($validationData);
+
+        return redirect()->route('healthquestions.index')->with('success', 'Questão criada com sucesso!');
+
     }
 
     /**
@@ -46,7 +52,7 @@ class HealthQuestionController extends Controller
      */
     public function show(HealthQuestion $healthQuestion)
     {
-        //
+        
     }
 
     /**
@@ -67,9 +73,15 @@ class HealthQuestionController extends Controller
      * @param  \App\HealthQuestion  $healthQuestion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, HealthQuestion $healthQuestion)
+    public function update(HealthQuestionStore $request, $healthquestion)
     {
-        //
+        $healthquestionModel = healthquestion::findOrFail($healthquestion);
+        $validationData = $request->validated();        
+        
+        $healthquestionModel->fill($validationData);
+        $healthquestionModel->save();
+
+        return redirect()->route('healthquestions.index')->with('success', 'Questão editada com sucesso!');
     }
 
     /**

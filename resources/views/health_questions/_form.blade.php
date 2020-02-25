@@ -26,8 +26,14 @@
 <div class="form-row mb-2 mt-2">
     <div class="col-4">
         <div class="form-check form-check-inline mt-2">
-            <input class="form-check-input" type="checkbox" id="required" value="1">
+            <input type="hidden" name="required" value="0" />
+            <input class="form-check-input @error('required') is-invalid @enderror" name="required" @if(isset($healthquestion) && $healthquestion->required) checked @endif type="checkbox" id="required" value="1">
             <label class="form-check-label" for="required">Obrigatória?</label>
+            @error('required')
+            <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+            </span>
+            @enderror
         </div>    
     </div>
 </div>

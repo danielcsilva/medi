@@ -18,6 +18,6 @@
     </div>
 </div>
 
-@livewire('data-tables', 'healthquestions', 'healthquestion', $model, ['question', 'description', 'required'], ['Questão', 'Descrição', 'Obrigatório?'])
+@livewire('data-tables', 'healthquestions', 'healthquestion', $model, ['question', 'description', 'required'], ['Questão', 'Descrição', 'Obrigatório?'], ['required'])
 
 @endsection
