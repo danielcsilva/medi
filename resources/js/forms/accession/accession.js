@@ -67,9 +67,15 @@ $(document).ready(function($){
         const cep = $(e.target).val();
         if (cep.length == 9) {
             $.ajax({
-                url: 'http://viacep.com.br/ws/' + cep.replace('-', '') + '/json/',
+                url: 'https://viacep.com.br/ws/' + cep.replace('-', '') + '/json/',
                 success: function(result) {
                     objInput.parents('.address').find('input:eq(1)').val(result.logradouro);
+                    objInput.parents('.address').next('.address-city-state').find('input:first').val(result.localidade);
+                    objInput.parents('.address').next('.address-city-state').find('input:eq(1)').val(result.uf);
+                    objInput.parents('.address').find('input:eq(2)').focus();
+                },
+                error: function() {
+                    alert('Não é possível recuperar o endereço, verifique sua conexão com a internet!');
                 }
             });
         }

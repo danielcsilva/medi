@@ -69,6 +69,15 @@
         </div>
     </div>
 
+    <div class="form-row mb-4 mt-4 address-city-state">
+        <div class="col-4">
+            <input type="text" name="address_city" class="form-control cep" placeholder="Cidade">
+        </div>
+        <div class="col-2">
+            <input type="text" name="address_state" class="form-control" placeholder="UF">
+        </div>
+    </div>
+
 </div>
 
 
