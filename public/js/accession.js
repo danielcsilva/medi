@@ -11324,6 +11324,7 @@ __webpack_require__(/*! jquery-mask-plugin */ "./node_modules/jquery-mask-plugin
 var dependents = 0;
 $(document).ready(function ($) {
   $('.telephone').mask('(00) 0000-0000');
+  $('.cep').mask('00000-000');
   $('#addTelephone').on('click', function (e) {
     e.preventDefault();
     var item = $('.repeat-telephone:first').clone();
@@ -11351,6 +11352,7 @@ $(document).ready(function ($) {
     var deleteBtn = '<a href="#" data-toggle="modal" data-target="#deleteModal" class="float-right"><i class="material-icons">delete_forever</i></a>';
     var fieldset = '<fieldset class="form-group dependent"><span class="count">#' + dependents + '</span><span class="delete-dependent">' + deleteBtn + '</span>' + items.html() + '</fieldset>';
     $('#dependents').append(fieldset);
+    $('.cep').mask('00000-000');
   });
   $(document).on('click', '.delete-dependent', function (e) {
     $('#toDelete').val($(e.target).parents('fieldset:first').index());
@@ -11361,12 +11363,24 @@ $(document).ready(function ($) {
     $('fieldset:eq(' + toRemove + ')').remove();
     recountDependents();
   });
+  $(document).on('keyup', '.cep', function (e) {
+    var objInput = $(e.target);
+    var cep = $(e.target).val();
+
+    if (cep.length == 9) {
+      $.ajax({
+        url: 'http://viacep.com.br/ws/' + cep.replace('-', '') + '/json/',
+        success: function success(result) {
+          objInput.parents('.address').find('input:eq(1)').val(result.logradouro);
+        }
+      });
+    }
+  });
 });
 
 function recountDependents() {
   var count = 0;
   $('fieldset.dependent').each(function (i, o) {
-    console.log(i);
     $(o).find('span.count').html('#' + (i + 1));
     count++;
   });

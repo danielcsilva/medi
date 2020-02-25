@@ -7,6 +7,8 @@ $(document).ready(function($){
 
 
     $('.telephone').mask('(00) 0000-0000');
+    $('.cep').mask('00000-000');
+    
 
     $('#addTelephone').on('click', function(e){
         e.preventDefault();
@@ -42,6 +44,7 @@ $(document).ready(function($){
         
 
         $('#dependents').append(fieldset);
+        $('.cep').mask('00000-000');
     })
 
 
@@ -59,6 +62,19 @@ $(document).ready(function($){
         recountDependents();
     })
 
+    $(document).on('keyup', '.cep', function(e){
+        var objInput = $(e.target);
+        const cep = $(e.target).val();
+        if (cep.length == 9) {
+            $.ajax({
+                url: 'http://viacep.com.br/ws/' + cep.replace('-', '') + '/json/',
+                success: function(result) {
+                    objInput.parents('.address').find('input:eq(1)').val(result.logradouro);
+                }
+            });
+        }
+    });
+
 });
 
 
@@ -66,7 +82,6 @@ function recountDependents() {
 
     var count = 0
     $('fieldset.dependent').each(function(i,o){
-        console.log(i);
         $(o).find('span.count').html('#' + (i + 1));
         count++;
     });

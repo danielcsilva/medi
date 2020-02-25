@@ -18,7 +18,6 @@
 </div>
 
 
-
 <div id="repeater-colaborator">
 
     <div class="form-row mb-4 mt-4">
@@ -52,6 +51,21 @@
                 <input class="form-check-input" type="checkbox" id="financier" value="1">
                 <label class="form-check-label" for="financier">Financiador</label>
             </div>
+        </div>
+    </div>
+
+    <div class="form-row mb-4 mt-4 address">
+        <div class="col-2">
+            <input type="text" name="address_cep" class="form-control cep" placeholder="CEP">
+        </div>
+        <div class="col-6">
+            <input type="text" name="address_address" class="form-control" placeholder="rua de exemplo...">
+        </div>
+        <div class="col">
+            <input type="text" name="address_number" class="form-control" placeholder="número...">
+        </div>
+        <div class="col">
+            <input type="text" name="address_complement" class="form-control" placeholder="complemento...">
         </div>
     </div>
 

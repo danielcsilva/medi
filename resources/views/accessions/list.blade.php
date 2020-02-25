@@ -12,7 +12,7 @@
                 Opções
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{ route('healthplans.create') }}">Nova</a>
+                <a class="dropdown-item" href="{{ route('accessions.create') }}">Novo</a>
             </div>
         </div>
     </div>
