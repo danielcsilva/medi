@@ -1,4 +1,17 @@
 <div class="form-row mb-4 mt-4">
+    <div class="col-6">
+        <label for="health-declaration">Escolha um Modelo de DS</label>
+        <select id="health-declaration" class="form-control">
+            <option>...</option>
+            @foreach($quizzes as $quiz)
+                <option value="{{ $quiz->id }}"> {{ $quiz->name }}</option>
+            @endforeach
+        </select>
+        
+    </div>
+</div>
+
+<div class="form-row mb-4 mt-4">
     <div class="col-3">
         <input type="text" name="proposal_number" class="form-control" placeholder="Nº da Proposta" value="">
     </div>
@@ -21,10 +34,13 @@
 <div id="repeater-colaborator">
 
     <div class="form-row mb-4 mt-4">
-        <div class="col-6">
-            <input type="text" name="beneficiary_name" class="form-control" placeholder="Nome do beneficiário titular" value="">
+        <div class="col-3">
+            <input type="text" name="beneficiary_cpf" class="form-control cpf" placeholder="CPF">
         </div>
-        <div class="col-6">
+        <div class="col-5">
+            <input type="text" name="beneficiary_name" id="beneficiary-name" class="form-control" placeholder="Nome do beneficiário titularail">
+        </div>
+        <div class="col-4">
             <input type="email" name="beneficiary_email" class="form-control" placeholder="Email">
         </div>
     </div>
@@ -75,6 +91,10 @@
         </div>
         <div class="col-2">
             <input type="text" name="address_state" class="form-control" placeholder="UF">
+        </div>
+        <div class="col-3 mt-2">
+            <span id="health-declartion-link" style="display:none;"> <a href="#">Visualizar DS</a></span>
+            <input type="hidden" name="health_declaration" value="">
         </div>
     </div>
 

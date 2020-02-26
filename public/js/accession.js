@@ -11325,6 +11325,7 @@ var dependents = 0;
 $(document).ready(function ($) {
   $('.telephone').mask('(00) 0000-0000');
   $('.cep').mask('00000-000');
+  $('.cpf').mask('000.000.000-00');
   $('#addTelephone').on('click', function (e) {
     e.preventDefault();
     var item = $('.repeat-telephone:first').clone();
@@ -11353,6 +11354,7 @@ $(document).ready(function ($) {
     var fieldset = '<fieldset class="form-group dependent"><span class="count">#' + dependents + '</span><span class="delete-dependent">' + deleteBtn + '</span>' + items.html() + '</fieldset>';
     $('#dependents').append(fieldset);
     $('.cep').mask('00000-000');
+    $('.cpf').mask('000.000.000-00');
   });
   $(document).on('click', '.delete-dependent', function (e) {
     $('#toDelete').val($(e.target).parents('fieldset:first').index());
@@ -11380,6 +11382,11 @@ $(document).ready(function ($) {
           alert('Não é possível recuperar o endereço, verifique sua conexão com a internet!');
         }
       });
+    }
+  });
+  $(document).on('keyup', '#beneficiary-name', function () {
+    if ($('#health-declaration').val() != '' && $('input[name=beneficiary_cpf]').val() != '') {
+      $('#health-declartion-link').show();
     }
   });
 });

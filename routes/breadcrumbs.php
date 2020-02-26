@@ -98,9 +98,9 @@ Breadcrumbs::for('quizzes', function ($trail, $content = null) {
     $trail->push('Dashboard', route('home'));
     
     if ($content == 'list'){
-        $trail->push('Declarações de Saúde');
+        $trail->push('Modelos de DS');
     } else {
-        $trail->push('Declarações de Saúde', route('quizzes.index'));
+        $trail->push('Modelos de DS', route('quizzes.index'));
     }
 
     if ($content == null) {

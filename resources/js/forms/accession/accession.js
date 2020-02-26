@@ -8,6 +8,7 @@ $(document).ready(function($){
 
     $('.telephone').mask('(00) 0000-0000');
     $('.cep').mask('00000-000');
+    $('.cpf').mask('000.000.000-00');
     
 
     $('#addTelephone').on('click', function(e){
@@ -45,6 +46,7 @@ $(document).ready(function($){
 
         $('#dependents').append(fieldset);
         $('.cep').mask('00000-000');
+        $('.cpf').mask('000.000.000-00');
     })
 
 
@@ -79,6 +81,14 @@ $(document).ready(function($){
                 }
             });
         }
+    });
+
+    $(document).on('keyup', '#beneficiary-name', function(){
+        
+        if ($('#health-declaration').val() != '' && $('input[name=beneficiary_cpf]').val() != '') {
+            $('#health-declartion-link').show();
+        }
+        
     });
 
 });
