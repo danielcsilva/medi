@@ -11388,6 +11388,7 @@ $(document).ready(function ($) {
   });
   $(document).on('change', '#health-declaration', function (e) {
     openHealthDeclaration($(e.target).val());
+    $('#health-declaration-comments').toggle();
   });
 });
 

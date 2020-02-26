@@ -126,8 +126,17 @@
 
 
 <div class="form-row mb-4 mt-4">
-    <table id="health-declaration-table" class="table table-striped">
-    </table>
+    <div class="col">
+        <table id="health-declaration-table" class="table table-striped">
+        </table>
+    </div>
+</div>
+
+<div class="form-row mb-4 mt-4" id="health-declaration-comments" style="display:none;">
+    <div class="col">
+        <label for="health-declaration-comments">Comentários da DS</label>
+        <textarea name="health_declaration_comments" class="form-control" id="" cols="30" rows="5"></textarea>
+    </div>
 </div>
 
 
