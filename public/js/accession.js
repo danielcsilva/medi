@@ -11355,6 +11355,7 @@ $(document).ready(function ($) {
     $('#dependents').append(fieldset);
     $('.cep').mask('00000-000');
     $('.cpf').mask('000.000.000-00');
+    changeHealthDeclaration();
   });
   $(document).on('click', '.delete-dependent', function (e) {
     $('#toDelete').val($(e.target).parents('fieldset:first').index());
@@ -11364,6 +11365,7 @@ $(document).ready(function ($) {
     var toRemove = $('#toDelete').val();
     $('fieldset:eq(' + toRemove + ')').remove();
     recountDependents();
+    changeHealthDeclaration();
   });
   $(document).on('keyup', '.cep', function (e) {
     var objInput = $(e.target);
@@ -11385,40 +11387,68 @@ $(document).ready(function ($) {
     }
   });
   $(document).on('change', '#health-declaration', function (e) {
-    $.ajax({
-      url: '/api/quizzes/' + $(e.target).val(),
-      success: function success(results) {
-        var table = "<thead>";
-        table += "<tr>";
-        table += "<td>Pergunta</td>";
+    openHealthDeclaration($(e.target).val());
+  });
+});
+
+function changeHealthDeclaration() {
+  if ($('#health-declaration-table').find('tbody > tr').length > 0) {
+    var table = $('#health-declaration-table');
+    num_dependents = dependents + 2;
+    var head = table.find('thead').clone();
+    var body = table.find('tbody').clone();
+
+    if (head.find('th').length > num_dependents) {
+      head.find('th:eq(' + (head.find('th').length - 1) + ')').remove();
+      body.find('tr').each(function (i, o) {
+        $(o).find('td:eq(' + (head.find('th').length - 1) + ')').remove();
+      });
+    } else if (num_dependents > head.find('th').length) {
+      head.find('tr:first').append("<th>Dependente " + (head.find('th').length - 2 + 1) + "</th>");
+      body.find('tr').each(function (i, o) {
+        $(o).append("<td><input type='text'></td>");
+      });
+    }
+
+    table.find('thead').html(head.html());
+    table.find('tbody').html(body.html());
+  }
+}
+
+function openHealthDeclaration(model_id) {
+  $.ajax({
+    url: '/api/quizzes/' + model_id,
+    success: function success(results) {
+      var table = "<thead>";
+      table += "<tr>";
+      table += "<th with=\"25%\">Pergunta</th>";
+
+      for (var j = 0; j <= dependents; j++) {
+        if (j == 0) {
+          table += "<th>Titular</th>";
+        } else {
+          table += "<th>Dependente " + j + "</th>";
+        }
+      }
+
+      table += "</tr>";
+      table += "</thead><tbody>";
+
+      for (i in results.questions) {
+        table += "<tr><td>" + results.questions[i].question + "</td>";
 
         for (var j = 0; j <= dependents; j++) {
-          if (j == 0) {
-            table += "<td>Titular</td>";
-          } else {
-            table += "<td>Dependente " + j + "</td>";
-          }
+          table += "<td><input type='text'></td>";
         }
 
         table += "</tr>";
-        table += "</thead><tbody>";
-
-        for (i in results.questions) {
-          table += "<tr><td>" + results.questions[i].question + "</td>";
-
-          for (var j = 0; j <= dependents; j++) {
-            table += "<td><input type='text'></td>";
-          }
-
-          table += "</tr>";
-        }
-
-        table += "</tbody>";
-        $('#health-declaration-table').html(table);
       }
-    });
+
+      table += "</tbody>";
+      $('#health-declaration-table').html(table);
+    }
   });
-});
+}
 
 function recountDependents() {
   var count = 0;
