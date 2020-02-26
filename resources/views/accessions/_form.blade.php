@@ -1,15 +1,3 @@
-<div class="form-row mb-4 mt-4">
-    <div class="col-6">
-        <label for="health-declaration">Escolha um Modelo de DS</label>
-        <select id="health-declaration" class="form-control">
-            <option>...</option>
-            @foreach($quizzes as $quiz)
-                <option value="{{ $quiz->id }}"> {{ $quiz->name }}</option>
-            @endforeach
-        </select>
-        
-    </div>
-</div>
 
 <div class="form-row mb-4 mt-4">
     <div class="col-3">
@@ -92,10 +80,6 @@
         <div class="col-2">
             <input type="text" name="address_state" class="form-control" placeholder="UF">
         </div>
-        <div class="col-3 mt-2">
-            <span id="health-declartion-link" style="display:none;"> <a href="#">Visualizar DS</a></span>
-            <input type="hidden" name="health_declaration" value="">
-        </div>
     </div>
 
 </div>
@@ -126,6 +110,24 @@
 </div>
 
 <div id="dependents">
+</div>
+
+<div class="form-row mb-4 mt-4">
+    <div class="col-6">
+        <label for="health-declaration">Escolha um Modelo de DS</label>
+        <select id="health-declaration" class="form-control">
+            <option>...</option>
+            @foreach($quizzes as $quiz)
+                <option value="{{ $quiz->id }}"> {{ $quiz->name }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
+
+
+<div class="form-row mb-4 mt-4">
+    <table id="health-declaration-table" class="table table-striped">
+    </table>
 </div>
 
 

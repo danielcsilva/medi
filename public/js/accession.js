@@ -11384,10 +11384,39 @@ $(document).ready(function ($) {
       });
     }
   });
-  $(document).on('keyup', '#beneficiary-name', function () {
-    if ($('#health-declaration').val() != '' && $('input[name=beneficiary_cpf]').val() != '') {
-      $('#health-declartion-link').show();
-    }
+  $(document).on('change', '#health-declaration', function (e) {
+    $.ajax({
+      url: '/api/quizzes/' + $(e.target).val(),
+      success: function success(results) {
+        var table = "<thead>";
+        table += "<tr>";
+        table += "<td>Pergunta</td>";
+
+        for (var j = 0; j <= dependents; j++) {
+          if (j == 0) {
+            table += "<td>Titular</td>";
+          } else {
+            table += "<td>Dependente " + j + "</td>";
+          }
+        }
+
+        table += "</tr>";
+        table += "</thead><tbody>";
+
+        for (i in results.questions) {
+          table += "<tr><td>" + results.questions[i].question + "</td>";
+
+          for (var j = 0; j <= dependents; j++) {
+            table += "<td><input type='text'></td>";
+          }
+
+          table += "</tr>";
+        }
+
+        table += "</tbody>";
+        $('#health-declaration-table').html(table);
+      }
+    });
   });
 });
 
