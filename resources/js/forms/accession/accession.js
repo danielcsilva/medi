@@ -9,6 +9,7 @@ $(document).ready(function($){
     $('.telephone').mask('(00) 0000-0000');
     $('.cep').mask('00000-000');
     $('.cpf').mask('000.000.000-00');
+    $('.date-br').mask('00/00/0000');
     
 
     $('#addTelephone').on('click', function(e){
@@ -47,6 +48,7 @@ $(document).ready(function($){
         $('#dependents').append(fieldset);
         $('.cep').mask('00000-000');
         $('.cpf').mask('000.000.000-00');
+        $('.date-br').mask('00/00/0000');
 
         changeHealthDeclaration();
     })
@@ -88,8 +90,8 @@ $(document).ready(function($){
 
     $(document).on('change', '#health-declaration', function(e){
 
-        openHealthDeclaration($(e.target).val());
-        $('#health-declaration-comments').toggle();
+        openHealthDeclaration($(e.target).val());        
+        $('#health-declaration-comments').show();
 
     });
 
@@ -101,7 +103,7 @@ function changeHealthDeclaration() {
     if ($('#health-declaration-table').find('tbody > tr').length > 0) {
 
         var table = $('#health-declaration-table');
-        num_dependents = dependents + 2;
+        num_dependents = dependents + 3;
 
         var head = table.find('thead').clone(); 
         var body = table.find('tbody').clone();
@@ -111,17 +113,17 @@ function changeHealthDeclaration() {
             head.find('th:eq('+ (head.find('th').length - 1) + ')').remove();
             
             body.find('tr').each(function(i,o){
-                $(o).find('td:eq('+ (head.find('th').length - 1) +')').remove();  
+                $(o).find('td:eq('+ (head.find('td').length - 1) +')').remove();  
             });
 
         } else if (num_dependents > head.find('th').length) {
             
                 
-                head.find('tr:first').append("<th>Dependente " + ((head.find('th').length - 2) + 1) + "</th>")
-                
-                body.find('tr').each(function(i,o){
-                    $(o).append("<td><input type='text'></td>");  
-                });
+            head.find('tr:first').append("<th>Dependente " + ((head.find('th').length - 3) + 1) + "</th>")
+            
+            body.find('tr').each(function(i,o){
+                $(o).append("<td><input class='form-control col-4 text-center' type='text' name=\"dep_"+ (head.find('th').length - 3) +"_answer_"+ (i + 1) +"\"></td>");  
+            });
 
         }
     
@@ -133,13 +135,16 @@ function changeHealthDeclaration() {
 
 
 function openHealthDeclaration(model_id) {
+    
+    var item_number = 0;
 
     $.ajax({
         url: '/api/quizzes/' + model_id,
         success: function(results) {
             var table = "<thead>";
             table += "<tr>";
-            table += "<th with=\"25%\">Pergunta</th>";
+            table += "<th>#</th>";
+            table += "<th>Pergunta</th>";
             for(var j = 0; j <= dependents; j++){
                 if (j == 0) {
                     table += "<th>Titular</th>";
@@ -150,14 +155,36 @@ function openHealthDeclaration(model_id) {
             table += "</tr>";
             table += "</thead><tbody>";
             for(i in results.questions) {
-                table += "<tr><td>" + results.questions[i].question + "</td>";
+                item_number++;
+                table += "<tr><td><input type=\"hidden\" name=\"item_number_"+ item_number +"\" />" + item_number + "</td>";
+                table += "<td>" + results.questions[i].question + "</td>";
                 for(var j = 0; j <= dependents; j++){
-                        table += "<td><input type='text'></td>";
+                        table += "<td><input class='form-control col-4 text-center' type='text' name=\"titular_answer_"+ item_number +"\"></td>";
                 }
                 table += "</tr>";
             }
             table += "</tbody>";
+
             $('#health-declaration-table').html(table);
+
+            var html = "<label>Em caso de existência de doença, especifique o item, subitem e proponente</label>";
+            for (var i = 1; i <= item_number; i++) {
+                html += '<div class="form-row mb-1 mt-1">';
+                    html += '<div class="col-1">';
+                    html += '#' + i;
+                    html += "</div>";
+                    html += '<div class="col">';
+                        html += '<input type="text" name="comment_by_item_' + i + '" class="form-control" placeholder="especificação" />';
+                    html += "</div>";
+                    html += '<div class="col">';
+                        html += '<input type="text" name="period_by_item_' + i + '" class="form-control" placeholder="período da doença" />';
+                    html += "</div>";
+                html += "</div>";
+
+            }
+
+            $('#comments-by-item').html(html);
+
         }
     })
 
@@ -168,6 +195,7 @@ function recountDependents() {
     var count = 0
     $('fieldset.dependent').each(function(i,o){
         $(o).find('span.count').html('#' + (i + 1));
+        $(o).find('input,select').attr('name', $(o).find('input,select').attr('name').replace(/_[0-9]*$/gm, '_' + (i + 1)));
         count++;
     });
 

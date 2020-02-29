@@ -4,7 +4,7 @@
         <input type="text" name="proposal_number" class="form-control" placeholder="Nº da Proposta" value="">
     </div>
     <div class="col-3">
-        <input type="text" name="received_at" class="form-control" placeholder="Data de Recebimento" value="{{ date('d/m/Y') }}">
+        <input type="text" name="received_at" class="form-control date-br" placeholder="Data de Recebimento" value="{{ date('d/m/Y') }}">
     </div>
     <div class="col-6">
         
@@ -35,7 +35,7 @@
     
     <div class="form-row mb-4 mt-4">
         <div class="col">
-            <input type="text" name="beneficiary_birth_date" class="form-control" placeholder="Data de Nasc.">
+            <input type="text" name="beneficiary_birth_date" class="form-control date-br" placeholder="Data de Nasc.">
         </div>
         <div class="col">
             <input type="text" name="beneficiary_height" class="form-control" placeholder="Altura">
@@ -129,7 +129,11 @@
     <div class="col">
         <table id="health-declaration-table" class="table table-striped">
         </table>
+        
     </div>
+</div>
+
+<div id="comments-by-item">
 </div>
 
 <div class="form-row mb-4 mt-4" id="health-declaration-comments" style="display:none;">
