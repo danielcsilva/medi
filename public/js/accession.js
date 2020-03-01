@@ -13476,9 +13476,10 @@ var Inputmask = __webpack_require__(/*! inputmask */ "./node_modules/inputmask/i
 
 var dependents = 0;
 $(document).ready(function ($) {
-  // $('.telephone').inputmask('(00) 0000-0000');$('.telephone').inputmask('(00) 0000-0000');
+  recountDependents(); // $('.telephone').inputmask('(00) 0000-0000');$('.telephone').inputmask('(00) 0000-0000');
   // $('.cep').inputmask('00000-000');
   // $('.cpf').inputmask('000.000.000-00');
+
   Inputmask({
     "mask": "99/99/9999",
     placeholder: ""

@@ -6,6 +6,7 @@ var dependents = 0;
 
 $(document).ready(function($){
 
+    recountDependents();
 
     // $('.telephone').inputmask('(00) 0000-0000');$('.telephone').inputmask('(00) 0000-0000');
     // $('.cep').inputmask('00000-000');
