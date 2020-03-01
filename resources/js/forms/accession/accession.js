@@ -39,18 +39,20 @@ $(document).ready(function($){
         e.preventDefault();
         dependents += 1;
 
-        var items = $('#repeater-colaborator').clone();
-        
+        var items = $('#repeater-colaborator').clone(true);        
+
         items.find('input').each(function(i,o){            
+            
             let placeholder = ($(o).attr('placeholder') ? $(o).attr('placeholder').replace('titular', 'dependente') : '');
             $(o).attr('placeholder', placeholder);
-            //$(o).attr('name', $(o).attr('name') + '_' + dependents);
+            $(o).val('');
+
         });
 
         var deleteBtn = '<a href="#" data-toggle="modal" data-target="#deleteModal" class="float-right"><i class="material-icons">delete_forever</i></a>';
-        var fieldset = '<fieldset class="form-group dependent"><span class="count">#' + dependents + '</span><span class="delete-dependent">' + deleteBtn  +'</span>' + items.html() + '</fieldset>';
+        var fieldset = $.parseHTML('<fieldset class="form-group dependent"><span class="count">#' + dependents + '</span><span class="delete-dependent">' + deleteBtn  +'</span></fieldset>');
         
-
+        $(fieldset).append(items);
         $('#dependents').append(fieldset);
         
         Inputmask({"mask": "99/99/9999", placeholder: ""}).mask('.date-br');
@@ -203,12 +205,18 @@ function openHealthDeclaration(model_id) {
 
 function recountDependents() {    
 
-    var count = 0
-    $('fieldset.dependent').each(function(i,o){
-        $(o).find('span.count').html('#' + (i + 1));
-        //$(o).find('input,select').attr('name', $(o).find('input,select').attr('name').replace(/dependent\[[0-9]*\]/gm, '[' + (i + 1) + ']'));
-        count++;
-    });
+    if ($('fieldset.dependent').length > 0) {
+        
+        var count = 0
+        $('fieldset.dependent').each(function(i,o){
+            $(o).find('span.count').html('#' + (i + 1));
+            // $(o).find('input').val('');
+            //$(o).find('input,select').attr('name', $(o).find('input,select').attr('name').replace(/dependent\[[0-9]*\]/gm, '[' + (i + 1) + ']'));
+            count++;
+        });
+    
+        dependents = count;
 
-    dependents = count;
+    }
+
 }   

@@ -12,4 +12,9 @@ class Address extends Model
     {
         return $this->belongsTo('App\Accession', 'accession_id');
     }
+
+    public function setCepAttribute($value)
+    {
+        $this->attributes['cep'] = str_replace('-', '', $value);
+    }
 }

@@ -33,4 +33,25 @@ class Beneficiary extends Model
     {   
         $this->attributes['cpf'] = str_replace(['.', '-'], '', $value);
     }
+
+    public function setHeightAttribute($value)
+    {           
+        $this->attributes['height'] = str_replace(',', '.', $value);
+    }
+
+    public function setWeightAttribute($value)
+    {   
+        $this->attributes['weight'] = str_replace(',', '.', $value);
+    }
+
+    public function getHeightAttribute($value)
+    {   
+        return str_replace('.', ',', $value);
+    }
+
+    public function getWeightAttribute($value)
+    {   
+        return str_replace('.', ',', $value);
+    }
+
 }

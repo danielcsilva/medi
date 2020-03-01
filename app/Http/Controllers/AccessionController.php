@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Accession;
+use App\Address;
 use App\Beneficiary;
 use App\Company;
 use App\HealthPlan;
@@ -63,7 +64,12 @@ class AccessionController extends Controller
             'beneficiary_name.*' => 'required',
             'beneficiary_height.*' => 'required',
             'beneficiary_weight.*' => 'required',
-            'beneficiary_gender.*' => 'required'
+            'beneficiary_gender.*' => 'required',
+            'address_cep.*' => 'required',
+            'address_address.*' => 'required',
+            'address_number.*' => 'required',
+            'address_city.*' => 'required',
+            'address_state.*' => 'required'
         ],
         [
             'proposal_number' => 'O número da proposta é obrigatório!',
@@ -73,7 +79,12 @@ class AccessionController extends Controller
             'beneficiary_name.*' => 'O nome do beneficiário é obrigatório!' ,
             'beneficiary_height.*' => 'A altura é obrigatória!',
             'beneficiary_weight.*' => 'O peso é obrigatório!',
-            'beneficiary_gender.*' => 'O campo sexo é obrigatório!'           
+            'beneficiary_gender.*' => 'O campo sexo é obrigatório!',
+            'address_cep.*' => 'Cep obrigatório!',
+            'address_address.*' => 'Endereço obrigatório!',
+            'address_number.*' => 'Número obrigatório!',
+            'address_city.*' => 'Cidade obrigatório!',
+            'address_state.*' => 'Estado (UF) obrigatório!'           
         ])->validate();
         
 
@@ -100,13 +111,24 @@ class AccessionController extends Controller
                         'gender' => $request->get('beneficiary_gender')[$k]
                     ]);
         
-                    Accession::create([
+                    $accession = Accession::create([
                         'proposal_number' => $request->get('proposal_number'),
                         'received_at' => DateTime::createFromFormat('d/m/Y', $request->get('received_at'))->format('Y-m-d'),
                         'company_id' => $request->get('company_id'),
                         'beneficiary_id' => $beneficiary->id 
                     ]);
-                        
+
+                    Address::create([
+                        'cep' => $request->get('address_cep')[$k],
+                        'address' => $request->get('address_address')[$k],
+                        'number' => $request->get('address_number')[$k],
+                        'complement' => $request->get('address_complement')[$k],
+                        'accession_id' => $accession->id,
+                        'city' => $request->get('address_city')[$k],
+                        'state' => $request->get('address_state')[$k]
+                    ]);
+                    
+                    
                 }
     
             });
