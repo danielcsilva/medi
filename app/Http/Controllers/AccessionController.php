@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Accession;
+use App\Beneficiary;
 use App\Company;
 use App\HealthPlan;
 use App\Quiz;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AccessionController extends Controller
 {
@@ -48,9 +51,45 @@ class AccessionController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        
+        $validatedData = $request->validate([
+            'beneficiary_cpf.*' => 'required',
+            'beneficiary_name.*' => 'required',
+        ]);
 
-        dd($data);
+        $beneficiaries = $request->get('beneficiary_cpf');
+            
+        DB::transaction(function() use ($request, $beneficiaries) {
+            
+            foreach($beneficiaries as $k => $v) {
+    
+                $weight = (double)$request->get('beneficiary_weight')[$k];
+                $height = (double)$request->get('beneficiary_height')[$k];
+                $imc = round($weight / ($height * $height), 2);
+    
+                $beneficiary = Beneficiary::create([
+                    'name' => $request->get('beneficiary_name')[$k], 
+                    'email' => $request->get('beneficiary_email')[$k], 
+                    'cpf' => $v, 
+                    'birth_date' => DateTime::createFromFormat('d/m/Y', $request->get('beneficiary_birth_date')[$k])->format('Y-m-d'), 
+                    'height' => $height, 
+                    'weight' => $weight, 
+                    'imc' => $imc, 
+                    'gender' => $request->get('beneficiary_gender')[$k]
+                ]);
+    
+                Accession::create([
+                    'proposal_number' => $request->get('proposal_number'),
+                    'received_at' => DateTime::createFromFormat('d/m/Y', $request->get('received_at'))->format('Y-m-d'),
+                    'company_id' => $request->get('company_id'),
+                    'beneficiary_id' => $beneficiary->id 
+                ]);
+                    
+            }
+
+        });
+        
+        dd('fim');
     }
 
     /**

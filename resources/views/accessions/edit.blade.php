@@ -10,7 +10,7 @@
 
     <div class="row">
         <div class="col">
-            <form method="post" action="{{ route('accessions.update', ['accession' => $accession->id])  }}">
+            <form id="process-form" method="post" action="{{ route('accessions.update', ['accession' => $accession->id])  }}">
                 @csrf
                 @method('PUT')
 

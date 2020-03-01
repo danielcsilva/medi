@@ -1,15 +1,27 @@
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 
 <div class="form-row mb-4 mt-4">
     <div class="col-3">
-        <input type="text" name="proposal_number" class="form-control" placeholder="Nº da Proposta" value="">
+        <label for="">Data do Recebimento</label>
+        <input type="text" name="received_at" class="form-control date-br" value="{{ date('d/m/Y') }}" required1>
     </div>
     <div class="col-3">
-        <input type="text" name="received_at" class="form-control date-br" placeholder="Data de Recebimento" value="{{ date('d/m/Y') }}">
+        <label for="">Nº da Proposta</label>
+
+        <input type="text" name="proposal_number" class="form-control" value="" required1>
     </div>
     <div class="col-6">
-        
-        <select id="inputState" class="form-control">
-            <option>Cliente</option>
+        <label for="">Cliente</label>        
+        <select id="inputState" class="form-control" name="company_id" required1>
+            <option value="">selecione</option>
             @foreach($customers as $customer)
                 <option value="{{ $customer->id }}"> {{ $customer->name }}</option>
             @endforeach
@@ -23,28 +35,28 @@
 
     <div class="form-row mb-4 mt-4">
         <div class="col-3">
-            <input type="text" name="beneficiary_cpf" class="form-control cpf" placeholder="CPF">
+            <input type="text" name="beneficiary_cpf[]" class="form-control cpf" placeholder="CPF" required1>            
         </div>
         <div class="col-5">
-            <input type="text" name="beneficiary_name" id="beneficiary-name" class="form-control" placeholder="Nome do beneficiário titularail">
+            <input type="text" name="beneficiary_name[]" id="beneficiary-name" class="form-control" placeholder="Nome do beneficiário titular" required1>            
         </div>
         <div class="col-4">
-            <input type="email" name="beneficiary_email" class="form-control" placeholder="Email">
+            <input type="email" name="beneficiary_email[]" id="beneficiary-email" class="form-control" placeholder="Email" required1>
         </div>
     </div>
     
     <div class="form-row mb-4 mt-4">
         <div class="col">
-            <input type="text" name="beneficiary_birth_date" class="form-control date-br" placeholder="Data de Nasc.">
+            <input type="text" name="beneficiary_birth_date[]" class="form-control date-br" placeholder="Data de Nasc." required1>
         </div>
         <div class="col">
-            <input type="text" name="beneficiary_height" class="form-control" placeholder="Altura">
+            <input type="text" name="beneficiary_height[]" class="form-control" placeholder="Altura" required1>
         </div>
         <div class="col">
-            <input type="text" name="beneficiary_weight" class="form-control" placeholder="Peso">
+            <input type="text" name="beneficiary_weight[]" class="form-control" placeholder="Peso" required1>
         </div>
         <div class="col">        
-            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="beneficiary_gender">
+            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="beneficiary_gender[]" required1>
                 <option value="">Sexo</option>
                 <option value="M">Masculino</option>
                 <option value="F">Feminino</option>
@@ -52,7 +64,7 @@
         </div>
         <div class="col">
             <div class="form-check form-check-inline mt-2">
-                <input class="form-check-input" type="checkbox" id="financier" value="1">
+                <input class="form-check-input" type="checkbox" id="financier" name="beneficiary_financier[]" value="1">
                 <label class="form-check-label" for="financier">Financiador</label>
             </div>
         </div>
@@ -60,25 +72,25 @@
 
     <div class="form-row mb-4 mt-4 address">
         <div class="col-2">
-            <input type="text" name="address_cep" class="form-control cep" placeholder="CEP">
+            <input type="text" name="address_cep[]" id="address-cep" class="form-control cep" placeholder="CEP">
         </div>
         <div class="col-6">
-            <input type="text" name="address_address" class="form-control" placeholder="rua de exemplo...">
+            <input type="text" name="address_address[]" class="form-control" placeholder="rua de exemplo...">
         </div>
         <div class="col">
-            <input type="text" name="address_number" class="form-control" placeholder="número...">
+            <input type="text" name="address_number[]" class="form-control" placeholder="número...">
         </div>
         <div class="col">
-            <input type="text" name="address_complement" class="form-control" placeholder="complemento...">
+            <input type="text" name="address_complement[]" class="form-control" placeholder="complemento...">
         </div>
     </div>
 
     <div class="form-row mb-4 mt-4 address-city-state">
         <div class="col-4">
-            <input type="text" name="address_city" class="form-control cep" placeholder="Cidade">
+            <input type="text" name="address_city[]" class="form-control" placeholder="Cidade">
         </div>
         <div class="col-2">
-            <input type="text" name="address_state" class="form-control" placeholder="UF">
+            <input type="text" name="address_state[]" class="form-control" placeholder="UF">
         </div>
     </div>
 
@@ -115,8 +127,8 @@
 <div class="form-row mb-4 mt-4">
     <div class="col-6">
         <label for="health-declaration">Escolha um Modelo de DS</label>
-        <select id="health-declaration" class="form-control">
-            <option>...</option>
+        <select id="health-declaration" class="form-control" name="health_declaration" required1>
+            <option value="">...</option>
             @foreach($quizzes as $quiz)
                 <option value="{{ $quiz->id }}"> {{ $quiz->name }}</option>
             @endforeach
@@ -150,7 +162,7 @@
     </div>
 </div>
 
-<input type="hidden" id="toDelete" value="" />
+<input type="hidden" class="ignore" name="toDelete" id="toDelete" value="" />
 
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

@@ -1,22 +1,27 @@
 window.$ = window.jQuery = require('jquery');
-require('jquery-mask-plugin');
+var Inputmask = require('inputmask');
+// require('jquery-validation');
 
 var dependents = 0;
 
 $(document).ready(function($){
 
 
-    $('.telephone').mask('(00) 0000-0000');
-    $('.cep').mask('00000-000');
-    $('.cpf').mask('000.000.000-00');
-    $('.date-br').mask('00/00/0000');
-    
+    // $('.telephone').inputmask('(00) 0000-0000');$('.telephone').inputmask('(00) 0000-0000');
+    // $('.cep').inputmask('00000-000');
+    // $('.cpf').inputmask('000.000.000-00');
 
+    Inputmask({"mask": "99/99/9999", placeholder: ""}).mask('.date-br');
+    Inputmask({"mask": "999.999.999-99", placeholder: ""}).mask('.cpf');
+    Inputmask({"mask": "99999-999", placeholder: ""}).mask('.cep');
+    Inputmask({"mask": "(99)99999-9999", placeholder: ""}).mask('.telephone');
+
+    
     $('#addTelephone').on('click', function(e){
         e.preventDefault();
         var item = $('.repeat-telephone:first').clone();
         item.find('input').val('');
-        item.find('input').mask('(00) 0000-0000');
+        Inputmask({"mask": "(99)99999-9999", placeholder: ""}).mask(item.find('input'));
         item.find('.remove-telephone').show();
         $('#telephone-repeater').append(item);
     });
@@ -38,7 +43,7 @@ $(document).ready(function($){
         items.find('input').each(function(i,o){            
             let placeholder = ($(o).attr('placeholder') ? $(o).attr('placeholder').replace('titular', 'dependente') : '');
             $(o).attr('placeholder', placeholder);
-            $(o).attr('name', $(o).attr('name') + '_' + dependents);
+            //$(o).attr('name', $(o).attr('name') + '_' + dependents);
         });
 
         var deleteBtn = '<a href="#" data-toggle="modal" data-target="#deleteModal" class="float-right"><i class="material-icons">delete_forever</i></a>';
@@ -46,9 +51,10 @@ $(document).ready(function($){
         
 
         $('#dependents').append(fieldset);
-        $('.cep').mask('00000-000');
-        $('.cpf').mask('000.000.000-00');
-        $('.date-br').mask('00/00/0000');
+        
+        Inputmask({"mask": "99/99/9999", placeholder: ""}).mask('.date-br');
+        Inputmask({"mask": "999.999.999-99", placeholder: ""}).mask('.cpf');
+        Inputmask({"mask": "99999-999", placeholder: ""}).mask('.cep');
 
         changeHealthDeclaration();
     })
@@ -93,7 +99,7 @@ $(document).ready(function($){
         openHealthDeclaration($(e.target).val());        
         $('#health-declaration-comments').show();
 
-    });
+    });    
 
 });
 
@@ -122,7 +128,7 @@ function changeHealthDeclaration() {
             head.find('tr:first').append("<th>Dependente " + ((head.find('th').length - 3) + 1) + "</th>")
             
             body.find('tr').each(function(i,o){
-                $(o).append("<td><input class='form-control col-4 text-center' type='text' name=\"dep_"+ (head.find('th').length - 3) +"_answer_"+ (i + 1) +"\"></td>");  
+                $(o).append("<td><input class='form-control col-4 text-center' type='text' required name=\"dependent_" + (head.find('th').length - 3) + "[]\"></td>");  
             });
 
         }
@@ -156,10 +162,14 @@ function openHealthDeclaration(model_id) {
             table += "</thead><tbody>";
             for(i in results.questions) {
                 item_number++;
-                table += "<tr><td><input type=\"hidden\" name=\"item_number_"+ item_number +"\" />" + item_number + "</td>";
+                table += "<tr><td><input type=\"hidden\" name=\"item_number[]\" />" + item_number + "</td>";
                 table += "<td>" + results.questions[i].question + "</td>";
                 for(var j = 0; j <= dependents; j++){
-                        table += "<td><input class='form-control col-4 text-center' type='text' name=\"titular_answer_"+ item_number +"\"></td>";
+                        if (j == 0) {
+                            table += "<td><input class='form-control col-4 text-center' type='text' required name=\"holder_answer[]\"></td>";
+                        } else {
+                            table += "<td><input class='form-control col-4 text-center' type='text' required name=\"dependent_" + j + "[]\"></td>";
+                        }
                 }
                 table += "</tr>";
             }
@@ -168,16 +178,16 @@ function openHealthDeclaration(model_id) {
             $('#health-declaration-table').html(table);
 
             var html = "<label>Em caso de existência de doença, especifique o item, subitem e proponente</label>";
-            for (var i = 1; i <= item_number; i++) {
+            for (var i = 1; i <= 5; i++) {
                 html += '<div class="form-row mb-1 mt-1">';
                     html += '<div class="col-1">';
                     html += '#' + i;
                     html += "</div>";
                     html += '<div class="col">';
-                        html += '<input type="text" name="comment_by_item_' + i + '" class="form-control" placeholder="especificação" />';
+                        html += '<input type="text" name="comment_by_item[]" class="form-control" placeholder="especificação" />';
                     html += "</div>";
                     html += '<div class="col">';
-                        html += '<input type="text" name="period_by_item_' + i + '" class="form-control" placeholder="período da doença" />';
+                        html += '<input type="text" name="period_by_item[]" class="form-control" placeholder="período da doença" />';
                     html += "</div>";
                 html += "</div>";
 
@@ -195,7 +205,7 @@ function recountDependents() {
     var count = 0
     $('fieldset.dependent').each(function(i,o){
         $(o).find('span.count').html('#' + (i + 1));
-        $(o).find('input,select').attr('name', $(o).find('input,select').attr('name').replace(/_[0-9]*$/gm, '_' + (i + 1)));
+        //$(o).find('input,select').attr('name', $(o).find('input,select').attr('name').replace(/dependent\[[0-9]*\]/gm, '[' + (i + 1) + ']'));
         count++;
     });
 

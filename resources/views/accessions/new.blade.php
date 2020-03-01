@@ -10,7 +10,7 @@
 
     <div class="row">
         <div class="col">
-            <form method="post" action="{{ route('accessions.store')  }}">
+            <form id="process-form" method="post" action="{{ route('accessions.store')  }}">
                 @csrf
 
                 @include('accessions._form')
