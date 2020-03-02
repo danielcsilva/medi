@@ -13623,8 +13623,8 @@ function openHealthDeclaration(model_id) {
 
       for (i in results.questions) {
         item_number++;
-        table += "<tr><td><input type=\"hidden\" name=\"item_number[]\" />" + item_number + "</td>";
-        table += "<td>" + results.questions[i].question + "</td>";
+        table += "<tr><td><input type=\"hidden\" name=\"item_number[]\" value=\"" + item_number + "\" />" + item_number + "</td>";
+        table += "<td><input type=\"hidden\" name=\"question[]\" value=\"" + results.questions[i].question + "\" />" + results.questions[i].question + "</td>";
 
         for (var j = 0; j <= dependents; j++) {
           if (j == 0) {

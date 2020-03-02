@@ -6,8 +6,10 @@ use App\Accession;
 use App\Address;
 use App\Beneficiary;
 use App\Company;
+use App\HealthDeclaration;
 use App\HealthPlan;
 use App\Quiz;
+use App\Telephone;
 use DateTime;
 use Exception;
 use Illuminate\Http\Request;
@@ -128,7 +130,34 @@ class AccessionController extends Controller
                         'state' => $request->get('address_state')[$k]
                     ]);
                     
+                    Telephone::create([
+                        'telephone' => $request->get('beneficiary_telephone')[$k],
+                        'accession_id' => $accession->id
+                    ]);
                     
+                    // Health Declaration
+                    $field = 'dependent_' . $k;
+
+                    if ($k == 0) {
+                        $field = 'holder_answer';
+                    }
+
+                    $questions = $request->get('question');
+
+                    foreach($questions as $k1 => $v1) {
+
+                        HealthDeclaration::create([
+                            'question' => $request->get('question')[$k1],
+                            'answer' => $request->get($field)[$k1],
+                            'period' => $request->get('period_by_item')[$k1] ?? null,
+                            'item_number_obs' => $request->get('comment_by_item')[$k1] ?? null,
+                            'item_number' => $request->get('item_number')[$k1],
+                            'comments' => ($k1 == 0 ? $request->get('health_declaration_comments') : null),
+                            'accession_id' => $accession->id
+                        ]);
+
+                    }                    
+
                 }
     
             });
@@ -163,9 +192,23 @@ class AccessionController extends Controller
      * @param  \App\Accession  $accession
      * @return \Illuminate\Http\Response
      */
-    public function edit(Accession $accession)
+    public function edit($accession)
     {
-        //
+        $accession = Accession::find($accession);
+        $accessions = Accession::where('proposal_number', $accession->proposal_number);
+
+        $beneficiaries = [];
+        $addresses = [];
+        $telephones = [];
+        foreach ($accessions as $acc) {
+
+            $beneficiaries[] = Beneficiary::find($acc->beneficiary_id);
+            $addresses[] = Address::where('accession_id', $acc->id);
+            $telephones[] = Telephone::where('accession_id', $acc->id);
+
+        }
+
+        return view('accessions.edit');
     }
 
     /**
