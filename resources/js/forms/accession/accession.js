@@ -184,13 +184,13 @@ function openHealthDeclaration(model_id) {
             for (var i = 1; i <= 5; i++) {
                 html += '<div class="form-row mb-1 mt-1">';
                     html += '<div class="col-1">';
-                    html += '#' + i;
+                    html += '#' + i + '<input type="hidden" name="comment_number[]" value="'+ i +'">';
                     html += "</div>";
                     html += '<div class="col">';
-                        html += '<input type="text" name="comment_by_item[]" class="form-control" placeholder="especificação" />';
+                        html += '<input type="text" name="comment_item[]" class="form-control" placeholder="especificação" />';
                     html += "</div>";
                     html += '<div class="col">';
-                        html += '<input type="text" name="period_by_item[]" class="form-control" placeholder="período da doença" />';
+                        html += '<input type="text" name="period_item[]" class="form-control" placeholder="período da doença" />';
                     html += "</div>";
                 html += "</div>";
 

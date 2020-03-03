@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAccessionToHealthDeclarationsTable extends Migration
+class AddAccessionToBeneficiariesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class AddAccessionToHealthDeclarationsTable extends Migration
      */
     public function up()
     {
-        Schema::table('health_declarations', function (Blueprint $table) {
-
-            $table->unsignedBigInteger('accession_id')->after('comments')->nullable();
+        Schema::table('beneficiaries', function (Blueprint $table) {
+            $table->unsignedBigInteger('accession_id')->nullable();
             $table->foreign('accession_id')->references('id')->on('accessions');
-
         });
     }
 
@@ -28,11 +26,9 @@ class AddAccessionToHealthDeclarationsTable extends Migration
      */
     public function down()
     {
-        Schema::table('health_declarations', function (Blueprint $table) {
-            
+        Schema::table('beneficiaries', function (Blueprint $table) {
             $table->dropForeign(['accession_id']);
             $table->dropColumn('accession_id');
-            
         });
     }
 }
