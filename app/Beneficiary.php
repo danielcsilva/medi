@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Beneficiary extends Model
 {
-    protected $fillable = ['name', 'email', 'cpf', 'birth_date', 'height', 'weight', 'imc', 'gender'];
+    protected $fillable = ['name', 'email', 'cpf', 'birth_date', 'height', 'weight', 'imc', 'gender', 'accession_id'];
 
     public function accession()
     {
