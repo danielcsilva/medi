@@ -6,7 +6,8 @@ use App\Accession;
 use App\Address;
 use App\Beneficiary;
 use App\Company;
-use App\HealthDeclaration;
+use App\HealthDeclarationAnswer;
+use App\HealthDeclarationSpecific;
 use App\HealthPlan;
 use App\Quiz;
 use App\Telephone;
@@ -91,16 +92,37 @@ class AccessionController extends Controller
         
 
         $beneficiaries = $request->get('beneficiary_cpf');
+        $telephones = $request->get('beneficiary_telephone');
  
         try {
 
-            DB::transaction(function() use ($request, $beneficiaries) {
+            DB::transaction(function() use ($request, $beneficiaries, $telephones) {
                 
+                $accession = Accession::create([
+                    'proposal_number' => $request->get('proposal_number'),
+                    'received_at' => DateTime::createFromFormat('d/m/Y', $request->get('received_at'))->format('Y-m-d'),
+                    'company_id' => $request->get('company_id'),
+                    'comments' => $request->get('health_declaration_comments') ?? ''
+                ]);
+
+                foreach($telephones as $tel) {
+                    
+                    Telephone::create([
+                        'telephone' => $tel,
+                        'accession_id' => $accession->id
+                    ]);
+
+                }
+
                 foreach($beneficiaries as $k => $v) {
         
                     $weight = (double)$request->get('beneficiary_weight')[$k];
                     $height = (double)$request->get('beneficiary_height')[$k];
                     $imc = ($height > 0 ? round($weight / ($height * $height), 2) : 0);
+
+                    if (isset($request->get('beneficiary_financier')[$k])) {
+                        $accession->financier_id = $request->get('beneficiary_financier')[$k];
+                    }
         
                     $beneficiary = Beneficiary::create([
                         'name' => $request->get('beneficiary_name')[$k], 
@@ -110,15 +132,9 @@ class AccessionController extends Controller
                         'height' => $height, 
                         'weight' => $weight, 
                         'imc' => $imc, 
-                        'gender' => $request->get('beneficiary_gender')[$k]
-                    ]);
-        
-                    $accession = Accession::create([
-                        'proposal_number' => $request->get('proposal_number'),
-                        'received_at' => DateTime::createFromFormat('d/m/Y', $request->get('received_at'))->format('Y-m-d'),
-                        'company_id' => $request->get('company_id'),
-                        'beneficiary_id' => $beneficiary->id 
-                    ]);
+                        'gender' => $request->get('beneficiary_gender')[$k],
+                        'accession_id' => $accession->id
+                    ]);                    
 
                     Address::create([
                         'cep' => $request->get('address_cep')[$k],
@@ -128,14 +144,9 @@ class AccessionController extends Controller
                         'accession_id' => $accession->id,
                         'city' => $request->get('address_city')[$k],
                         'state' => $request->get('address_state')[$k]
-                    ]);
+                    ]);    
                     
-                    Telephone::create([
-                        'telephone' => $request->get('beneficiary_telephone')[$k],
-                        'accession_id' => $accession->id
-                    ]);
-                    
-                    // Health Declaration
+                    //Health Declaration
                     $field = 'dependent_' . $k;
 
                     if ($k == 0) {
@@ -146,19 +157,33 @@ class AccessionController extends Controller
 
                     foreach($questions as $k1 => $v1) {
 
-                        HealthDeclaration::create([
+                        HealthDeclarationAnswer::create([
                             'question' => $request->get('question')[$k1],
                             'answer' => $request->get($field)[$k1],
-                            'period' => $request->get('period_by_item')[$k1] ?? null,
-                            'item_number_obs' => $request->get('comment_by_item')[$k1] ?? null,
-                            'item_number' => $request->get('item_number')[$k1],
-                            'comments' => ($k1 == 0 ? $request->get('health_declaration_comments') : null),
+                            'beneficiary_id' => $beneficiary->id,
                             'accession_id' => $accession->id
                         ]);
 
-                    }                    
+                    }
 
                 }
+
+                $specifics = $request->get('comment_number');
+
+                foreach($specifics as $specific_k => $specific_v) {
+
+                    if ($request->get('comment_item')[$specific_k] !== null) {
+
+                        HealthDeclarationSpecific::create([
+                            'comment_number' => $request->get('comment_number')[$specific_k],
+                            'comment_item' => $request->get('comment_item')[$specific_k],
+                            'period_item' => $request->get('period_item')[$specific_k],
+                            'accession_id' => $accession->id
+                        ]);
+
+                    }
+                }
+                
     
             });
 

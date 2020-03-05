@@ -37,7 +37,7 @@ class DataTables extends Component
     public function render()
     {
         $this->emit('rewriteTable', 'rewrite');
-
+        // dd($this->columns);
         return view('livewire.data-tables', [
             'rows' => $this->model::whereLike($this->columns, $this->search)
             ->paginate($this->perPage),

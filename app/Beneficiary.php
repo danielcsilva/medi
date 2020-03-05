@@ -9,14 +9,9 @@ class Beneficiary extends Model
 {
     protected $fillable = ['name', 'email', 'cpf', 'birth_date', 'height', 'weight', 'imc', 'gender'];
 
-    public function telephones()
-    {
-        $this->hasMany('App\Beneficiary', 'beneficiary_id');
-    }
-
     public function accession()
     {
-        return $this->hasMany('App\Accession', 'beneficiary_id');
+        return $this->belongsTo('App\Accession', 'accession_id');
     }
 
     public function getBirthDateAttribute($value)

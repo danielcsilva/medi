@@ -33,8 +33,9 @@ class AppServiceProvider extends ServiceProvider
                     $query->when(
                         Str::contains($attribute, '.'),
                         function (Builder $query) use ($attribute, $searchTerm) {
+
                             [$relationName, $relationAttribute] = explode('.', $attribute);
-        
+                            
                             $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm) {
                                 $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
                             });
