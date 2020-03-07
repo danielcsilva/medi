@@ -70,8 +70,8 @@
         <div class="col">        
             <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="beneficiary_gender[]" required1>
                 <option value="">Sexo</option>
-                <option value="M">Masculino</option>
-                <option value="F">Feminino</option>
+                <option value="M" {{ (old('beneficiary_gender.0') && old('beneficiary_gender.0') == 'M' ? 'selected' : '') }}>Masculino</option>
+                <option value="F" {{ (old('beneficiary_gender.0') && old('beneficiary_gender.0') == 'M' ? 'selected' : '') }}>Feminino</option>
             </select>
             @if($errors->has('beneficiary_gender.0'))
                 <div class="alert alert-danger small">{{ $errors->first('beneficiary_gender.0') }}</div>
@@ -99,7 +99,7 @@
             @endif
         </div>
         <div class="col">
-            <input type="text" name="address_number[]" value="{{ old('address_number.0') }}" class="form-control" placeholder="número...">
+            <input type="number" name="address_number[]" value="{{ old('address_number.0') }}" class="form-control" placeholder="número...">
             @if($errors->has('address_number.0'))
                 <div class="alert alert-danger small">{{ $errors->first('address_number.0') }}</div>
             @endif
@@ -135,12 +135,28 @@
 
         <div class="form-group" id="telephone-repeater">            
             <label for="telephone">Telefones <a href="#" id="addTelephone">(+)</a></label>
+            @if($errors->has('beneficiary_telephone.0'))
+                <div class="alert alert-danger small mb-10">{{ $errors->first('beneficiary_telephone.*') }}</div>
+            @endif
             <div class="input-group repeat-telephone mb-2 mt-2">
-                <input type="text" class="form-control telephone" name="beneficiary_telephone[]" aria-describedby="telephonelHelp">
+                <input type="text" class="form-control telephone" name="beneficiary_telephone[]" aria-describedby="telephonelHelp" value="{{ old('beneficiary_telephone.0') }}">
                 <div class="input-group-append">
                     <span class="input-group-text remove-telephone" style="display:none;"><img src="/images/delete.png" alt=""></span>
                 </div>
+                
             </div>
+            @if(old('beneficiary_telephone'))
+                @foreach(old('beneficiary_telephone') as $k => $v)
+                    @if($k > 0)
+                    <div class="input-group repeat-telephone mb-2 mt-2">
+                        <input type="text" class="form-control telephone" name="beneficiary_telephone[]" aria-describedby="telephonelHelp" value="{{ old('beneficiary_telephone')[$k] }}">
+                        <div class="input-group-append">
+                            <span class="input-group-text remove-telephone" style="display:block;"><img src="/images/delete.png" alt=""></span>
+                        </div>
+                    </div>
+                    @endif
+                @endforeach
+            @endif
         </div>
     
     </div>
@@ -237,7 +253,7 @@
                         @endif
                     </div>
                     <div class="col">
-                        <input type="text" name="address_number[]" value="{{ old('address_number')[$k] }}" class="form-control" placeholder="número...">
+                        <input type="number" name="address_number[]" value="{{ old('address_number')[$k] }}" class="form-control" placeholder="número...">
                         @if($errors->has('address_number.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('address_number.'.$k) }}</div>
                         @endif
@@ -285,20 +301,48 @@
 </div>
 
 
+@if(old('holder_answer'))
+    @foreach(old('holder_answer') as $k => $v)
+        <input type="hidden" id="holder_answer.{{ $k }}" value="{{ old('holder_answer.' . $k) }}">
+    @endforeach
+@endif
+
+@for($i = 1; $i <= 10; $i++)
+    @if(old('dependent_'.$i))
+        @foreach(old('dependent_'.$i) as $k => $v)
+            <input type="hidden" id="dependent_{{ $i }}.{{ $k }}" value="{{ old('dependent_'.$i.'.' . $k) }}">
+        @endforeach
+    @endif
+@endfor
+
 <div class="form-row mb-4 mt-4">
     <div class="col">
-        <table id="health-declaration-table" class="table table-striped">
+        <table id="health-declaration-table" class="table table-striped">                 
         </table>        
     </div>
 </div>
 
-<div id="comments-by-item">
+<div id="comments-by-item" style="display: block;">
+    <label>Em caso de existência de doença, especifique o item, subitem e proponente</label>
+    @for($i = 0; $i < 5; $i++)
+        <div class="form-row mb-1 mt-1">
+            <div class="col-1">
+            # {{ $i + 1 }}<input type="hidden" name="comment_number[]" value="{{ old('comment_number')[$i] ?? null }}">
+            </div>
+            <div class="col">
+                <input type="text" name="comment_item[]" class="form-control" placeholder="especificação" value="{{ old('comment_item')[$i] ?? null }}" />
+            </div>
+            <div class="col">
+                <input type="text" name="period_item[]" class="form-control" placeholder="período da doença" value="{{ old('period_item')[$i] ?? null }}" />
+            </div>
+        </div>
+    @endfor
 </div>
 
 <div class="form-row mb-4 mt-4" id="health-declaration-comments" style="display:none;">
     <div class="col">
         <label for="health-declaration-comments">Comentários da DS</label>
-        <textarea name="health_declaration_comments" class="form-control" id="" cols="30" rows="5"></textarea>
+        <textarea name="health_declaration_comments" class="form-control" id="" cols="30" rows="5">{{ old('health_declaration_comments') }}</textarea>
     </div>
 </div>
 
@@ -322,7 +366,6 @@
         </div>
         <div class="modal-body">
             Deseja realmente excluir o registro?
-           
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>

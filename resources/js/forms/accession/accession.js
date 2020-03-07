@@ -104,6 +104,11 @@ $(document).ready(function($){
 
     });    
 
+
+    if ($('#health-declaration').find('option:selected').val() > 0) {
+        $('#health-declaration').trigger('change');
+    }
+
 });
 
 
@@ -150,6 +155,7 @@ function openHealthDeclaration(model_id) {
     $.ajax({
         url: '/api/quizzes/' + model_id,
         success: function(results) {
+            
             var table = "<thead>";
             table += "<tr>";
             table += "<th>#</th>";
@@ -169,9 +175,9 @@ function openHealthDeclaration(model_id) {
                 table += "<td><input type=\"hidden\" name=\"question[]\" value=\""+ results.questions[i].question +"\" />" + results.questions[i].question + "</td>";
                 for(var j = 0; j <= dependents; j++){
                         if (j == 0) {
-                            table += "<td><input class='form-control col-4 text-center' type='text' required name=\"holder_answer[]\"></td>";
+                            table += "<td><input class='form-control col-4 text-center' type='text' required name=\"holder_answer[]\" value=\""+ ( $('#holder_answer\\.' + (item_number - 1)).length > 0 ? $('#holder_answer\\.' + (item_number - 1)).val() : '' ) +"\"></td>";
                         } else {
-                            table += "<td><input class='form-control col-4 text-center' type='text' required name=\"dependent_" + j + "[]\"></td>";
+                            table += "<td><input class='form-control col-4 text-center' type='text' required name=\"dependent_" + j + "[]\" value=\""+ ( $('#dependent_' + j + '\\.' + (item_number - 1)).length > 0 ? $('#dependent_' + j + '\\.' + (item_number - 1)).val() : '') +"\"></td>";
                         }
                 }
                 table += "</tr>";
@@ -180,23 +186,7 @@ function openHealthDeclaration(model_id) {
 
             $('#health-declaration-table').html(table);
 
-            var html = "<label>Em caso de existência de doença, especifique o item, subitem e proponente</label>";
-            for (var i = 1; i <= 5; i++) {
-                html += '<div class="form-row mb-1 mt-1">';
-                    html += '<div class="col-1">';
-                    html += '#' + i + '<input type="hidden" name="comment_number[]" value="'+ i +'">';
-                    html += "</div>";
-                    html += '<div class="col">';
-                        html += '<input type="text" name="comment_item[]" class="form-control" placeholder="especificação" />';
-                    html += "</div>";
-                    html += '<div class="col">';
-                        html += '<input type="text" name="period_item[]" class="form-control" placeholder="período da doença" />';
-                    html += "</div>";
-                html += "</div>";
-
-            }
-
-            $('#comments-by-item').html(html);
+            //$('#comments-by-item').html(html);
 
         }
     })

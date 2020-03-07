@@ -68,9 +68,9 @@ class AccessionController extends Controller
             'beneficiary_height.*' => 'required',
             'beneficiary_weight.*' => 'required',
             'beneficiary_gender.*' => 'required',
+            'beneficiary_telephone.*' => 'required',
             'address_cep.*' => 'required',
             'address_address.*' => 'required',
-            'address_number.*' => 'required',
             'address_city.*' => 'required',
             'address_state.*' => 'required'
         ],
@@ -83,9 +83,9 @@ class AccessionController extends Controller
             'beneficiary_height.*' => 'A altura é obrigatória!',
             'beneficiary_weight.*' => 'O peso é obrigatório!',
             'beneficiary_gender.*' => 'O campo sexo é obrigatório!',
+            'beneficiary_telephone.*' => 'O Telefone é obrigatório!',
             'address_cep.*' => 'Cep obrigatório!',
             'address_address.*' => 'Endereço obrigatório!',
-            'address_number.*' => 'Número obrigatório!',
             'address_city.*' => 'Cidade obrigatório!',
             'address_state.*' => 'Estado (UF) obrigatório!'           
         ])->validate();
@@ -189,11 +189,11 @@ class AccessionController extends Controller
 
         } catch(Exception $e) {
             
-            return back()->withInput()->with('error', config('medi.tech_error_msg') . $e->getMessage());
+            //return back()->withInput()->with('error', config('medi.tech_error_msg') . $e->getMessage());
 
         } catch(Throwable $t) {
 
-            return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
+            //return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
 
         }
         

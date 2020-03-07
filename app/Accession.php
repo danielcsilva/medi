@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
 class Accession extends Model
@@ -24,5 +25,9 @@ class Accession extends Model
         return $this->belongsTo('App\Company', 'company_id');
     }
 
+    public function getReceivedAtAttribute($value)
+    {
+        return DateTime::createFromFormat('Y-m-d', $value)->format('d/m/Y');
+    }
     
 }
