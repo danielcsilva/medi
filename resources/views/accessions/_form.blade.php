@@ -5,12 +5,12 @@
 <div class="form-row mb-4 mt-4">
     <div class="col-3">
         <label for="">Data do Recebimento</label>
-        <input type="text" name="received_at" class="form-control date-br" value="{{ old('received_at', date('d/m/Y')) }}" required1>
+        <input type="text" name="received_at" class="form-control date-br" value="{{ old('received_at', $accession->received_at ?? date('d/m/Y')) }}" required1>
     </div>
     <div class="col-3">
         <label for="">Nº da Proposta</label>
 
-        <input type="text" name="proposal_number" class="form-control" value="{{ old('proposal_number', '') }}" required1>
+        <input type="text" name="proposal_number" class="form-control" value="{{ old('proposal_number', $accession->proposal_number ?? null) }}" required1>
     </div>
     <div class="col-6">
         <label for="">Cliente</label>        
@@ -291,10 +291,10 @@
 <div class="form-row mb-4 mt-4">
     <div class="col-6">
         <label for="health-declaration">Escolha um Modelo de DS</label>
-        <select id="health-declaration" class="form-control" name="health_declaration" required1>
+        <select id="health-declaration" class="form-control" name="health_declaration">
             <option value="">...</option>
             @foreach($quizzes as $quiz)
-                <option value="{{ $quiz->id }}" @if(old('health_declaration') == $quiz->id) selected @endif> {{ $quiz->name }}</option>
+                <option value="{{ $quiz->id }}" @if(old('health_declaration', $accession->quiz_id ?? null) == $quiz->id) selected @endif> {{ $quiz->name }}</option>
             @endforeach
         </select>
     </div>
@@ -322,7 +322,7 @@
     </div>
 </div>
 
-<div id="comments-by-item" style="display: block;">
+<div id="comments-by-item" style="display:none;">
     <label>Em caso de existência de doença, especifique o item, subitem e proponente</label>
     @for($i = 0; $i < 5; $i++)
         <div class="form-row mb-1 mt-1">

@@ -68,15 +68,15 @@ $(document).ready(function($){
     });
 
 
-    $('#delete-dependent-confirm').on('click', function(e){
+    $(document).on('click', '#delete-dependent-confirm', function(e){
         e.preventDefault();
         
         var toRemove = $('#toDelete').val();
         $('fieldset:eq('+ toRemove +')').remove();
-
+        
         recountDependents();
         changeHealthDeclaration();
-    })
+    });
 
     $(document).on('keyup', '.cep', function(e){
         var objInput = $(e.target);
@@ -121,9 +121,12 @@ function changeHealthDeclaration() {
 
         var head = table.find('thead').clone(); 
         var body = table.find('tbody').clone();
+        
+        //console.log(head.find('th').length);
+        //console.log(num_dependents);
 
         if (head.find('th').length > num_dependents) {
-
+            console.log('retirar');
             head.find('th:eq('+ (head.find('th').length - 1) + ')').remove();
             
             body.find('tr').each(function(i,o){
@@ -186,7 +189,7 @@ function openHealthDeclaration(model_id) {
 
             $('#health-declaration-table').html(table);
 
-            //$('#comments-by-item').html(html);
+            $('#comments-by-item').toggle();
 
         }
     })
@@ -195,18 +198,19 @@ function openHealthDeclaration(model_id) {
 
 function recountDependents() {    
 
-    if ($('fieldset.dependent').length > 0) {
+    //if ($('fieldset.dependent').length > 0) {
         
         var count = 0
         $('fieldset.dependent').each(function(i,o){
             $(o).find('span.count').html('#' + (i + 1));
+            //console.log('conta ' + i);
             // $(o).find('input').val('');
             //$(o).find('input,select').attr('name', $(o).find('input,select').attr('name').replace(/dependent\[[0-9]*\]/gm, '[' + (i + 1) + ']'));
             count++;
         });
-    
+        //console.log('conta todos: ' + count);
         dependents = count;
 
-    }
+    //}
 
 }   

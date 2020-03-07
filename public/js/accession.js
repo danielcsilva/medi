@@ -13544,7 +13544,7 @@ $(document).ready(function ($) {
   $(document).on('click', '.delete-dependent', function (e) {
     $('#toDelete').val($(e.target).parents('fieldset:first').index());
   });
-  $('#delete-dependent-confirm').on('click', function (e) {
+  $(document).on('click', '#delete-dependent-confirm', function (e) {
     e.preventDefault();
     var toRemove = $('#toDelete').val();
     $('fieldset:eq(' + toRemove + ')').remove();
@@ -13585,9 +13585,11 @@ function changeHealthDeclaration() {
     var table = $('#health-declaration-table');
     num_dependents = dependents + 3;
     var head = table.find('thead').clone();
-    var body = table.find('tbody').clone();
+    var body = table.find('tbody').clone(); //console.log(head.find('th').length);
+    //console.log(num_dependents);
 
     if (head.find('th').length > num_dependents) {
+      console.log('retirar');
       head.find('th:eq(' + (head.find('th').length - 1) + ')').remove();
       body.find('tr').each(function (i, o) {
         $(o).find('td:eq(' + (head.find('td').length - 1) + ')').remove();
@@ -13642,22 +13644,24 @@ function openHealthDeclaration(model_id) {
       }
 
       table += "</tbody>";
-      $('#health-declaration-table').html(table); //$('#comments-by-item').html(html);
+      $('#health-declaration-table').html(table);
+      $('#comments-by-item').toggle();
     }
   });
 }
 
 function recountDependents() {
-  if ($('fieldset.dependent').length > 0) {
-    var count = 0;
-    $('fieldset.dependent').each(function (i, o) {
-      $(o).find('span.count').html('#' + (i + 1)); // $(o).find('input').val('');
-      //$(o).find('input,select').attr('name', $(o).find('input,select').attr('name').replace(/dependent\[[0-9]*\]/gm, '[' + (i + 1) + ']'));
+  //if ($('fieldset.dependent').length > 0) {
+  var count = 0;
+  $('fieldset.dependent').each(function (i, o) {
+    $(o).find('span.count').html('#' + (i + 1)); //console.log('conta ' + i);
+    // $(o).find('input').val('');
+    //$(o).find('input,select').attr('name', $(o).find('input,select').attr('name').replace(/dependent\[[0-9]*\]/gm, '[' + (i + 1) + ']'));
 
-      count++;
-    });
-    dependents = count;
-  }
+    count++;
+  }); //console.log('conta todos: ' + count);
+
+  dependents = count; //}
 }
 
 /***/ }),

@@ -50,14 +50,10 @@ class AccessionController extends Controller
         return view('accessions.new', ['customers' => $customers, 'healthplans' => $healthplans, 'quizzes' => $quizzes]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function accessionValidate(Request $request)
     {
+        
         Validator::make($request->all(), 
         [
             'proposal_number' => 'required',
@@ -89,7 +85,18 @@ class AccessionController extends Controller
             'address_city.*' => 'Cidade obrigatório!',
             'address_state.*' => 'Estado (UF) obrigatório!'           
         ])->validate();
-        
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {        
+        //$this->accessionValidate($request);
 
         $beneficiaries = $request->get('beneficiary_cpf');
         $telephones = $request->get('beneficiary_telephone');
@@ -102,9 +109,10 @@ class AccessionController extends Controller
                     'proposal_number' => $request->get('proposal_number'),
                     'received_at' => DateTime::createFromFormat('d/m/Y', $request->get('received_at'))->format('Y-m-d'),
                     'company_id' => $request->get('company_id'),
-                    'comments' => $request->get('health_declaration_comments') ?? ''
+                    'comments' => $request->get('health_declaration_comments') ?? '',
+                    'quiz_id' => $request->get('health_declaration')
                 ]);
-
+                   
                 foreach($telephones as $tel) {
                     
                     Telephone::create([
@@ -119,10 +127,6 @@ class AccessionController extends Controller
                     $weight = (double)$request->get('beneficiary_weight')[$k];
                     $height = (double)$request->get('beneficiary_height')[$k];
                     $imc = ($height > 0 ? round($weight / ($height * $height), 2) : 0);
-
-                    if (isset($request->get('beneficiary_financier')[$k])) {
-                        $accession->financier_id = $request->get('beneficiary_financier')[$k];
-                    }
         
                     $beneficiary = Beneficiary::create([
                         'name' => $request->get('beneficiary_name')[$k], 
@@ -135,6 +139,10 @@ class AccessionController extends Controller
                         'gender' => $request->get('beneficiary_gender')[$k],
                         'accession_id' => $accession->id
                     ]);                    
+
+                    if (isset($request->get('beneficiary_financier')[$k])) {
+                        $accession->financier_id = $beneficiary->id;
+                    }
 
                     Address::create([
                         'cep' => $request->get('address_cep')[$k],
@@ -184,16 +192,17 @@ class AccessionController extends Controller
                     }
                 }
                 
-    
+                $accession->save();
             });
-
+            
+            
         } catch(Exception $e) {
             
-            //return back()->withInput()->with('error', config('medi.tech_error_msg') . $e->getMessage());
+            return back()->withInput()->with('error', config('medi.tech_error_msg') . $e->getMessage());
 
         } catch(Throwable $t) {
 
-            //return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
+            return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
 
         }
         
@@ -219,21 +228,13 @@ class AccessionController extends Controller
      */
     public function edit($accession)
     {
-        $accession = Accession::find($accession);
-        $accessions = Accession::where('proposal_number', $accession->proposal_number);
+        $customers = Company::all();
+        $healthplans = HealthPlan::all();
+        $quizzes = Quiz::all();
 
-        $beneficiaries = [];
-        $addresses = [];
-        $telephones = [];
-        foreach ($accessions as $acc) {
+        $accessionInstace = Accession::findOrFail($accession);
 
-            $beneficiaries[] = Beneficiary::find($acc->beneficiary_id);
-            $addresses[] = Address::where('accession_id', $acc->id);
-            $telephones[] = Telephone::where('accession_id', $acc->id);
-
-        }
-
-        return view('accessions.edit');
+        return view('accessions.edit', ['customers' => $customers, 'healthplans' => $healthplans, 'quizzes' => $quizzes, 'accession' => $accessionInstace]);
     }
 
     /**
