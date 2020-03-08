@@ -110,7 +110,13 @@ class AccessionController extends Controller
                     'received_at' => DateTime::createFromFormat('d/m/Y', $request->get('received_at'))->format('Y-m-d'),
                     'company_id' => $request->get('company_id'),
                     'comments' => $request->get('health_declaration_comments') ?? '',
-                    'quiz_id' => $request->get('health_declaration')
+                    'quiz_id' => $request->get('health_declaration'),
+                    'admin_partner' => $request->get('admin_partner'),
+                    'health_plan_id' => $request->get('health_plan_id'),
+                    'initial_validity' => $request->get('initial_validity'),
+                    'consult_partner' => $request->get('consult_partner'),
+                    'broker_partner' => $request->get('broker_partner'),
+                    'entity' => $request->get('entity')
                 ]);
                    
                 foreach($telephones as $tel) {
@@ -231,10 +237,19 @@ class AccessionController extends Controller
         $customers = Company::all();
         $healthplans = HealthPlan::all();
         $quizzes = Quiz::all();
+        $beneficiaries = Beneficiary::where('accession_id', $accession)->get();
+        $telephones = Telephone::where('accession_id', $accession)->get();
+        $addresses = Address::where('accession_id', $accession)->get();
 
+        
         $accessionInstace = Accession::findOrFail($accession);
+    
 
-        return view('accessions.edit', ['customers' => $customers, 'healthplans' => $healthplans, 'quizzes' => $quizzes, 'accession' => $accessionInstace]);
+        return view('accessions.edit', ['customers' => $customers, 'beneficiaries' => $beneficiaries, 
+                                        'telephones' => $telephones, 'healthplans' => $healthplans, 
+                                        'quizzes' => $quizzes, 'accession' => $accessionInstace,
+                                        'addresses' => $addresses
+                                    ]);
     }
 
     /**

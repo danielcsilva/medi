@@ -39,14 +39,14 @@ class Beneficiary extends Model
         $this->attributes['weight'] = str_replace(',', '.', $value);
     }
 
-    public function getHeightAttribute($value)
-    {   
-        return str_replace('.', ',', $value);
-    }
+    // public function getHeightAttribute($value)
+    // {   
+    //     return str_replace('.', ',', $value);
+    // }
 
-    public function getWeightAttribute($value)
-    {   
-        return str_replace('.', ',', $value);
-    }
+    // public function getWeightAttribute($value)
+    // {   
+    //     return str_replace('.', ',', $value);
+    // }
 
 }
