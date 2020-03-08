@@ -88,7 +88,7 @@ Breadcrumbs::for('accessions', function ($trail, $content = null) {
     if ($content == null) {
         $trail->push('Novo Processo');
     } else if(is_object($content)){
-        $trail->push($content->proposal_number);
+        $trail->push($content->proposal_number . ' - ' . $content->company->name);
     }
 
 });
