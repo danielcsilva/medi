@@ -36,7 +36,10 @@ class Accession extends Model
 
     public function getInitialValidityAttribute($value)
     {
-        return DateTime::createFromFormat('Y-m-d', $value)->format('d/m/Y');
+        $date = DateTime::createFromFormat('Y-m-d', $value);
+        if ($date) {
+             return $date->format('d/m/Y');
+        }
     }
 
     public function setInitialValidityAttribute($value)

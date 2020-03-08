@@ -45,7 +45,14 @@ $(document).ready(function($){
             
             let placeholder = ($(o).attr('placeholder') ? $(o).attr('placeholder').replace('titular', 'dependente') : '');
             $(o).attr('placeholder', placeholder);
-            $(o).val('');
+            
+            if ($(o).hasClass('financier')) {
+                $(o).val(dependents + 1);
+                $(o).prop('checked', false);
+                $(o).attr('checked', "");
+            } else {
+                $(o).val('');
+            }
 
         });
 
@@ -204,9 +211,15 @@ function recountDependents() {
         $('fieldset.dependent').each(function(i,o){
             $(o).find('span.count').html('#' + (i + 1));
             //console.log('conta ' + i);
-            // $(o).find('input').val('');
             //$(o).find('input,select').attr('name', $(o).find('input,select').attr('name').replace(/dependent\[[0-9]*\]/gm, '[' + (i + 1) + ']'));
+            if ($(o).find('input[type=radio]').each(function(index,obj){
+                if ($(obj).hasClass('financier')){
+                    $(obj).val(i + 2);
+                }
+            })) 
+        
             count++;
+
         });
         //console.log('conta todos: ' + count);
         dependents = count;

@@ -13521,7 +13521,14 @@ $(document).ready(function ($) {
     items.find('input').each(function (i, o) {
       var placeholder = $(o).attr('placeholder') ? $(o).attr('placeholder').replace('titular', 'dependente') : '';
       $(o).attr('placeholder', placeholder);
-      $(o).val('');
+
+      if ($(o).hasClass('financier')) {
+        $(o).val(dependents + 1);
+        $(o).prop('checked', false);
+        $(o).attr('checked', "");
+      } else {
+        $(o).val('');
+      }
     });
     var deleteBtn = '<a href="#" data-toggle="modal" data-target="#deleteModal" class="float-right"><i class="material-icons">delete_forever</i></a>';
     var fieldset = $.parseHTML('<fieldset class="form-group dependent"><span class="count">#' + dependents + '</span><span class="delete-dependent">' + deleteBtn + '</span></fieldset>');
@@ -13655,10 +13662,13 @@ function recountDependents() {
   var count = 0;
   $('fieldset.dependent').each(function (i, o) {
     $(o).find('span.count').html('#' + (i + 1)); //console.log('conta ' + i);
-    // $(o).find('input').val('');
     //$(o).find('input,select').attr('name', $(o).find('input,select').attr('name').replace(/dependent\[[0-9]*\]/gm, '[' + (i + 1) + ']'));
 
-    count++;
+    if ($(o).find('input[type=radio]').each(function (index, obj) {
+      if ($(obj).hasClass('financier')) {
+        $(obj).val(i + 2);
+      }
+    })) count++;
   }); //console.log('conta todos: ' + count);
 
   dependents = count; //}

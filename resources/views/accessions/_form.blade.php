@@ -65,7 +65,6 @@
 <div>Titular</div>
 
 <div id="repeater-colaborator">
-
     <div class="form-row mb-4 mt-4">
         <div class="col-3">
             <input type="text" name="beneficiary_cpf[]" class="form-control cpf" placeholder="CPF" value="{{ old('beneficiary_cpf.0', $beneficiaries[0]->cpf ?? null) }}" required1>            
@@ -118,7 +117,7 @@
         </div>
         <div class="col">
             <div class="form-check form-check-inline mt-2">
-                <input class="form-check-input" type="checkbox" id="financier" name="beneficiary_financier[]" {{ old('beneficiary_financier.0', $accession->financier_id ?? null) > 0 ? "checked" : "" }} value="{{ old('beneficiary_financier.0', $accession->financier_id ?? null) > 0 ? 1 : 0 }}">
+                <input class="form-check-input financier" type="radio" name="beneficiary_financier[]" {{ old('beneficiary_financier.0', (isset($accession->financier_id) && $accession->financier_id == $beneficiaries[0]->id ? 1 : '' )) == 1 ? "checked" : "" }} value="1">
                 <label class="form-check-label" for="financier">Financiador</label>
             </div>
         </div>
@@ -178,17 +177,17 @@
                 <div class="alert alert-danger small mb-10">{{ $errors->first('beneficiary_telephone.*') }}</div>
             @endif
             <div class="input-group repeat-telephone mb-2 mt-2">
-                <input type="text" class="form-control telephone" name="beneficiary_telephone[]" aria-describedby="telephonelHelp" value="{{ old('beneficiary_telephone.0', $telephones[0]->telephone) }}">
+                <input type="text" class="form-control telephone" name="beneficiary_telephone[]" aria-describedby="telephonelHelp" value="{{ old('beneficiary_telephone.0', $telephones[0]->telephone ?? null) }}">
                 <div class="input-group-append">
                     <span class="input-group-text remove-telephone" style="display:none;"><img src="/images/delete.png" alt=""></span>
                 </div>
                 
             </div>
-            @if(old('beneficiary_telephone') || ($telephones ?? null))
-                @foreach(old('beneficiary_telephone', $telephones) as $k => $v)
+            @if(old('beneficiary_telephone') || ($telephones ?? false))
+                @foreach(old('beneficiary_telephone', $telephones ?? null) as $k => $v)
                     @if($k > 0)
                     <div class="input-group repeat-telephone mb-2 mt-2">
-                        <input type="text" class="form-control telephone" name="beneficiary_telephone[]" aria-describedby="telephonelHelp" value="{{ old('beneficiary_telephone.' . $k, $v->telephone) }}">
+                        <input type="text" class="form-control telephone" name="beneficiary_telephone[]" aria-describedby="telephonelHelp" value="{{ old('beneficiary_telephone.' . $k, $v->telephone ?? null) }}">
                         <div class="input-group-append">
                             <span class="input-group-text remove-telephone" style="display:block;"><img src="/images/delete.png" alt=""></span>
                         </div>
@@ -211,30 +210,31 @@
 
 <div id="dependents">
     
-    @if(old('beneficiary_cpf'))
-        @foreach(old('beneficiary_cpf') as $k => $v)
+    @if(old('beneficiary_cpf', $beneficiaries ?? false))
+        @foreach(old('beneficiary_cpf', $beneficiaries ?? null) as $k => $v)
             @if($k > 0)
             
             <fieldset class="form-group dependent"><span class="count">#{{ $k }}</span>
+
                 <span class="delete-dependent">
                     <a href="#" data-toggle="modal" data-target="#deleteModal" class="float-right"><i class="material-icons">delete_forever</i></a>
                 </span>
 
                 <div class="form-row mb-4 mt-4">
                     <div class="col-3">
-                        <input type="text" name="beneficiary_cpf[]" class="form-control cpf" placeholder="CPF" value="{{ old('beneficiary_cpf')[$k] }}" />
+                        <input type="text" name="beneficiary_cpf[]" class="form-control cpf" placeholder="CPF" value="{{ old('beneficiary_cpf.' . $k, $v->cpf ?? null) }}" />
                         @if($errors->has('beneficiary_cpf.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('beneficiary_cpf.'.$k) }}</div>
                         @endif
                     </div>
                     <div class="col-5">
-                        <input type="text" name="beneficiary_name[]" id="beneficiary-name" class="form-control" value="{{ old('beneficiary_name')[$k] }}" placeholder="Nome do beneficiário dependente" required1>            
+                        <input type="text" name="beneficiary_name[]" id="beneficiary-name" class="form-control" value="{{ old('beneficiary_name.' . $k, $v->name ?? null) }}" placeholder="Nome do beneficiário dependente" required1>            
                         @if($errors->has('beneficiary_name.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('beneficiary_name.'.$k) }}</div>
                         @endif
                     </div>
                     <div class="col-4">
-                        <input type="email" name="beneficiary_email[]" id="beneficiary-email" class="form-control" value="{{ old('beneficiary_email')[$k] }}" placeholder="Email" required1>
+                        <input type="email" name="beneficiary_email[]" id="beneficiary-email" class="form-control" value="{{ old('beneficiary_email.' . $k, $v->email ?? null) }}" placeholder="Email" required1>
                         @if($errors->has('beneficiary_email.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('beneficiary_email.'.$k) }}</div>
                         @endif
@@ -243,19 +243,19 @@
                 
                 <div class="form-row mb-4 mt-4">
                     <div class="col">
-                        <input type="text" name="beneficiary_birth_date[]" value="{{ old('beneficiary_birth_date')[$k] }}" class="form-control date-br" placeholder="Data de Nasc." required1>
+                        <input type="text" name="beneficiary_birth_date[]" value="{{ old('beneficiary_birth_date.' . $k, $v->birth_date ?? null) }}" class="form-control date-br" placeholder="Data de Nasc." required1>
                         @if($errors->has('beneficiary_birth_date.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('beneficiary_birth_date.'.$k) }}</div>
                         @endif
                     </div>
                     <div class="col">
-                        <input type="number" step=".01" name="beneficiary_height[]" value="{{ old('beneficiary_height')[$k] }}" class="form-control" placeholder="Altura" required1>
+                        <input type="number" step=".01" name="beneficiary_height[]" value="{{ old('beneficiary_height.' . $k, $v->height ?? null) }}" class="form-control" placeholder="Altura" required1>
                         @if($errors->has('beneficiary_height.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('beneficiary_height.'.$k) }}</div>
                         @endif
                     </div>
                     <div class="col">
-                        <input type="number" step=".01" name="beneficiary_weight[]" value="{{ old('beneficiary_weight')[$k] }}" class="form-control" placeholder="Peso" required1>
+                        <input type="number" step=".01" name="beneficiary_weight[]" value="{{ old('beneficiary_weight.' . $k, $v->weight ?? null) }}" class="form-control" placeholder="Peso" required1>
                         @if($errors->has('beneficiary_weight.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('beneficiary_weight.'.$k) }}</div>
                         @endif
@@ -263,8 +263,8 @@
                     <div class="col">        
                         <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="beneficiary_gender[]" required1>
                             <option value="">Sexo</option>
-                            <option value="M" @if(old('beneficiary_gender')[$k]) selected @endif>Masculino</option>
-                            <option value="F" @if(old('beneficiary_gender')[$k]) selected @endif>Feminino</option>
+                            <option value="M" @if(old('beneficiary_gender.' . $k, $v->gender ?? null) == 'M') selected @endif>Masculino</option>
+                            <option value="F" @if(old('beneficiary_gender.' . $k, $v->gender ?? null) == 'F') selected @endif>Feminino</option>
                         </select>
                         @if($errors->has('beneficiary_gender.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('beneficiary_gender.'.$k) }}</div>
@@ -272,7 +272,7 @@
                     </div>
                     <div class="col">
                         <div class="form-check form-check-inline mt-2">
-                            <input class="form-check-input" type="checkbox" id="financier" name="beneficiary_financier[]" value="1">
+                        <input class="form-check-input financier" type="radio" name="beneficiary_financier[]" {{ old('beneficiary_financier.0', (isset($accession->financier_id) && $accession->financier_id == $v->id ? $k + 1 : '')) == ($k + 1) ? "checked" : "" }} value="{{ $k }}">
                             <label class="form-check-label" for="financier">Financiador</label>
                         </div>
                     </div>
@@ -280,25 +280,28 @@
 
                 <div class="form-row mb-4 mt-4 address">
                     <div class="col-2">
-                        <input type="text" name="address_cep[]" value="{{ old('address_cep')[$k] }}" id="address-cep" class="form-control cep" placeholder="CEP">
+            
+                        <input type="hidden" name="address_id[]" value="{{ old('address_cep.' . $k, $addresses[$k]->id ?? null) }}">
+
+                        <input type="text" name="address_cep[]" value="{{ old('address_cep.' . $k, $addresses[$k]->cep ?? null) }}" id="address-cep" class="form-control cep" placeholder="CEP">
                         @if($errors->has('address_cep.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('address_cep.'.$k) }}</div>
                         @endif
                     </div>
                     <div class="col-6">
-                        <input type="text" name="address_address[]" value="{{ old('address_address')[$k] }}" class="form-control" placeholder="rua de exemplo...">
+                        <input type="text" name="address_address[]" value="{{ old('address_address.' . $k, $addresses[$k]->address ?? null) }}" class="form-control" placeholder="rua de exemplo...">
                         @if($errors->has('address_address.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('address_address.'.$k) }}</div>
                         @endif
                     </div>
                     <div class="col">
-                        <input type="number" name="address_number[]" value="{{ old('address_number')[$k] }}" class="form-control" placeholder="número...">
+                        <input type="number" name="address_number[]" value="{{ old('address_number.' . $k, $addresses[$k]->number ?? null) }}" class="form-control" placeholder="número...">
                         @if($errors->has('address_number.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('address_number.'.$k) }}</div>
                         @endif
                     </div>
                     <div class="col">
-                        <input type="text" name="address_complement[]" value="{{ old('address_complement')[$k] }}" class="form-control" placeholder="complemento...">
+                        <input type="text" name="address_complement[]" value="{{ old('address_complement.' . $k, $addresses[$k]->complement ?? null) }}" class="form-control" placeholder="complemento...">
                         @if($errors->has('address_complement.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('address_complement.'.$k) }}</div>
                         @endif
@@ -307,13 +310,13 @@
 
                 <div class="form-row mb-4 mt-4 address-city-state">
                     <div class="col-4">
-                        <input type="text" name="address_city[]" value="{{ old('address_city')[$k] }}" class="form-control" placeholder="Cidade">
+                        <input type="text" name="address_city[]" value="{{ old('address_city.' . $k, $addresses[$k]->city ?? null) }}" class="form-control" placeholder="Cidade">
                         @if($errors->has('address_city.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('address_city.'.$k) }}</div>
                         @endif
                     </div>
                     <div class="col-2">
-                        <input type="text" name="address_state[]" value="{{ old('address_state')[$k] }}" class="form-control" placeholder="UF">
+                        <input type="text" name="address_state[]" value="{{ old('address_state.' . $k, $addresses[$k]->state ?? null) }}" class="form-control" placeholder="UF">
                         @if($errors->has('address_state.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('address_state.'.$k) }}</div>
                         @endif
@@ -354,6 +357,30 @@
     @endif
 @endfor
 
+@if(isset($beneficiaries) && isset($answers))
+    @foreach ($beneficiaries as $k => $v)
+        @if ($k == 0)
+            @foreach($answers as $k1 => $v1)
+                @if ($v1->beneficiary_id == $v->id)
+                    <input type="hidden" id="holder_answer.{{ $k1 }}" value="{{ $v1->answer }}">
+                @endif
+            @endforeach
+        @else 
+            @php 
+                $question = 0
+            @endphp
+            @foreach($answers as $k1 => $v1)
+                @if ($k1 > 0 && $v1->beneficiary_id == $v->id)
+                    <input type="hidden" id="dependent_{{ $k }}.{{ $question }}" value="{{ $v1->answer }}">
+                    @php
+                        $question++
+                    @endphp
+                @endif
+            @endforeach
+        @endif
+    @endforeach
+@endif
+
 <div class="form-row mb-4 mt-4">
     <div class="col">
         <table id="health-declaration-table" class="table table-striped">                 
@@ -366,13 +393,13 @@
     @for($i = 0; $i < 5; $i++)
         <div class="form-row mb-1 mt-1">
             <div class="col-1">
-            # {{ $i + 1 }}<input type="hidden" name="comment_number[]" value="{{ old('comment_number')[$i] ?? null }}">
+            # {{ $i + 1 }}<input type="hidden" name="comment_number[]" value="{{ old('comment_number.' . $i, $specifics[$i]->comment_number ?? null) ?? null }}">
             </div>
             <div class="col">
-                <input type="text" name="comment_item[]" class="form-control" placeholder="especificação" value="{{ old('comment_item')[$i] ?? null }}" />
+                <input type="text" name="comment_item[]" class="form-control" placeholder="especificação" value="{{ old('comment_item.' . $i, $specifics[$i]->comment_item ?? null) ?? null }}" />
             </div>
             <div class="col">
-                <input type="text" name="period_item[]" class="form-control" placeholder="período da doença" value="{{ old('period_item')[$i] ?? null }}" />
+                <input type="text" name="period_item[]" class="form-control" placeholder="período da doença" value="{{ old('period_item.' . $i, $specifics[$i]->period_item ?? null) ?? null }}" />
             </div>
         </div>
     @endfor
@@ -381,7 +408,7 @@
 <div class="form-row mb-4 mt-4" id="health-declaration-comments" style="display:none;">
     <div class="col">
         <label for="health-declaration-comments">Comentários da DS</label>
-        <textarea name="health_declaration_comments" class="form-control" id="" cols="30" rows="5">{{ old('health_declaration_comments') }}</textarea>
+        <textarea name="health_declaration_comments" class="form-control" id="" cols="30" rows="5">{{ old('health_declaration_comments', $accession->comments ?? null) }}</textarea>
     </div>
 </div>
 
