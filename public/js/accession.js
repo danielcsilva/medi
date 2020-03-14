@@ -13585,11 +13585,38 @@ $(document).ready(function ($) {
   if ($('#health-declaration').find('option:selected').val() > 0) {
     $('#health-declaration').trigger('change');
   }
+
+  $(document).on('change', '.specific-items', function (e) {
+    var choose = $(e.target).val();
+
+    if (choose != '') {
+      var count = 0;
+      $('.specific-items').each(function (i, o) {
+        if ($(o).val() == choose) {
+          count++;
+
+          if (count > 1) {
+            alert('Você não pode escolher o mesmo Item da DS');
+            $(e.target).val('');
+          }
+        }
+      });
+    } else {
+      $(e.target).val('');
+      $(e.target).find('option').each(function (i, o) {
+        $(o).attr('selected', "");
+        $(o).removeAttr('selected');
+        console.log($(o));
+      });
+    }
+  });
 });
 
 function changeHealthDeclaration() {
+  var table = $('#health-declaration-table');
+  console.log('ssss333');
+
   if ($('#health-declaration-table').find('tbody > tr').length > 0) {
-    var table = $('#health-declaration-table');
     num_dependents = dependents + 3;
     var head = table.find('thead').clone();
     var body = table.find('tbody').clone(); //console.log(head.find('th').length);
@@ -13641,9 +13668,9 @@ function openHealthDeclaration(model_id) {
 
         for (var j = 0; j <= dependents; j++) {
           if (j == 0) {
-            table += "<td><input class='form-control col-4 text-center' type='text' required name=\"holder_answer[]\" value=\"" + ($('#holder_answer\\.' + (item_number - 1)).length > 0 ? $('#holder_answer\\.' + (item_number - 1)).val() : '') + "\"></td>";
+            table += "<td><input class='form-control col-4 text-center' type='text' required name=\"holder_answer[]\" value=\"" + ($('#holder_answer\\.' + (item_number - 1)).length > 0 ? $('#holder_answer\\.' + (item_number - 1)).val() : 'N') + "\"></td>";
           } else {
-            table += "<td><input class='form-control col-4 text-center' type='text' required name=\"dependent_" + j + "[]\" value=\"" + ($('#dependent_' + j + '\\.' + (item_number - 1)).length > 0 ? $('#dependent_' + j + '\\.' + (item_number - 1)).val() : '') + "\"></td>";
+            table += "<td><input class='form-control col-4 text-center' type='text' required name=\"dependent_" + j + "[]\" value=\"" + ($('#dependent_' + j + '\\.' + (item_number - 1)).length > 0 ? $('#dependent_' + j + '\\.' + (item_number - 1)).val() : 'N') + "\"></td>";
           }
         }
 
@@ -13651,6 +13678,20 @@ function openHealthDeclaration(model_id) {
       }
 
       table += "</tbody>";
+      $('.specific-items').each(function (index, obj) {
+        for (i in results.questions) {
+          if ($(obj).find('option[value=' + (parseInt(i) + 1) + ']').length == 0) {
+            console.log($('#specific-item-' + (parseInt(i) + 1)).val(), index);
+            var selected = $('#specific-item-' + (parseInt(i) + 1)).val() != undefined && index + 1 == parseInt(i) + 1 ? "selected" : "";
+
+            if (selected == 'selected') {
+              $(obj).append('<option value="' + $('#specific-item-' + (parseInt(i) + 1)).val() + '" ' + selected + '>Item ' + $('#specific-item-' + (parseInt(i) + 1)).val() + '</option>');
+            } else {
+              $(obj).append('<option value="' + (parseInt(i) + 1) + '">Item ' + (parseInt(i) + 1) + '</option>');
+            }
+          }
+        }
+      });
       $('#health-declaration-table').html(table);
       $('#comments-by-item').toggle();
     }

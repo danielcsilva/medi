@@ -47,7 +47,7 @@ class AccessionController extends Controller
         $healthplans = HealthPlan::all();
         $quizzes = Quiz::all();
 
-        return view('accessions.new', ['customers' => $customers, 'healthplans' => $healthplans, 'quizzes' => $quizzes]);
+        return view('accessions.new', ['customers' => $customers, 'healthplans' => $healthplans, 'quizzes' => $quizzes, 'specifics' => '']);
     }
 
 
@@ -177,7 +177,7 @@ class AccessionController extends Controller
 
                     }
 
-                    // beneficiaries index from _form view
+                    // beneficiaries index from _form.blade.php view
                     if (isset($request->get('beneficiary_financier')[0]) && $request->get('beneficiary_financier')[0] == ($k + 1)) {                    
                         $accession->financier_id = $beneficiary->id;
                     }

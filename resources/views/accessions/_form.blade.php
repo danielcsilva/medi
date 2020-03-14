@@ -7,11 +7,6 @@
         <label for="">Data do Recebimento</label>
         <input type="text" name="received_at" class="form-control date-br" value="{{ old('received_at', $accession->received_at ?? date('d/m/Y')) }}" required>
     </div>
-    <div class="col-3">
-        <label for="">Nº da Proposta</label>
-
-        <input type="text" name="proposal_number" class="form-control" value="{{ old('proposal_number', $accession->proposal_number ?? null) }}" required1>
-    </div>
     <div class="col-6">
         <label for="">Cliente</label>        
         <select id="inputState" class="form-control" name="company_id" required1>
@@ -22,13 +17,16 @@
         </select>
         
     </div>
-</div>
-
-<div class="form-row mb-4 mt-4">
     <div class="col-3">
         <label for="">Parceiro Administradora</label>
         <input type="text" name="admin_partner" class="form-control" value="{{ old('admin_partner', $accession->admin_partner ?? null) }}">
     </div>
+    
+    
+</div>
+
+<div class="form-row mb-4 mt-4">
+    
     <div class="col-6">
         <label for="">Parceiro Operadora</label>        
         <select id="inputState" class="form-control" name="health_plan_id">
@@ -37,6 +35,11 @@
                 <option value="{{ $healthplan->id }}" @if(old('health_plan_id', $accession->health_plan_id ?? null) == $healthplan->id) selected @endif> {{ $healthplan->name }}</option>
             @endforeach
         </select>
+    </div>
+    <div class="col-3">
+        <label for="">Nº da Proposta</label>
+
+        <input type="text" name="proposal_number" class="form-control" value="{{ old('proposal_number', $accession->proposal_number ?? null) }}" required1>
     </div>
     <div class="col-3">
         <label for="">Início da Vigência</label>
@@ -51,7 +54,7 @@
         <input type="text" name="consult_partner" class="form-control" value="{{ old('consult_partner', $accession->consult_partner ?? null) }}">
     </div>
     <div class="col-3">
-        <label for="">Pareceiro Corretora</label>
+        <label for="">Parceiro Corretora</label>
 
         <input type="text" name="broker_partner" class="form-control" value="{{ old('broker_partner', $accession->broker_partner ?? null) }}">
     </div>
@@ -67,19 +70,19 @@
 <div id="repeater-colaborator">
     <div class="form-row mb-4 mt-4">
         <div class="col-3">
-            <input type="text" name="beneficiary_cpf[]" class="form-control cpf" placeholder="CPF" value="{{ old('beneficiary_cpf.0', $beneficiaries[0]->cpf ?? null) }}" required1>            
+            <input type="text" name="beneficiary_cpf[]" class="form-control cpf" placeholder="CPF" value="{{ old('beneficiary_cpf.0', $beneficiaries[0]->cpf ?? null) }}" required>            
             @if($errors->has('beneficiary_cpf.0'))
                 <div class="alert alert-danger small">{{ $errors->first('beneficiary_cpf.0') }}</div>
             @endif
         </div>
         <div class="col-5">
-            <input type="text" name="beneficiary_name[]" id="beneficiary-name" class="form-control" value="{{ old('beneficiary_name.0', $beneficiaries[0]->name ?? null) }}" placeholder="Nome do beneficiário titular" required1>            
+            <input type="text" name="beneficiary_name[]" id="beneficiary-name" class="form-control" value="{{ old('beneficiary_name.0', $beneficiaries[0]->name ?? null) }}" placeholder="Nome do beneficiário titular" required>            
             @if($errors->has('beneficiary_name.0'))
                 <div class="alert alert-danger small">{{ $errors->first('beneficiary_name.0') }}</div>
             @endif
         </div>
         <div class="col-4">
-            <input type="email" name="beneficiary_email[]" id="beneficiary-email" class="form-control" value="{{ old('beneficiary_email.0', $beneficiaries[0]->email ?? null) }}" placeholder="Email" required1>
+            <input type="email" name="beneficiary_email[]" id="beneficiary-email" class="form-control" value="{{ old('beneficiary_email.0', $beneficiaries[0]->email ?? null) }}" placeholder="Email" required>
             @if($errors->has('beneficiary_email.0'))
                 <div class="alert alert-danger small">{{ $errors->first('beneficiary_email.0') }}</div>
             @endif
@@ -91,18 +94,6 @@
             <input type="text" name="beneficiary_birth_date[]" value="{{ old('beneficiary_birth_date.0', $beneficiaries[0]->birth_date ?? null) }}" class="form-control date-br" placeholder="Data de Nasc." required>
             @if($errors->has('beneficiary_birth_date.0'))
                 <div class="alert alert-danger small">{{ $errors->first('beneficiary_birth_date.0') }}</div>
-            @endif
-        </div>
-        <div class="col">
-            <input type="number" name="beneficiary_height[]" step=".01" value="{{ old('beneficiary_height.0', $beneficiaries[0]->height ?? null) }}" class="form-control" placeholder="Altura" required1>
-            @if($errors->has('beneficiary_height.0'))
-                <div class="alert alert-danger small">{{ $errors->first('beneficiary_height.0') }}</div>
-            @endif
-        </div>
-        <div class="col">
-            <input type="number" name="beneficiary_weight[]" step=".01" value="{{ old('beneficiary_weight.0', $beneficiaries[0]->weight ?? null) }}" class="form-control" placeholder="Peso" required1>
-            @if($errors->has('beneficiary_weight.0'))
-                <div class="alert alert-danger small">{{ $errors->first('beneficiary_weight.0') }}</div>
             @endif
         </div>
         <div class="col">        
@@ -161,6 +152,23 @@
             <input type="text" name="address_state[]" value="{{ old('address_state.0', $addresses[0]->state ?? null) }}" class="form-control" placeholder="UF">
             @if($errors->has('address_state.0'))
                 <div class="alert alert-danger small">{{ $errors->first('address_state.0') }}</div>
+            @endif
+        </div>
+    </div>
+
+    <div class="form-row mb-4 mt-4">
+        <div class="col-2">
+            <label for="">Altura</label>
+            <input type="number" name="beneficiary_height[]" step=".01" value="{{ old('beneficiary_height.0', $beneficiaries[0]->height ?? null) }}" class="form-control" placeholder="Altura" required1>
+            @if($errors->has('beneficiary_height.0'))
+                <div class="alert alert-danger small">{{ $errors->first('beneficiary_height.0') }}</div>
+            @endif
+        </div>
+        <div class="col-2">
+            <label for="">Peso</label>
+            <input type="number" name="beneficiary_weight[]" step=".01" value="{{ old('beneficiary_weight.0', $beneficiaries[0]->weight ?? null) }}" class="form-control" placeholder="Peso" required1>
+            @if($errors->has('beneficiary_weight.0'))
+                <div class="alert alert-danger small">{{ $errors->first('beneficiary_weight.0') }}</div>
             @endif
         </div>
     </div>
@@ -248,18 +256,6 @@
                             <div class="alert alert-danger small">{{ $errors->first('beneficiary_birth_date.'.$k) }}</div>
                         @endif
                     </div>
-                    <div class="col">
-                        <input type="number" step=".01" name="beneficiary_height[]" value="{{ old('beneficiary_height.' . $k, $v->height ?? null) }}" class="form-control" placeholder="Altura" required1>
-                        @if($errors->has('beneficiary_height.'.$k))
-                            <div class="alert alert-danger small">{{ $errors->first('beneficiary_height.'.$k) }}</div>
-                        @endif
-                    </div>
-                    <div class="col">
-                        <input type="number" step=".01" name="beneficiary_weight[]" value="{{ old('beneficiary_weight.' . $k, $v->weight ?? null) }}" class="form-control" placeholder="Peso" required1>
-                        @if($errors->has('beneficiary_weight.'.$k))
-                            <div class="alert alert-danger small">{{ $errors->first('beneficiary_weight.'.$k) }}</div>
-                        @endif
-                    </div>
                     <div class="col">        
                         <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="beneficiary_gender[]" required1>
                             <option value="">Sexo</option>
@@ -319,6 +315,23 @@
                         <input type="text" name="address_state[]" value="{{ old('address_state.' . $k, $addresses[$k]->state ?? null) }}" class="form-control" placeholder="UF">
                         @if($errors->has('address_state.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('address_state.'.$k) }}</div>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="form-row mb-4 mt-4">
+                    <div class="col-2">
+                        <label for="">Altura</label>
+                        <input type="number" name="beneficiary_height[]" step=".01" value="{{ old('beneficiary_height.' . $k, $beneficiaries[$k]->height ?? null) }}" class="form-control" placeholder="Altura" required>
+                        @if($errors->has('beneficiary_height.0'))
+                            <div class="alert alert-danger small">{{ $errors->first('beneficiary_height.' . $k) }}</div>
+                        @endif
+                    </div>
+                    <div class="col-2">
+                        <label for="">Peso</label>
+                        <input type="number" name="beneficiary_weight[]" step=".01" value="{{ old('beneficiary_weight.' . $k, $beneficiaries[$k]->weight ?? null) }}" class="form-control" placeholder="Peso" required>
+                        @if($errors->has('beneficiary_weight.0'))
+                            <div class="alert alert-danger small">{{ $errors->first('beneficiary_weight.' . $k) }}</div>
                         @endif
                     </div>
                 </div>
@@ -388,12 +401,23 @@
     </div>
 </div>
 
+@if ($specifics)
+    @foreach($specifics as $specific_k => $specific_v)
+        <input type="hidden" id="specific-item-{{ ($specific_k + 1) }}" value="{{ old('comment_number.' . ($specific_k + 1), $specific_v->comment_number ?? null) }}" />
+    @endforeach
+@endif
+
 <div id="comments-by-item" style="display:none;">
     <label>Em caso de existência de doença, especifique o item, subitem e proponente</label>
     @for($i = 0; $i < 5; $i++)
         <div class="form-row mb-1 mt-1">
             <div class="col-1">
-            # {{ $i + 1 }}<input type="hidden" name="comment_number[]" value="{{ old('comment_number.' . $i, $specifics[$i]->comment_number ?? null) ?? null }}">
+                # {{ $i + 1 }}
+            </div>
+            <div class="col-2">
+                <select name="comment_number[]" class="specific-items form-control"> 
+                    <option value="">selecione</option>
+                </select>
             </div>
             <div class="col">
                 <input type="text" name="comment_item[]" class="form-control" placeholder="especificação" value="{{ old('comment_item.' . $i, $specifics[$i]->comment_item ?? null) ?? null }}" />
