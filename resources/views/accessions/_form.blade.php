@@ -5,7 +5,7 @@
 <div class="form-row mb-4 mt-4">
     <div class="col-3">
         <label for="">Data do Recebimento</label>
-        <input type="text" name="received_at" class="form-control date-br" value="{{ old('received_at', $accession->received_at ?? date('d/m/Y')) }}" required1>
+        <input type="text" name="received_at" class="form-control date-br" value="{{ old('received_at', $accession->received_at ?? date('d/m/Y')) }}" required>
     </div>
     <div class="col-3">
         <label for="">Nº da Proposta</label>
@@ -41,7 +41,7 @@
     <div class="col-3">
         <label for="">Início da Vigência</label>
 
-        <input type="text" name="initial_validity" class="form-control date-br" value="{{ old('initial_validity', $accession->initial_validity ?? null) }}">
+        <input type="text" name="initial_validity" class="form-control date-br" value="{{ old('initial_validity', $accession->initial_validity ?? null) }}" required>
     </div>
 </div>
 
@@ -88,7 +88,7 @@
     
     <div class="form-row mb-4 mt-4">
         <div class="col">
-            <input type="text" name="beneficiary_birth_date[]" value="{{ old('beneficiary_birth_date.0', $beneficiaries[0]->birth_date ?? null) }}" class="form-control date-br" placeholder="Data de Nasc." required1>
+            <input type="text" name="beneficiary_birth_date[]" value="{{ old('beneficiary_birth_date.0', $beneficiaries[0]->birth_date ?? null) }}" class="form-control date-br" placeholder="Data de Nasc." required>
             @if($errors->has('beneficiary_birth_date.0'))
                 <div class="alert alert-danger small">{{ $errors->first('beneficiary_birth_date.0') }}</div>
             @endif
@@ -243,7 +243,7 @@
                 
                 <div class="form-row mb-4 mt-4">
                     <div class="col">
-                        <input type="text" name="beneficiary_birth_date[]" value="{{ old('beneficiary_birth_date.' . $k, $v->birth_date ?? null) }}" class="form-control date-br" placeholder="Data de Nasc." required1>
+                        <input type="text" name="beneficiary_birth_date[]" value="{{ old('beneficiary_birth_date.' . $k, $v->birth_date ?? null) }}" class="form-control date-br" placeholder="Data de Nasc." required>
                         @if($errors->has('beneficiary_birth_date.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('beneficiary_birth_date.'.$k) }}</div>
                         @endif
