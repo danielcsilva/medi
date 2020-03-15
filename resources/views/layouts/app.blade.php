@@ -70,7 +70,7 @@
                                     Cadastros <span class="caret"></span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('beneficiaries.index') }}">Beneficiários</a>
+                                    {{-- <a class="dropdown-item" href="{{ route('beneficiaries.index') }}">Beneficiários</a> --}}
                                     <a class="dropdown-item" href="{{ route('companies.index') }}">Clientes</a>
                                     <a class="dropdown-item" href="{{ route('quizzes.index') }}">Modelos de DSs</a>
                                     <a class="dropdown-item" href="{{ route('healthquestions.index') }}">Questões para DS</a>
