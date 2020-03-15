@@ -13580,6 +13580,7 @@ $(document).ready(function ($) {
   $(document).on('change', '#health-declaration', function (e) {
     openHealthDeclaration($(e.target).val());
     $('#health-declaration-comments').show();
+    $('#comments-by-item').show();
   });
 
   if ($('#health-declaration').find('option:selected').val() > 0) {
@@ -13614,7 +13615,6 @@ $(document).ready(function ($) {
 
 function changeHealthDeclaration() {
   var table = $('#health-declaration-table');
-  console.log('ssss333');
 
   if ($('#health-declaration-table').find('tbody > tr').length > 0) {
     num_dependents = dependents + 3;
@@ -13623,7 +13623,6 @@ function changeHealthDeclaration() {
     //console.log(num_dependents);
 
     if (head.find('th').length > num_dependents) {
-      console.log('retirar');
       head.find('th:eq(' + (head.find('th').length - 1) + ')').remove();
       body.find('tr').each(function (i, o) {
         $(o).find('td:eq(' + (head.find('td').length - 1) + ')').remove();
@@ -13681,7 +13680,7 @@ function openHealthDeclaration(model_id) {
       $('.specific-items').each(function (index, obj) {
         for (i in results.questions) {
           if ($(obj).find('option[value=' + (parseInt(i) + 1) + ']').length == 0) {
-            console.log($('#specific-item-' + (parseInt(i) + 1)).val(), index);
+            // console.log($('#specific-item-' + (parseInt(i) + 1)).val(), index);
             var selected = $('#specific-item-' + (parseInt(i) + 1)).val() != undefined && index + 1 == parseInt(i) + 1 ? "selected" : "";
 
             if (selected == 'selected') {
@@ -13693,7 +13692,7 @@ function openHealthDeclaration(model_id) {
         }
       });
       $('#health-declaration-table').html(table);
-      $('#comments-by-item').toggle();
+      $('#comments-by-item').show();
     }
   });
 }
