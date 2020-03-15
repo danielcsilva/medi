@@ -18,6 +18,6 @@
     </div>
 </div>
 
-@livewire('data-tables', 'companies', 'company', $model, ['name', 'contract', 'cnpj', 'telephone', 'email'], ['Nome', 'Contrato', 'CNPJ', 'Telefone', 'Email'])
+@livewire('data-tables', ['editRoute' => 'companies', 'modelEditParam' => 'company', 'model' => $model, 'columns' => ['name', 'contract', 'cnpj', 'telephone', 'email'], 'labels' => ['Nome', 'Contrato', 'CNPJ', 'Telefone', 'Email']])
 
 @endsection
