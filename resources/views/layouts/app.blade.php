@@ -76,7 +76,7 @@
                                     <a class="dropdown-item" href="{{ route('healthquestions.index') }}">Questões para DS</a>
                                     <a class="dropdown-item" href="{{ route('healthplans.index') }}">Operadoras</a>
                                     <a class="dropdown-item" href="{{ route('inconsistencies.index') }}">Inconsistências</a>
-
+                                    <a class="dropdown-item" href="{{ route('suggestions.index') }}">Sugestões</a>
 
                                 </div>
                             </li>

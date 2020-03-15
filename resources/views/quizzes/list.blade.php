@@ -18,6 +18,6 @@
     </div>
 </div>
 
-@livewire('data-tables', 'quizzes', 'quiz', $model, ['name'], ['Nome'])
+@livewire('data-tables', ['editRoute' => 'quizzes', 'modelEditParam' => 'quiz', 'model' => $model, 'columns' => ['name'], 'labels' => ['Nome']])
 
 @endsection

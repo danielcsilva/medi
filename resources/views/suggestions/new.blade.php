@@ -4,16 +4,16 @@
 
     <div class="row">
         <div class="col">
-            {{ Breadcrumbs::render('healthplans') }}
+            {{ Breadcrumbs::render('suggestions') }}
         </div>  
     </div>
 
     <div class="row">
         <div class="col">
-            <form method="post" action="{{ route('healthplans.store')  }}">
+            <form method="post" action="{{ route('suggestions.store')  }}">
                 @csrf
 
-                @include('health_plans._form')
+                @include('suggestions._form')
 
             </form>
         </div>

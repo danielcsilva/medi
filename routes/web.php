@@ -19,12 +19,20 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('beneficiaries', 'BeneficiaryController');
-Route::resource('companies', 'CompanyController');
-Route::resource('quizzes', 'QuizController');
-Route::resource('healthplans', 'HealthPlanController');
-Route::resource('inconsistencies', 'InconsistencyController');
-Route::resource('accessions', 'AccessionController');
-Route::resource('healthquestions', 'HealthQuestionController');
+Route::middleware('auth')->group(function(){
+
+    Route::resource('beneficiaries', 'BeneficiaryController');
+    Route::resource('companies', 'CompanyController');
+    Route::resource('quizzes', 'QuizController');
+    Route::resource('healthplans', 'HealthPlanController');
+    Route::resource('inconsistencies', 'InconsistencyController');
+    Route::resource('accessions', 'AccessionController');
+    Route::resource('healthquestions', 'HealthQuestionController');
+    Route::resource('suggestions', 'SuggestionController');
+    Route::resource('riskgrades', 'RiskGradeController');
+    Route::resource('users', 'UserController');
+
+});
+
 
 

@@ -129,3 +129,22 @@ Breadcrumbs::for('healthquestions', function ($trail, $content = null) {
     }
 
 });
+
+
+Breadcrumbs::for('suggestions', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    
+    if ($content == 'list'){
+        $trail->push('Sugestões');
+    } else {
+        $trail->push('Sugestões', route('suggestions.index'));
+    }
+
+    if ($content == null) {
+        $trail->push('Nova Sugestão');
+    } else if(is_object($content)){
+        $trail->push($content->suggestion);
+    }
+
+});

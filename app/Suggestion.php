@@ -10,6 +10,6 @@ class Suggestion extends Model
     
     public function accession()
     {
-        return $this->belongsTo('App\Accession', 'suggestion_id');
+        return $this->hasMany('App\Accession', 'suggestion_id');
     }
 }

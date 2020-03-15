@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SuggestionStore;
 use App\Suggestion;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class SuggestionController extends Controller
      */
     public function index()
     {
-        //
+        return view('suggestions.list', ['model' => '\App\\Suggestion']);
+        
     }
 
     /**
@@ -24,7 +26,8 @@ class SuggestionController extends Controller
      */
     public function create()
     {
-        //
+        return view('suggestions.new');
+        
     }
 
     /**
@@ -33,9 +36,13 @@ class SuggestionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SuggestionStore $request)
     {
-        //
+        $validationData = $request->validated();
+        
+        Suggestion::create($validationData);
+
+        return redirect()->route('suggestions.index')->with('success', 'Sugestão adicionada!');
     }
 
     /**
@@ -55,9 +62,10 @@ class SuggestionController extends Controller
      * @param  \App\Suggestion  $suggestion
      * @return \Illuminate\Http\Response
      */
-    public function edit(Suggestion $suggestion)
+    public function edit($suggestion)
     {
-        //
+        return view('suggestions.edit', ['suggestion' => Suggestion::findOrFail($suggestion)]);
+        
     }
 
     /**
@@ -67,9 +75,15 @@ class SuggestionController extends Controller
      * @param  \App\Suggestion  $suggestion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Suggestion $suggestion)
+    public function update(SuggestionStore $request, $suggestion)
     {
-        //
+        $suggestionModel = Suggestion::findOrFail($suggestion);
+        $validationData = $request->validated();        
+        
+        $suggestionModel->fill($validationData);
+        $suggestionModel->save();
+
+        return redirect()->route('suggestions.index')->with('success', 'Sugestão editada com sucesso!');
     }
 
     /**

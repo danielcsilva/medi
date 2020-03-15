@@ -4,17 +4,17 @@
 
     <div class="row">
         <div class="col">
-            {{ Breadcrumbs::render('healthplans', $healthplan) }}
+            {{ Breadcrumbs::render('suggestions', $suggestion) }}
         </div>  
     </div>
 
     <div class="row">
         <div class="col">
-            <form method="post" action="{{ route('healthplans.update', ['healthplan' => $healthplan->id])  }}">
+            <form method="post" action="{{ route('suggestions.update', ['suggestion' => $suggestion->id])  }}">
                 @csrf
                 @method('PUT')
 
-                @include('health_plans._form')
+                @include('suggestions._form')
 
             </form>
         </div>
