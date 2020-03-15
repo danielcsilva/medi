@@ -17,7 +17,7 @@
         <tbody>
             @foreach($rows as $row)
             <tr wire:key="{{ $row->id }}">
-                @if(key($rows) == 0)                    
+                @if(key($rows) == 0 && $edit)                    
                     <th scope="row"><a href="{{ route( $editRoute . '.edit', [$modelEditParam => $row->id]) }}"><i class="material-icons">edit</i></a></th>
                 @endif
 
@@ -29,7 +29,11 @@
                     @endif
                 @endforeach
 
-                <td><a href="#" data-toggle="modal" data-target="#deleteModal" onclick="setDeleteRoute('{{ route( $editRoute . '.destroy', [$modelEditParam => $row->id]) }}')"><i class="material-icons">delete_forever</i></a></td>
+                <td>
+                    @if ($delete)
+                    <a href="#" data-toggle="modal" data-target="#deleteModal" onclick="setDeleteRoute('{{ route( $editRoute . '.destroy', [$modelEditParam => $row->id]) }}')"><i class="material-icons">delete_forever</i></a>
+                    @endif
+                </td>
             </tr>
             @endforeach
         </tbody>

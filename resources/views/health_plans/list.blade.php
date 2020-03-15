@@ -18,6 +18,6 @@
     </div>
 </div>
 
-@livewire('data-tables', 'healthplans', 'healthplan', $model, ['name'], ['name'])
+@livewire('data-tables', ['editRoute' => 'healthplans', 'modelEditParam' => 'healthplan', 'model' => $model, 'columns' => ['name'], 'labels' => ['name']])
 
 @endsection
