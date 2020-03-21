@@ -18,6 +18,6 @@
     </div>
 </div>
 
-@livewire('data-tables', 'accessions', 'accession', $model, ['proposal_number', 'received_at', 'financier.name', 'company.name'], ['Proposta', 'Recebida', 'Financiamento', 'Cliente'])
+@livewire('data-tables', ['editRoute' => 'accessions', 'modelEditParam' => 'accession', 'model' => $model, 'columns' => ['proposal_number', 'received_at', 'financier.name', 'company.name'], 'labels' => ['Proposta', 'Recebida', 'Financiamento', 'Cliente']])
 
 @endsection
