@@ -62,6 +62,8 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('accessions.create') }}">Novo</a>
                                     <a class="dropdown-item" href="{{ route('accessions.index') }}">Em andamento</a>
+                                    <a class="dropdown-item" href="{{ route('accessions.index') }}">Liberado para Entrevista</a>
+                                    <a class="dropdown-item" href="{{ route('accessions.index') }}">Em avaliação de Grau</a>
                                     <a class="dropdown-item" href="{{ route('accessions.index') }}">Finalizados</a>
                                 </div>
                             </li>    
