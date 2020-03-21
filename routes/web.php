@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function(){
     Route::resource('suggestions', 'SuggestionController');
     Route::resource('riskgrades', 'RiskGradeController');
     Route::resource('statusprocess', 'ProcessStatusController');
+    Route::resource('processtypes', 'ProcessTypeController');
 
     Route::resource('users', 'UserController');
 

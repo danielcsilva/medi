@@ -91,10 +91,18 @@ class ProcessStatusController extends Controller
      * @param  \App\ProcessStatus  $processStatus
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProcessStatusStore $processStatus)
+    public function destroy($processStatus)
     {
-        $processStatusModel = ProcessStatus::findOrFail($processStatus);
-        $processStatusModel->delete();
+        try {
+            
+            $processStatusModel = ProcessStatus::findOrFail($processStatus);
+            $processStatusModel->delete();
+
+        } catch (\Illuminate\Database\QueryException $e) {
+                
+            return redirect()->route('statusprocess.index')->with('error', config('medi.constraint_error'));
+
+        }
 
         return redirect()->route('statusprocess.index')->with('success', 'Status do Processo excluído com sucesso!');
     }

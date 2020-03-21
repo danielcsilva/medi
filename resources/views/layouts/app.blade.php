@@ -79,6 +79,7 @@
                                     <a class="dropdown-item" href="{{ route('suggestions.index') }}">Sugestões</a>
                                     <a class="dropdown-item" href="{{ route('riskgrades.index') }}">Graus de Risco</a>
                                     <a class="dropdown-item" href="{{ route('statusprocess.index') }}">Status do Processo</a>
+                                    <a class="dropdown-item" href="{{ route('processtypes.index') }}">Tipos de Movimentação</a>
 
                                 </div>
                             </li>

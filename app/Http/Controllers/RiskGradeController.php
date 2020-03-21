@@ -90,10 +90,19 @@ class RiskGradeController extends Controller
      * @param  \App\RiskGrade  $riskGrade
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RiskGrade $riskGrade)
+    public function destroy($riskGrade)
     {
-        $riskgradeModel = Riskgrade::findOrFail($riskGrade);
-        $riskgradeModel->delete();
+        try {
+            
+            $riskgradeModel = Riskgrade::findOrFail($riskGrade);
+            $riskgradeModel->delete();
+
+        } catch (\Illuminate\Database\QueryException $e) {
+                
+            return redirect()->route('riskgrades.index')->with('error', config('medi.constraint_error'));
+
+        }
+        
 
         return redirect()->route('riskgrades.index')->with('success', 'Grau de Risco excluído com sucesso!');
     }

@@ -186,3 +186,21 @@ Breadcrumbs::for('statusprocess', function ($trail, $content = null) {
     }
 
 });
+
+Breadcrumbs::for('processtypes', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    
+    if ($content == 'list'){
+        $trail->push('Tipo de Movimentação');
+    } else {
+        $trail->push('Tipo de Movimentação', route('processtypes.index'));
+    }
+
+    if ($content == null) {
+        $trail->push('Novo Tipo de Movimentação');
+    } else if(is_object($content)){
+        $trail->push($content->type_of_process);
+    }
+
+});

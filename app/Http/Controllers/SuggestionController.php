@@ -92,10 +92,18 @@ class SuggestionController extends Controller
      * @param  \App\Suggestion  $suggestion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Suggestion $suggestion)
+    public function destroy($suggestion)
     {
-        $suggestionModel = Suggestion::findOrFail($suggestion);
-        $suggestionModel->delete();
+        try {
+            
+            $suggestionModel = Suggestion::findOrFail($suggestion);
+            $suggestionModel->delete();
+
+        } catch (\Illuminate\Database\QueryException $e) {
+                
+            return redirect()->route('suggestions.index')->with('error', config('medi.constraint_error'));
+
+        }
 
         return redirect()->route('suggestions.index')->with('success', 'Sugestão excluída com sucesso!');
     }
