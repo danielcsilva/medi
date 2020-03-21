@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function(){
     Route::resource('healthquestions', 'HealthQuestionController');
     Route::resource('suggestions', 'SuggestionController');
     Route::resource('riskgrades', 'RiskGradeController');
+    Route::resource('statusprocess', 'ProcessStatusController');
+
     Route::resource('users', 'UserController');
 
 });

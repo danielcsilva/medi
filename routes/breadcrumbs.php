@@ -167,3 +167,22 @@ Breadcrumbs::for('riskgrades', function ($trail, $content = null) {
     }
 
 });
+
+
+Breadcrumbs::for('statusprocess', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    
+    if ($content == 'list'){
+        $trail->push('Status do Processo');
+    } else {
+        $trail->push('Status do Processo', route('statusprocess.index'));
+    }
+
+    if ($content == null) {
+        $trail->push('Novo Status do Processo');
+    } else if(is_object($content)){
+        $trail->push($content->status);
+    }
+
+});

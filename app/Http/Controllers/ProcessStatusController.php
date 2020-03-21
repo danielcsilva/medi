@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProcessStatusStore;
 use App\ProcessStatus;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class ProcessStatusController extends Controller
      */
     public function index()
     {
-        //
+        return view('process_status.list', ['model' => '\App\\ProcessStatus']);
     }
 
     /**
@@ -24,7 +25,8 @@ class ProcessStatusController extends Controller
      */
     public function create()
     {
-        //
+        return view('process_status.new');
+        
     }
 
     /**
@@ -33,9 +35,13 @@ class ProcessStatusController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProcessStatusStore $request)
     {
-        //
+        $validationData = $request->validated();
+        
+        ProcessStatus::create($validationData);
+
+        return redirect()->route('statusprocess.index')->with('success', 'Status do Processo adicionado!');
     }
 
     /**
@@ -55,9 +61,10 @@ class ProcessStatusController extends Controller
      * @param  \App\ProcessStatus  $processStatus
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProcessStatus $processStatus)
+    public function edit($processStatus)
     {
-        //
+        return view('process_status.edit', ['risk' => ProcessStatus::findOrFail($processStatus)]);
+        
     }
 
     /**
@@ -67,9 +74,15 @@ class ProcessStatusController extends Controller
      * @param  \App\ProcessStatus  $processStatus
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProcessStatus $processStatus)
+    public function update(ProcessStatusStore $request, $processStatus)
     {
-        //
+        $processSatusModel = ProcessStatus::findOrFail($processStatus);
+        $validationData = $request->validated();        
+        
+        $processSatusModel->fill($validationData);
+        $processSatusModel->save();
+
+        return redirect()->route('statuprocess.index')->with('success', 'Status do Processo editado com sucesso!');
     }
 
     /**
@@ -78,8 +91,11 @@ class ProcessStatusController extends Controller
      * @param  \App\ProcessStatus  $processStatus
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProcessStatus $processStatus)
+    public function destroy(ProcessStatusStore $processStatus)
     {
-        //
+        $processStatusModel = ProcessStatus::findOrFail($processStatus);
+        $processStatusModel->delete();
+
+        return redirect()->route('statusprocess.index')->with('success', 'Status do Processo excluído com sucesso!');
     }
 }
