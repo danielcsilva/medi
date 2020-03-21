@@ -20,7 +20,7 @@ class QuizForm extends Component
     public $perPage = 10;
 
     public $editRoute;
-    public $modelEditParam;
+    public $routeParam;
     public $model;
     public $columns;
     public $labels;
@@ -29,11 +29,11 @@ class QuizForm extends Component
     public $name;
     public $rowsHas;
 
-    public function mount($editRoute, $modelEditParam, $model, $columns, $labels, $QuizId = null)
+    public function mount($editRoute, $routeParam, $model, $columns, $labels, $QuizId = null)
     {
         
         $this->editRoute = $editRoute;
-        $this->modelEditParam = $modelEditParam;
+        $this->routeParam = $routeParam;
         $this->model = $model;
         $this->columns = $columns;
         $this->labels = $labels;
@@ -148,7 +148,7 @@ class QuizForm extends Component
             'rows' => $this->model::whereLike($this->columns, $this->search)
             ->paginate($this->perPage),
             'labels' => $this->labels,
-            'modelEditParam' => $this->modelEditParam,
+            'routeParam' => $this->routeParam,
             'editRoute' => $this->editRoute,
             'columns' => $this->columns,
             'selectedItems' => (array)$this->selectedItems,

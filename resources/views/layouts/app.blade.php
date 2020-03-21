@@ -77,6 +77,8 @@
                                     <a class="dropdown-item" href="{{ route('healthplans.index') }}">Operadoras</a>
                                     <a class="dropdown-item" href="{{ route('inconsistencies.index') }}">Inconsistências</a>
                                     <a class="dropdown-item" href="{{ route('suggestions.index') }}">Sugestões</a>
+                                    <a class="dropdown-item" href="{{ route('riskgrades.index') }}">Graus de Risco</a>
+
 
                                 </div>
                             </li>

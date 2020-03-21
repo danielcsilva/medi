@@ -148,3 +148,22 @@ Breadcrumbs::for('suggestions', function ($trail, $content = null) {
     }
 
 });
+
+
+Breadcrumbs::for('riskgrades', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    
+    if ($content == 'list'){
+        $trail->push('Graus de Risco');
+    } else {
+        $trail->push('Graus de Risco', route('riskgrades.index'));
+    }
+
+    if ($content == null) {
+        $trail->push('Novo Grau de Risco');
+    } else if(is_object($content)){
+        $trail->push($content->risk);
+    }
+
+});

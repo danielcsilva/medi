@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RiskGradeStore;
 use App\RiskGrade;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class RiskGradeController extends Controller
      */
     public function index()
     {
-        //
+        return view('riskgrades.list', ['model' => '\App\\RiskGrade']);
     }
 
     /**
@@ -24,7 +25,7 @@ class RiskGradeController extends Controller
      */
     public function create()
     {
-        //
+        return view('riskgrades.new');
     }
 
     /**
@@ -33,9 +34,13 @@ class RiskGradeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RiskGradeStore $request)
     {
-        //
+        $validationData = $request->validated();
+        
+        RiskGrade::create($validationData);
+
+        return redirect()->route('riskgrades.index')->with('success', 'Grau de Risco adicionado!');
     }
 
     /**
@@ -55,9 +60,10 @@ class RiskGradeController extends Controller
      * @param  \App\RiskGrade  $riskGrade
      * @return \Illuminate\Http\Response
      */
-    public function edit(RiskGrade $riskGrade)
+    public function edit($riskGrade)
     {
-        //
+        return view('riskgrades.edit', ['risk' => RiskGrade::findOrFail($riskGrade)]);
+        
     }
 
     /**
@@ -67,9 +73,15 @@ class RiskGradeController extends Controller
      * @param  \App\RiskGrade  $riskGrade
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, RiskGrade $riskGrade)
+    public function update(RiskGradeStore $request, $riskGrade)
     {
-        //
+        $riskgradeModel = riskgrade::findOrFail($riskGrade);
+        $validationData = $request->validated();        
+        
+        $riskgradeModel->fill($validationData);
+        $riskgradeModel->save();
+
+        return redirect()->route('riskgrades.index')->with('success', 'Grau de Risco editado com sucesso!');
     }
 
     /**
@@ -80,6 +92,9 @@ class RiskGradeController extends Controller
      */
     public function destroy(RiskGrade $riskGrade)
     {
-        //
+        $riskgradeModel = Riskgrade::findOrFail($riskGrade);
+        $riskgradeModel->delete();
+
+        return redirect()->route('riskgrades.index')->with('success', 'Grau de Risco excluído com sucesso!');
     }
 }

@@ -18,6 +18,6 @@
     </div>
 </div>
 
-@livewire('data-tables', 'inconsistencies', 'inconsistency', $model, ['name'], ['name'])
+@livewire('data-tables', ['editRoute' => 'inconsistencies', 'routeParam' => 'inconsistency', 'model' => $model, 'columns' => ['name'], 'labels' => ['name']])
 
 @endsection

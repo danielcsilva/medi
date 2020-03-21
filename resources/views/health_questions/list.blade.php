@@ -18,7 +18,7 @@
     </div>
 </div>
 
-@livewire('data-tables', ['editRoute' => 'healthquestions', 'modelEditParam' => 'healthquestion', 'model' => $model, 'columns' => ['question', 'description', 'required'], 'labels' => ['Questão', 'Descrição', 'Obrigatório?'], 'booleans' => ['required']])
+@livewire('data-tables', ['editRoute' => 'healthquestions', 'routeParam' => 'healthquestion', 'model' => $model, 'columns' => ['question', 'description', 'required'], 'labels' => ['Questão', 'Descrição', 'Obrigatório?'], 'booleans' => ['required']])
 
 
 @endsection

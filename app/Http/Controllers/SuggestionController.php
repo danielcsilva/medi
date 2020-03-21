@@ -94,6 +94,9 @@ class SuggestionController extends Controller
      */
     public function destroy(Suggestion $suggestion)
     {
-        //
+        $suggestionModel = Suggestion::findOrFail($suggestion);
+        $suggestionModel->delete();
+
+        return redirect()->route('suggestions.index')->with('success', 'Sugestão excluída com sucesso!');
     }
 }

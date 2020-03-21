@@ -15,7 +15,7 @@ class DataTables extends Component
     public $perPage = 10;
 
     public $editRoute;
-    public $modelEditParam;
+    public $routeParam;
     public $model;
     public $columns;
     public $labels;
@@ -25,10 +25,10 @@ class DataTables extends Component
     public $delete = true;
     
 
-    public function mount($editRoute, $modelEditParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true)
+    public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true)
     {
         $this->editRoute = $editRoute;
-        $this->modelEditParam = $modelEditParam;
+        $this->routeParam = $routeParam;
         $this->model = $model;
         $this->columns = $columns;
         $this->labels = $labels;
@@ -46,7 +46,7 @@ class DataTables extends Component
         return view('livewire.data-tables', [
             'rows' => $this->model::whereLike($this->columns, $this->search)->paginate($this->perPage),
             'labels' => $this->labels,
-            'modelEditParam' => $this->modelEditParam,
+            'routeParam' => $this->routeParam,
             'editRoute' => $this->editRoute,
             'columns' => $this->columns,
             'booleans' => $this->booleans,

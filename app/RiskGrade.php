@@ -10,6 +10,6 @@ class RiskGrade extends Model
     
     public function accession()
     {
-        return $this->belongsTo('App\Accession', 'suggestion_id');
+        return $this->hasMany('App\Accession', 'risk_grade_id');
     }
 }
