@@ -27,7 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.new', ['roles' => Role::all()]);
+        return view('users.new', ['roles' => Role::where('name', '<>', 'SuperAdmin')->get()]);
     }
 
     /**
@@ -64,7 +64,7 @@ class UserController extends Controller
      */
     public function edit($user)
     {
-        return view('users.edit', ['user' => User::findOrFail($user), 'roles' => Role::all()]);
+        return view('users.edit', ['user' => User::findOrFail($user), 'roles' => Role::where('name', '<>', 'SuperAdmin')->get()]);
     }
 
     /**
