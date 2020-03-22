@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserStore;
 use App\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -14,7 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return view('users.list', ['model' => '\App\\User']);
+        
     }
 
     /**
@@ -24,7 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.new', ['roles' => Role::all()]);
     }
 
     /**
@@ -33,9 +36,13 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserStore $request)
     {
-        //
+        $validationData = $request->validated();
+        
+        User::create($validationData);
+
+        return redirect()->route('users.index')->with('success', 'Usuário adicionado!');
     }
 
     /**
@@ -55,9 +62,9 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($user)
     {
-        //
+        return view('users.edit', ['user' => User::findOrFail($user), 'roles' => Role::all()]);
     }
 
     /**
@@ -67,9 +74,15 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserStore $request, $user)
     {
-        //
+        $userModel = User::findOrFail($user);
+        $validationData = $request->validated();        
+        
+        $userModel->fill($validationData);
+        $userModel->save();
+
+        return redirect()->route('users.index')->with('success', 'Usuário editado com sucesso!');
     }
 
     /**
@@ -78,8 +91,20 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($user)
     {
-        //
+        try {
+            
+            $userModel = user::findOrFail($user);
+            $userModel->delete();
+
+        } catch (\Illuminate\Database\QueryException $e) {
+                
+            return redirect()->route('users.index')->with('error', config('medi.constraint_error'));
+
+        }    
+
+        return redirect()->route('users.index')->with('success', 'Usuário excluído com sucesso!');
+    
     }
 }

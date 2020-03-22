@@ -204,3 +204,14 @@ Breadcrumbs::for('processtypes', function ($trail, $content = null) {
     }
 
 });
+
+
+Breadcrumbs::for('users', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    
+    $trail->push('Usuários', ($content != 'list' ? route('users.index') : ''));
+
+    $trail->push(($content == null ? 'Novo Usuário' : $content->name ?? ''));
+
+});

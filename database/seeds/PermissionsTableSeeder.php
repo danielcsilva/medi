@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
+use Spatie\Permission\Models\Permission;
+
 class PermissionsTableSeeder extends Seeder
 {
     /**
@@ -11,6 +13,14 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Permission::create(['name' => 'Visualizar Processos']);
+        Permission::create(['name' => 'Editar Processos']);
+
+        Permission::create(['name' => 'Visualizar Entrevistas']);
+        Permission::create(['name' => 'Editar Entrevistas']);
+
+        Permission::create(['name' => 'Avaliar Processos Clinicamente']);
+        Permission::create(['name' => 'Visualizar Indicadores e Relatórios']);
+
     }
 }
