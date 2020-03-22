@@ -15,8 +15,9 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        if (env('SUPERADMIN_NAME') == '' || env('SUPERADMIN_EMAIL') || env('SUPERADMIN_PASSWORD') == '') {
-            die('O Super Admin não está configurado no arquivo .env');
+        
+        if (env('SUPERADMIN_NAME') == '' || env('SUPERADMIN_EMAIL') == '' || env('SUPERADMIN_PASSWORD') == '') {
+            $this->command->alert('ERRO: O Super Admin não está configurado no arquivo .env');
         }
 
         $user = User::create([

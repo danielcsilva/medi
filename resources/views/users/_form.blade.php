@@ -48,25 +48,34 @@
 <div class="form-row mb-4 mt-4">
     <div class="col-4">
 
-        @if (Auth::user()->id == $user->id)
+        @if (isset($user) && Auth::user()->id == $user->id)
             @role('SuperAdmin')
                 <div class="alert alert-info">Você é um Super Admin. Qualquer mudança de grupo não afetará seu usuário.</div> 
             @endrole
         @endif 
+
+        @can('Editar Grupo de Usuário')
         
-        <label>Grupos</label>
-        <select class="form-control" multiple name="roles[]">
-            @if ($roles)
-                @foreach($roles as $role)
-                    <option value="">{{ $role->name }}</option>
-                @endforeach
-            @endif
-        </select>
+            <label>Grupos</label>
+            <select class="form-control" multiple name="roles[]">
+                @if ($roles)
+                        @foreach($roles as $role)
+                            <option value="">{{ $role->name }}</option>
+                        @endforeach
+                @endif
+            </select>
+
+            <span>Escolha mais de um grupo segurando a telca CTRL</span>
+        @else
+
+            <div class="alert alert-info">{{  (count($user->roles->pluck('name')->toArray()) > 0 ? "Você pertence ao(s) grupo(s): " . implode(",",  $user->roles->pluck('name')->toArray()) . "." : '') }} Você não tem permissão para modificar o grupo do seu usuário.</div>
+        
+        @endcan
+
         @if($errors->has('beneficiary_gender.0'))
             <div class="alert alert-danger small">{{ $errors->first('beneficiary_gender.0') }}</div>
         @endif
 
-        <span>Escolha mais de um grupo segurando a telca CTRL</span>
     </div>
 </div>
 

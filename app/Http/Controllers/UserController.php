@@ -38,9 +38,14 @@ class UserController extends Controller
      */
     public function store(UserStore $request)
     {
+        $roles = $request->get('roles');
         $validationData = $request->validated();
         
-        User::create($validationData);
+        $user = User::create($validationData);
+
+        if ($user->hasPermissionTo('Editar Grupo de Usuário')) {
+            $user->syncRoles($roles);
+        }
 
         return redirect()->route('users.index')->with('success', 'Usuário adicionado!');
     }
@@ -77,10 +82,16 @@ class UserController extends Controller
     public function update(UserStore $request, $user)
     {
         $userModel = User::findOrFail($user);
+        $roles = $request->get('roles');
+        
         $validationData = $request->validated();        
         
         $userModel->fill($validationData);
         $userModel->save();
+
+        if ($user->hasPermissionTo('Editar Grupo de Usuário')) {
+            $userModel->syncRoles($roles);
+        }
 
         return redirect()->route('users.index')->with('success', 'Usuário editado com sucesso!');
     }

@@ -4,16 +4,16 @@
 
     <div class="row">
         <div class="col">
-            {{ Breadcrumbs::render('inconsistencies') }}
+            {{ Breadcrumbs::render('users') }}
         </div>  
     </div>
 
     <div class="row">
         <div class="col">
-            <form method="post" action="{{ route('inconsistencies.store')  }}">
+            <form method="post" action="{{ route('users.store')  }}">
                 @csrf
 
-                @include('inconsistencies._form')
+                @include('users._form')
 
             </form>
         </div>

@@ -28,7 +28,8 @@ class UserStore extends FormRequest
         return [
             'name' => 'required',
             'email' =>  ['required', Rule::unique('users')->ignore(Auth::user()->id)],
-            'password' => 'confirmed'
+            'password' => 'confirmed',
+            'roles.*' => ''
         ];
     }
 }
