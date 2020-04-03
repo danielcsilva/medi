@@ -18,7 +18,7 @@
     @endif
 </select>
 
-<span>Escolha mais de um grupo segurando a telca CTRL</span>
+<span>Escolha mais de um grupo segurando a telca CTRL ou SHIFT</span>
 
 <div class="form-row mb-4 mt-4">
     <div class="col">

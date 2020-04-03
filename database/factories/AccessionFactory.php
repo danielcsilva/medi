@@ -8,45 +8,33 @@ use Faker\Generator as Faker;
 $factory->define(Accession::class, function (Faker $faker) {
     
     try {
-        
-        $beneficiary = App\Beneficiary::all()->random();
         $company = App\Company::all()->random();
-        $address = App\Address::all()->random();
+    } catch(Exception $e) {
+        factory(App\Company::class, 1)->create();
+        $company = App\Company::all()->first();
+    } 
+
+    try {
         $health_plan = App\HealthPlan::all()->random();
-
-    } catch(\Exception $e){
-
-        if (!isset($beneficiary->id)) {
-            factory(App\Beneficiary::class, 1)->create();
-            $beneficiary = App\Beneficiary::all()->first();
-        }
-
-        if (!isset($company->id)) {
-            factory(App\Company::class, 1)->create();
-            $company = App\Company::all()->first();
-        }
-
-        if (!isset($address->id)) {
-            factory(App\Address::class, 1)->create();
-            $address = App\Address::all()->first();
-        }            
+    } catch(Exception $e) {
+        factory(App\HealthPlan::class, 1)->create();
+        $health_plan = App\HealthPlan::all()->first();
+    }   
     
-        if (!isset($health_plan->id)) {
-            factory(App\HealthPlan::class, 1)->create();
-            $health_plan = App\HealthPlan::all()->first();
-        }
-
-    }
-       
-
     return [
         'proposal_number' => rand(1111, 9999),
-        'beneficiary_id' => $beneficiary->id,
-        'financier_id' => $beneficiary->id,
         'company_id' => $company->id,
-        'address_id' => $address->id,
         'health_plan_id' => $health_plan->id,
-        'received_at' => $faker->date
+        'received_at' => $faker->date,
+        'consult_partner' => $faker->name,
+        'broker_partner' => $faker->name,
+        'health_declaration_expires' => $faker->date,
+        'registered_date' => $faker->date,
+        'entity' => $faker->name,
+        'acomodation' => 'Apartamento',
+        'plan_value' => $faker->randomFloat(2),
+        'comments' => $faker->text,
+        'initial_validity' => date('d/m/Y', strtotime("-1 days"))
     ];
 
 });
