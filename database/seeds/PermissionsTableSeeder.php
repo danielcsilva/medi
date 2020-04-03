@@ -23,7 +23,9 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'Visualizar Indicadores e Relatórios']);
 
         Permission::create(['name' => 'Visualizar Usuários']);
-        Permission::create(['name' => 'Editar Grupo de Usuário']);
+        Permission::create(['name' => 'Editar Grupo de Usuários']);
+        Permission::create(['name' => 'Editar Usuários']);
+
 
     }
 }

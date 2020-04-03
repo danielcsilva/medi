@@ -54,10 +54,10 @@
             @endrole
         @endif 
 
-        @can('Editar Grupo de Usuário')
+        @can('Editar Grupo de Usuários')
         
             <label>Grupos</label>
-            <select class="form-control" multiple name="roles[]">
+            <select class="form-control" multiple name="roles[]" style="height: 200px;">
                 @if ($roles)
                         @foreach($roles as $role)
                             <option value="">{{ $role->name }}</option>

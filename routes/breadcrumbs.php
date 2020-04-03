@@ -215,3 +215,13 @@ Breadcrumbs::for('users', function ($trail, $content = null) {
     $trail->push(($content == null ? 'Novo Usuário' : $content->name ?? ''));
 
 });
+
+Breadcrumbs::for('roles', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    
+    $trail->push('Grupos', ($content != 'list' ? route('roles.index') : ''));
+
+    $trail->push(($content == null ? 'Novo Grupo' : $content->name ?? ''));
+
+});

@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function(){
     Route::resource('statusprocess', 'ProcessStatusController');
     Route::resource('processtypes', 'ProcessTypeController');
     
-    Route::resource('roles', 'RoleController');
+    Route::resource('roles', 'RolesController');
     Route::resource('users', 'UserController');
 
 });

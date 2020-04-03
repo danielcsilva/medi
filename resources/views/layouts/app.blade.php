@@ -63,7 +63,7 @@
                                     <a class="dropdown-item" href="{{ route('accessions.create') }}">Novo</a>
                                     <a class="dropdown-item" href="{{ route('accessions.index') }}">Em andamento</a>
                                     <a class="dropdown-item" href="{{ route('accessions.index') }}">Liberado para Entrevista</a>
-                                    <a class="dropdown-item" href="{{ route('accessions.index') }}">Em avaliação de Grau</a>
+                                    <a class="dropdown-item" href="{{ route('accessions.index') }}">Avaliar Grau de Risco</a>
                                     <a class="dropdown-item" href="{{ route('accessions.index') }}">Finalizados</a>
                                 </div>
                             </li>    
@@ -82,15 +82,28 @@
                                     <a class="dropdown-item" href="{{ route('riskgrades.index') }}">Graus de Risco</a>
                                     <a class="dropdown-item" href="{{ route('statusprocess.index') }}">Status do Processo</a>
                                     <a class="dropdown-item" href="{{ route('processtypes.index') }}">Tipos de Movimentação</a>
-
                                 </div>
                             </li>
+                            
+                            @can('Editar Usuários')
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Sistema <span class="caret"></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('users.index') }}">Usuários</a>
+                                    <a class="dropdown-item" href="{{ route('roles.index') }}">Grupos de Usuários</a>
+                                </div>
+                            </li>
+                            @endcan
+
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('users.edit', [ 'user' => Auth::user()->id ]) }}">Meu Perfil</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

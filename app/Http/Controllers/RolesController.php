@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RoleStore;
+use Exception;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Throwable;
 
 class RolesController extends Controller
 {
@@ -13,7 +18,7 @@ class RolesController extends Controller
      */
     public function index()
     {
-        return view('roles.list', ['model' => '\App\\RiskGrade']);
+        return view('roles.list', ['model' => Role::class]);
     }
 
     /**
@@ -23,7 +28,7 @@ class RolesController extends Controller
      */
     public function create()
     {
-        //
+        return view('roles.new', ['permissions' => Permission::all()]);
     }
 
     /**
@@ -32,9 +37,13 @@ class RolesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RoleStore $request)
     {
-        //
+        $validationData = $request->validated();
+        
+        Role::create($validationData);
+
+        return redirect()->route('roles.index')->with('success', 'Grupo adicionado!');
     }
 
     /**
@@ -54,9 +63,11 @@ class RolesController extends Controller
      * @param  \App\Roles  $Roles
      * @return \Illuminate\Http\Response
      */
-    public function edit(Roles $Roles)
+    public function edit($id)
     {
-        //
+        $role = Role::findOrFail($id);
+        
+        return view('roles.edit', ['role' => $role, 'permissions' => Permission::all()]);
     }
 
     /**
@@ -66,9 +77,19 @@ class RolesController extends Controller
      * @param  \App\Roles  $Roles
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $role)
+    public function update(RoleStore $request, $id)
     {
-        //
+        $role = Role::findOrFail($id);
+
+        $validationData = $request->validated();        
+        
+        $role->name = $validationData['name'];
+        $role->save();
+
+        $role->syncPermissions($validationData['permissions']);
+
+        return redirect()->route('roles.index')->with('success', 'Grupo editado com sucesso!');
+
     }
 
     /**
@@ -77,8 +98,22 @@ class RolesController extends Controller
      * @param  \App\Roles  $Roles
      * @return \Illuminate\Http\Response
      */
-    public function destroy($role)
+    public function destroy($id)
     {
-        //
+        try {
+
+            $role = Role::findOrFail($id);
+            $role->delete();
+
+        } catch(Exception $e) {
+
+            return back()->withInput()->with('error', config('medi.tech_error_msg') . $e->getMessage());
+
+
+        } catch(Throwable $t) {
+
+            return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
+
+        }
     }
 }

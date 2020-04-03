@@ -43,7 +43,7 @@ class UserController extends Controller
         
         $user = User::create($validationData);
 
-        if ($user->hasPermissionTo('Editar Grupo de Usuário')) {
+        if ($user->hasPermissionTo('Editar Grupo de Usuários')) {
             $user->syncRoles($roles);
         }
 
@@ -84,12 +84,18 @@ class UserController extends Controller
         $userModel = User::findOrFail($user);
         $roles = $request->get('roles');
         
+        
         $validationData = $request->validated();        
         
+        if ($request->get('password') == '') {
+            unset($validationData['password']);
+            unset($validationData['password_confirmation']);
+        }
+
         $userModel->fill($validationData);
         $userModel->save();
 
-        if ($user->hasPermissionTo('Editar Grupo de Usuário')) {
+        if ($userModel->hasPermissionTo('Editar Grupo de Usuários')) {
             $userModel->syncRoles($roles);
         }
 
