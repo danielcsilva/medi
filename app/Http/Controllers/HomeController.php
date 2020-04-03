@@ -31,6 +31,13 @@ class HomeController extends Controller
             'backgroundColor' => '#FFCC00'
         ]);
 
-        return view('home', ['chart' => $chart]);
+        $chart2 = new AccessionsCharts;
+        $chart2->labels(['2 dias atrás', 'Ontem', 'Hoje']);
+        $chart2->dataset('Entrevistas', 'line', [30, 60, 20])->options([
+            'color' => '#FF0000',
+            'backgroundColor' => '#FFCC99'
+        ]);
+
+        return view('home', ['chart' => $chart, 'chart2' => $chart2]);
     }
 }
