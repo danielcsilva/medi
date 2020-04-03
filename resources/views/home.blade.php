@@ -14,7 +14,8 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    {!! $chart->container() !!}
+                    {!! $chart->script() !!}
                 </div>
             </div>
         </div>
