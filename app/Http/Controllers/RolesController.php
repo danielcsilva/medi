@@ -52,7 +52,7 @@ class RolesController extends Controller
      * @param  \App\Roles  $Roles
      * @return \Illuminate\Http\Response
      */
-    public function show(Roles $Roles)
+    public function show($id)
     {
         //
     }

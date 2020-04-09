@@ -439,8 +439,14 @@
 
 <div class="row mb-4 mt-4">
     <div class="col">
-        Informar inconsistência(s)
-                
+        <label>Informar inconsistência(s)</label>
+        <select class="form-control" multiple name="inconsistencies[]" style="height: 200px;">
+            @if ($inconsistencies)
+                    @foreach($inconsistencies as $inconsistency)
+                        <option value="{{ $inconsistency->id }}" {{ in_array($inconsistency->id, $accession->inconsistencies->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $inconsistency->name }}</option>
+                    @endforeach
+            @endif
+        </select>
     </div>
 </div>
 

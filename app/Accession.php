@@ -16,7 +16,7 @@ class Accession extends Model
 
     public function inconsistencies()
     {
-        return $this->belongsToMany('App\Inconsistency', 'acession_inconsistency', 'accession_id', 'inconsistency_id');
+        return $this->belongsToMany('App\Inconsistency', 'acession_inconsistency');
     }
 
     public function financier()

@@ -253,7 +253,8 @@ class AccessionController extends Controller
         return view('accessions.edit', ['customers' => $customers, 'beneficiaries' => $beneficiaries, 
                                         'telephones' => $telephones, 'healthplans' => $healthplans, 
                                         'quizzes' => $quizzes, 'accession' => $accessionInstace,
-                                        'addresses' => $addresses, 'answers' => $answers, 'specifics' => $specifics
+                                        'addresses' => $addresses, 'answers' => $answers, 'specifics' => $specifics,
+                                        'inconsistencies' => $inconsistencies
                                     ]);
     }
 
@@ -282,6 +283,11 @@ class AccessionController extends Controller
                 Address::where('accession_id', $accession_id)->delete();
                 Beneficiary::where('accession_id', $accession_id)->delete();
                 Telephone::where('accession_id', $accession_id)->delete();
+
+                // Detach inconsistencies
+                $oldAccession = Accession::find($accession_id);
+                $oldAccession->inconsistencies()->detach();
+
                 Accession::where('id', $accession_id)->delete();
 
                 $accession = Accession::create([
@@ -342,16 +348,20 @@ class AccessionController extends Controller
                         $field = 'holder_answer';
                     }
 
-                    $questions = $request->get('question');
+                    if ($request->get('question')) {
 
-                    foreach($questions as $k1 => $v1) {
-
-                        HealthDeclarationAnswer::create([
-                            'question' => $request->get('question')[$k1],
-                            'answer' => $request->get($field)[$k1],
-                            'beneficiary_id' => $beneficiary->id,
-                            'accession_id' => $accession->id
-                        ]);
+                        $questions = $request->get('question');
+    
+                        foreach($questions as $k1 => $v1) {
+    
+                            HealthDeclarationAnswer::create([
+                                'question' => $request->get('question')[$k1],
+                                'answer' => $request->get($field)[$k1],
+                                'beneficiary_id' => $beneficiary->id,
+                                'accession_id' => $accession->id
+                            ]);
+    
+                        }
 
                     }
 
@@ -362,20 +372,28 @@ class AccessionController extends Controller
 
                 }
 
-                $specifics = $request->get('comment_number');
+                if ($request->get('comment_number')) {
 
-                foreach($specifics as $specific_k => $specific_v) {
-
-                    if ($request->get('comment_item')[$specific_k] !== null) {
-
-                        HealthDeclarationSpecific::create([
-                            'comment_number' => $request->get('comment_number')[$specific_k],
-                            'comment_item' => $request->get('comment_item')[$specific_k],
-                            'period_item' => $request->get('period_item')[$specific_k],
-                            'accession_id' => $accession->id
-                        ]);
-
+                    $specifics = $request->get('comment_number');
+                    
+                    foreach($specifics as $specific_k => $specific_v) {
+    
+                        if ($request->get('comment_item')[$specific_k] !== null) {
+    
+                            HealthDeclarationSpecific::create([
+                                'comment_number' => $request->get('comment_number')[$specific_k],
+                                'comment_item' => $request->get('comment_item')[$specific_k],
+                                'period_item' => $request->get('period_item')[$specific_k],
+                                'accession_id' => $accession->id
+                            ]);
+    
+                        }
                     }
+
+                }
+
+                if ($request->get('inconsistencies')) {
+                    $accession->inconsistencies()->sync($request->get('inconsistencies'));
                 }
                 
                 $accession->save();
