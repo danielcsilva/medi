@@ -9,6 +9,7 @@ use App\Company;
 use App\HealthDeclarationAnswer;
 use App\HealthDeclarationSpecific;
 use App\HealthPlan;
+use App\Inconsistency;
 use App\Quiz;
 use App\Telephone;
 use DateTime;
@@ -246,6 +247,8 @@ class AccessionController extends Controller
         $specifics = HealthDeclarationSpecific::where('accession_id', $accession)->get();
         
         $accessionInstace = Accession::findOrFail($accession);
+
+        $inconsistencies = Inconsistency::all();
 
         return view('accessions.edit', ['customers' => $customers, 'beneficiaries' => $beneficiaries, 
                                         'telephones' => $telephones, 'healthplans' => $healthplans, 

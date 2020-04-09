@@ -437,6 +437,14 @@
 </div>
 
 
+<div class="row mb-4 mt-4">
+    <div class="col">
+        Informar inconsistência(s)
+                
+    </div>
+</div>
+
+
 <div class="form-row mb-4 mt-4">
     <div class="col">
         <button type="submit" class="btn btn-primary">Salvar Processo</button>
