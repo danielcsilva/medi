@@ -11,6 +11,8 @@ use App\HealthDeclarationSpecific;
 use App\HealthPlan;
 use App\Inconsistency;
 use App\Quiz;
+use App\RiskGrade;
+use App\Suggestion;
 use App\Telephone;
 use DateTime;
 use Exception;
@@ -48,7 +50,10 @@ class AccessionController extends Controller
         $healthplans = HealthPlan::all();
         $quizzes = Quiz::all();
 
-        return view('accessions.new', ['customers' => $customers, 'healthplans' => $healthplans, 'quizzes' => $quizzes, 'specifics' => '']);
+        return view('accessions.new', ['customers' => $customers, 'healthplans' => $healthplans, 
+                                       'quizzes' => $quizzes, 'specifics' => '',
+                                       'inconsistencies' => Inconsistency::all(), 'riskgrades' => RiskGrade::all(),
+                                       'suggestions' => Suggestion::all() ]);
     }
 
 
@@ -158,7 +163,8 @@ class AccessionController extends Controller
                                         'telephones' => $telephones, 'healthplans' => $healthplans, 
                                         'quizzes' => $quizzes, 'accession' => $accessionInstace,
                                         'addresses' => $addresses, 'answers' => $answers, 'specifics' => $specifics,
-                                        'inconsistencies' => $inconsistencies
+                                        'inconsistencies' => $inconsistencies, 'riskgrades' => RiskGrade::all(),
+                                        'suggestions' => Suggestion::all()
                                     ]);
     }
 
@@ -320,6 +326,7 @@ class AccessionController extends Controller
 
             }
 
+            //Contact
             if ($request->get('inconsistencies')) {
                 $accession->inconsistencies()->sync($request->get('inconsistencies'));
             }
@@ -331,7 +338,37 @@ class AccessionController extends Controller
             if ($request->get('contacted_comments')) {
                 $accession->contacted_comments = $request->get('contacted_comments');
             }
+
+            //Interview
+            if ($request->get('interviewed_name')) {
+                $accession->interviewed_name = $request->get('interviewed_name');
+            }
+
+            if ($request->get('interview_date')) {
+                $accession->interview_date = $request->get('interview_date');
+            }
+
+            if ($request->get('interviewed_by')) {
+                $accession->interviewed_by = $request->get('interviewed_by');
+            }
+
+            if ($request->get('interview_comments')) {
+                $accession->interview_comments = $request->get('interview_comments');
+            }
             
+            if ($request->get('interview_validated')) {
+                $accession->interview_validated = $request->get('interview_validated');
+            }
+
+            //Medic analysis
+            if ($request->get('risk_grade_id')) {
+                $accession->risk_grade_id = $request->get('risk_grade_id');
+            }
+
+            if ($request->get('suggestion_id')) {
+                $accession->suggestion_id = $request->get('suggestion_id');
+            }
+
             $accession->save();
         });
     }

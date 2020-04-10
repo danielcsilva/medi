@@ -115,5 +115,8 @@ class RolesController extends Controller
             return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
 
         }
+
+        return redirect()->route('roles.index')->with('success', 'Grupo excluído com sucesso!');
+
     }
 }

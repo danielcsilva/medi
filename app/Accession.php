@@ -69,5 +69,26 @@ class Accession extends Model
     {
         $this->attributes['contacted_date'] = DateTime::createFromFormat('d/m/Y', $value)->format('Y-m-d');
     }
+
+    public function getInterviewDateAttribute($value)
+    {
+        $date = null;
+
+        try {
+            
+            $date = DateTime::createFromFormat('Y-m-d', $value)->format('d/m/Y');
+
+        } catch(Throwable $t){
+
+        }
+        
+        return $date;
+    }
+
+
+    public function setInterviewDateAttribute($value)
+    {
+        $this->attributes['interview_date'] = DateTime::createFromFormat('d/m/Y', $value)->format('Y-m-d');
+    }
     
 }

@@ -60,7 +60,7 @@
             <select class="form-control" multiple name="roles[]" style="height: 200px;">
                 @if ($roles)
                         @foreach($roles as $role)
-                            <option value="{{ $role->id }}" {{ in_array($role->id, $user->roles->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $role->name }}</option>
+                            <option value="{{ $role->id }}" {{ ( isset($user) && in_array($role->id, $user->roles->pluck('id')->toArray())) ? 'selected' : '' }}>{{ $role->name }}</option>
                         @endforeach
                 @endif
             </select>
