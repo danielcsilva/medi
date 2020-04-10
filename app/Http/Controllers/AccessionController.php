@@ -15,8 +15,8 @@ use App\RiskGrade;
 use App\Suggestion;
 use App\Telephone;
 use DateTime;
-use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
@@ -114,10 +114,6 @@ class AccessionController extends Controller
 
             $this->accessionTransaction($request, $beneficiaries, $telephones);
             
-        } catch(Exception $e) {
-            
-            return back()->withInput()->with('error', config('medi.tech_error_msg') . $e->getMessage());
-
         } catch(Throwable $t) {
 
             return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
@@ -177,24 +173,30 @@ class AccessionController extends Controller
      */
     public function update(Request $request, $accession_id)
     {
-        $this->accessionValidate($request);
+        
+        if (Auth::user()->hasRole('Médico')) {
+            
+            $accession = Accession::find($accession_id);
+            $this->setMedicAnalysis($request, $accession);
 
-        $beneficiaries = $request->get('beneficiary_cpf');
-        $telephones = $request->get('beneficiary_telephone');
+        } else {
+
+            $this->accessionValidate($request);
+
+            $beneficiaries = $request->get('beneficiary_cpf');
+            $telephones = $request->get('beneficiary_telephone');
+
+            try {
+                 
+                $this->accessionTransaction($request, $beneficiaries, $telephones, $accession_id);
     
-        try {
-            
-            $this->accessionTransaction($request, $beneficiaries, $telephones, $accession_id);
-
-        } catch(Exception $e) {
-            
-            return back()->withInput()->with('error', config('medi.tech_error_msg') . $e->getMessage());
-
-        } catch(Throwable $t) {
-
-            return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
-
+            } catch(Throwable $t) {
+    
+                return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
+    
+            }
         }
+    
         
         return redirect()->route('accessions.index')->with('success', 'Processo de Adesão editado com sucesso!');
     }
@@ -206,7 +208,7 @@ class AccessionController extends Controller
     {
         DB::transaction(function() use ($request, $beneficiaries, $telephones, $accession_id) {
                 
-            
+
             if ($accession_id !== null) { // edit
             
                 Accession::where('id', $accession_id)->update(['financier_id' => null]);
@@ -326,51 +328,70 @@ class AccessionController extends Controller
 
             }
 
-            //Contact
-            if ($request->get('inconsistencies')) {
-                $accession->inconsistencies()->sync($request->get('inconsistencies'));
-            }
-
-            if ($request->get('contacted_date')) {
-                $accession->contacted_date = $request->get('contacted_date');
-            }
-
-            if ($request->get('contacted_comments')) {
-                $accession->contacted_comments = $request->get('contacted_comments');
-            }
-
-            //Interview
-            if ($request->get('interviewed_name')) {
-                $accession->interviewed_name = $request->get('interviewed_name');
-            }
-
-            if ($request->get('interview_date')) {
-                $accession->interview_date = $request->get('interview_date');
-            }
-
-            if ($request->get('interviewed_by')) {
-                $accession->interviewed_by = $request->get('interviewed_by');
-            }
-
-            if ($request->get('interview_comments')) {
-                $accession->interview_comments = $request->get('interview_comments');
-            }
-            
-            if ($request->get('interview_validated')) {
-                $accession->interview_validated = $request->get('interview_validated');
-            }
-
-            //Medic analysis
-            if ($request->get('risk_grade_id')) {
-                $accession->risk_grade_id = $request->get('risk_grade_id');
-            }
-
-            if ($request->get('suggestion_id')) {
-                $accession->suggestion_id = $request->get('suggestion_id');
-            }
+            $this->setContact($request, $accession);
+            $this->setInterview($request, $accession);
+            $this->setMedicAnalysis($request, $accession);
 
             $accession->save();
         });
+    }
+
+    public function setContact($request, $accession)
+    {
+        //Contact
+        if ($request->get('inconsistencies')) {
+            $accession->inconsistencies()->sync($request->get('inconsistencies'));
+        }
+
+        if ($request->get('contacted_date')) {
+            $accession->contacted_date = $request->get('contacted_date');
+        }
+
+        if ($request->get('contacted_comments')) {
+            $accession->contacted_comments = $request->get('contacted_comments');
+        }
+
+        $accession->save();
+    }
+
+    public function setInterview($request, $accession) 
+    {
+        //Interview
+        if ($request->get('interviewed_name')) {
+            $accession->interviewed_name = $request->get('interviewed_name');
+        }
+
+        if ($request->get('interview_date')) {
+            $accession->interview_date = $request->get('interview_date');
+        }
+
+        if ($request->get('interviewed_by')) {
+            $accession->interviewed_by = $request->get('interviewed_by');
+        }
+
+        if ($request->get('interview_comments')) {
+            $accession->interview_comments = $request->get('interview_comments');
+        }
+        
+        if ($request->get('interview_validated')) {
+            $accession->interview_validated = $request->get('interview_validated');
+        }
+
+        $accession->save();
+    }
+
+    public function setMedicAnalysis($request, $accession)
+    {
+        //Medic analysis
+        if ($request->get('risk_grade_id')) {
+            $accession->risk_grade_id = $request->get('risk_grade_id');
+        }
+
+        if ($request->get('suggestion_id')) {
+            $accession->suggestion_id = $request->get('suggestion_id');
+        }
+
+        $accession->save();
     }
 
     /**
@@ -392,10 +413,6 @@ class AccessionController extends Controller
             Beneficiary::where('accession_id', $accession_id)->delete();
             Telephone::where('accession_id', $accession_id)->delete();
             Accession::where('id', $accession_id)->delete();
-
-        } catch(Exception $e) {
-            
-            return back()->withInput()->with('error', config('medi.tech_error_msg') . $e->getMessage());
 
         } catch(Throwable $t) {
 
