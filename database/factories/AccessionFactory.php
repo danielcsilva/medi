@@ -9,14 +9,14 @@ $factory->define(Accession::class, function (Faker $faker) {
     
     try {
         $company = App\Company::all()->random();
-    } catch(Exception $e) {
+    } catch(Throwable $e) {
         factory(App\Company::class, 1)->create();
         $company = App\Company::all()->first();
     } 
 
     try {
         $health_plan = App\HealthPlan::all()->random();
-    } catch(Exception $e) {
+    } catch(Throwable $e) {
         factory(App\HealthPlan::class, 1)->create();
         $health_plan = App\HealthPlan::all()->first();
     }   

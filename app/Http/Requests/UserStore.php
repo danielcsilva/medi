@@ -25,9 +25,11 @@ class UserStore extends FormRequest
      */
     public function rules()
     {
+        // dd(request()->all());
+        // dd(Rule::unique('users')->ignore(request()->get('user')));
         return [
             'name' => 'required',
-            'email' =>  ['required', Rule::unique('users')->ignore(Auth::user()->id)],
+            'email' =>  ['required', Rule::unique('users')->ignore($this->user)],
             'password' => 'confirmed',
             'roles.*' => ''
         ];

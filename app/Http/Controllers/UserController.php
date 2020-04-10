@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserStore;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -43,8 +44,8 @@ class UserController extends Controller
         
         $user = User::create($validationData);
 
-        if ($user->hasPermissionTo('Editar Grupo de Usuários')) {
-            $user->syncRoles($roles);
+        if (Auth::user()->can('Editar Usuários')) {
+            $user->assignRole($roles);
         }
 
         return redirect()->route('users.index')->with('success', 'Usuário adicionado!');
@@ -95,8 +96,8 @@ class UserController extends Controller
         $userModel->fill($validationData);
         $userModel->save();
 
-        if ($userModel->hasPermissionTo('Editar Grupo de Usuários')) {
-            $userModel->syncRoles($roles);
+        if (Auth::user()->can('Editar Usuários')) {
+            $userModel->assignRole($roles);
         }
 
         return redirect()->route('users.index')->with('success', 'Usuário editado com sucesso!');
