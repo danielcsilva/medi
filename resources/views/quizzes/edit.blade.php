@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col">            
                 
-            @livewire('quiz-form',  'healthquestions', 'healthquestion', $modelAutoComplete, ['question'], ['Questão'], $quiz->id)
+            @livewire('quiz-form',  ['editRoute' => 'healthquestions', 'routeParam' => 'healthquestion', 'model' => $modelAutoComplete, 'columns' => ['question'], 'labels' => ['Questão'], 'QuizId' => $quiz->id ])
 
         </div>
     </div>
