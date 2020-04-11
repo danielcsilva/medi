@@ -454,7 +454,7 @@
         <select class="form-control" multiple name="inconsistencies[]" style="height: 200px;">
             @if ($inconsistencies)
                     @foreach($inconsistencies as $inconsistency)
-                        <option value="{{ $inconsistency->id }}" {{ in_array($inconsistency->id, $accession->inconsistencies->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $inconsistency->name }}</option>
+                        <option value="{{ $inconsistency->id }}" {{ ( isset($accession) && in_array($inconsistency->id, $accession->inconsistencies->pluck('id')->toArray()) ? 'selected' : '' ) }}>{{ $inconsistency->name }}</option>
                     @endforeach
             @endif
         </select>
@@ -496,8 +496,8 @@
 
     <div class="row mb-4 mt-4">
         <div class="col">
-            <label for="">Entrevista validada</label>
-            <input type="checkbox" name="interview_validated" class="" {{ old('interview_validated', $accession->interview_validated ?? null) !== 0 ? 'checked' : ''}} value="1">
+            <label for="">Entrevista validada </label>
+            <input type="checkbox" name="interview_validated" class="" {{ old('interview_validated', $accession->interview_validated ?? 0) !== 0 ? 'checked' : ''}} value="1">
         </div>
     </div>
 
@@ -517,7 +517,7 @@
                 @if ($riskgrades)
                     <option value=""></option>
                     @foreach($riskgrades as $risk)
-                        <option value="{{ $risk->id }}" {{ old('risk_grade_id', $risk->id ?? null) === $accession->risk_grade_id ? 'selected' : '' }}>{{ $risk->risk }}</option>
+                        <option value="{{ $risk->id }}" {{ old('risk_grade_id', $risk->id ?? null) === (isset($accession) && $accession->risk_grade_id) ? 'selected' : '' }}>{{ $risk->risk }}</option>
                     @endforeach
                 @endif
             </select>
@@ -529,7 +529,7 @@
                 @if ($suggestions)
                     <option value=""></option>
                     @foreach($suggestions as $suggestion)
-                        <option value="{{ $suggestion->id }}" {{ old('suggestion_id', $suggestion->id ?? null) === $accession->suggestion_id ? 'selected' : '' }}>{{ $suggestion->suggestion }}</option>
+                        <option value="{{ $suggestion->id }}" {{ old('suggestion_id', $suggestion->id ?? null) === (isset($accession) && $accession->suggestion_id) ? 'selected' : '' }}>{{ $suggestion->suggestion }}</option>
                     @endforeach
                 @endif
             </select>
