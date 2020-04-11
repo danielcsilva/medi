@@ -6,6 +6,7 @@ use App\Http\Requests\UserStore;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -42,6 +43,10 @@ class UserController extends Controller
         $roles = $request->get('roles');
         $validationData = $request->validated();
         
+        if (isset($validationData['password']) && $validationData['password'] != '') {
+            $validationData['password'] = Hash::make($validationData['password']);
+        }
+
         $user = User::create($validationData);
 
         if (Auth::user()->can('Editar Usuários')) {
@@ -85,10 +90,11 @@ class UserController extends Controller
         $userModel = User::findOrFail($user);
         $roles = $request->get('roles');
         
-        
         $validationData = $request->validated();        
-        
-        if ($request->get('password') == '') {
+
+        if (isset($validationData['password']) && $validationData['password'] != '') {
+            $validationData['password'] = Hash::make($validationData['password']);
+        } else {
             unset($validationData['password']);
             unset($validationData['password_confirmation']);
         }
