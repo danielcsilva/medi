@@ -31,6 +31,16 @@ class Accession extends Model
         return $this->belongsTo('App\Company', 'company_id');
     }
 
+    public function riskGrade()
+    {
+        return $this->belongsTo('App\RiskGrade', 'risk_grade_id');
+    }
+
+    public function suggestion()
+    {
+        return $this->belongsTo('App\Suggestion', 'suggestion_id');
+    }
+
     public function getReceivedAtAttribute($value)
     {
         return DateTime::createFromFormat('Y-m-d', $value)->format('d/m/Y');
