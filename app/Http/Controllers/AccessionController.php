@@ -36,7 +36,11 @@ class AccessionController extends Controller
      */
     public function index()
     {
-        return view('accessions.list', ['model' => Accession::class]);
+        
+        $filter = request()->all();
+
+        return view('accessions.list', ['model' => Accession::class, 'filter' => $filter]);
+
     }
 
     /**

@@ -23,9 +23,11 @@ class DataTables extends Component
 
     public $edit = true;
     public $delete = true;
+
+    public $filter;
     
 
-    public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true)
+    public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true, $filter = [])
     {
         $this->editRoute = $editRoute;
         $this->routeParam = $routeParam;
