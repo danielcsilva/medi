@@ -20,6 +20,24 @@
         </div>    
 </div>
 
+@role('Cliente') 
+    @if (Auth::user()->powerbi_url != '')
+        Para acessar seu dashboard utilize o link: <a href="{!! Auth::user()->powerbi_url !!}" target="_blank">Dashboard</a>
+    @endif
+@else
+    <div class="form-row mb-4 mt-4">
+        <div class="col-4">
+            <input type="text" name="powerbi_url" class="form-control  @error('powerbi_url') is-invalid @enderror" placeholder="Power BI link" value="{{ old('powerbi_url', $user->powerbi_url ?? null) }}">
+            @error('powerbi_url')
+            <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+            </div>    
+    </div>
+@endrole
+
+
 <div class="form-row mb-4 mt-4">
     <div class="col-4">
         <input type="password" name="password" class="form-control  @error('password') is-invalid @enderror" placeholder="Senha" value="">

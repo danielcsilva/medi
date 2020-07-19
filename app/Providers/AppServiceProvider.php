@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
@@ -49,5 +50,7 @@ class AppServiceProvider extends ServiceProvider
         
             return $this;
         });
+
+        Blade::component('components.iframe', 'iframe');
     }
 }

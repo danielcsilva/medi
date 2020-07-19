@@ -31,7 +31,8 @@ class UserStore extends FormRequest
             'name' => 'required',
             'email' =>  ['required', Rule::unique('users')->ignore($this->user)],
             'password' => 'confirmed',
-            'roles.*' => ''
+            'roles.*' => '',
+            'powerbi_url' => ''
         ];
     }
 }

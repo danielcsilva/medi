@@ -20,6 +20,7 @@ class RolesTableSeeder extends Seeder
         Role::create(['name' => 'Coordenação']);
         Role::create(['name' => 'Supervisão']);
         Role::create(['name' => 'Gerência']);
+        Role::create(['name' => 'Cliente']);
 
         Role::create(['name' => 'SuperAdmin']);
 

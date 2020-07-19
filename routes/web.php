@@ -18,9 +18,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('users', 'UserController');
+Route::get('/dashboard/bi/{url}', 'HomeController@dashboardPowerBI');
 
-Route::middleware('auth')->group(function(){
-
+Route::group(['middleware' => ['role:SuperAdmin|Diretoria|Operacional|Médico|Coordenação|Supervisão|Gerência']], function () {
+    
     Route::resource('beneficiaries', 'BeneficiaryController');
     Route::resource('companies', 'CompanyController');
     Route::resource('quizzes', 'QuizController');
@@ -34,9 +36,5 @@ Route::middleware('auth')->group(function(){
     Route::resource('processtypes', 'ProcessTypeController');
     
     Route::resource('roles', 'RolesController');
-    Route::resource('users', 'UserController');
-
+    
 });
-
-
-

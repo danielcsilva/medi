@@ -13,19 +13,23 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
+        //Processos
         Permission::create(['name' => 'Visualizar Processos']);
         Permission::create(['name' => 'Editar Processos']);
 
+        //Entrevistas
         Permission::create(['name' => 'Visualizar Entrevistas']);
         Permission::create(['name' => 'Editar Entrevistas']);
 
+        //Avaliar processos
         Permission::create(['name' => 'Avaliar Processos Clinicamente']);
         Permission::create(['name' => 'Visualizar Indicadores e Relatórios']);
 
+        //Usuários
         Permission::create(['name' => 'Visualizar Usuários']);
         Permission::create(['name' => 'Editar Grupo de Usuários']);
         Permission::create(['name' => 'Editar Usuários']);
-
+        
 
     }
 }

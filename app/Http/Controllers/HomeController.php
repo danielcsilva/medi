@@ -40,4 +40,9 @@ class HomeController extends Controller
 
         return view('home', ['chart' => $chart, 'chart2' => $chart2]);
     }
+
+    public function dashboardPowerBI($url)
+    {
+        return view('users.powerbi', ['powerbi_url' => $url]);
+    }
 }
