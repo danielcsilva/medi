@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Charts\AccessionsCharts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -38,11 +40,22 @@ class HomeController extends Controller
             'backgroundColor' => '#FFCC99'
         ]);
 
-        return view('home', ['chart' => $chart, 'chart2' => $chart2]);
+        return view('home', ['chart' => $chart, 'chart2' => $chart2, 'powerbi_url' => $this->resolvePowerBIDashboard()]);
     }
 
-    public function dashboardPowerBI($url)
+    public function resolvePowerBIDashboard()
     {
-        return view('users.powerbi', ['powerbi_url' => $url]);
+        $powerbi_url = Auth::user()->powerbi_url;
+        $html = "";
+        $file = 'dashboard_' . Auth::user()->id . '.html';
+        $url = "";
+
+        if ($powerbi_url != '') {
+            ///$html = file_get_contents($powerbi_url); 
+            //Storage::disk('public')->put($file, $html);
+            //$url = Storage::url($file);
+        }
+
+        return $powerbi_url;
     }
 }

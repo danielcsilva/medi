@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+
     <div class="row justify-content-center">
 
         {{-- <div class="col-md-6">
@@ -30,13 +30,14 @@
                 <div class="card-header">Bem-vindo, {{ Auth::user()->name }}!</div>
 
                 <div class="card-body">                    
-                    <h2>Sistem de Gerenciamento em Saúde</h2>
+                    <h2>Sistema de Gerenciamento em Saúde</h2>
 
                     @role('Cliente')
                         <p>
-                        @if (Auth::user()->powerbi_url != '')
-                            <a class="btn btn-primary" href="{{ Auth::user()->powerbi_url }}" target="_blank">Acessar Dashboard</a>
-                        @endif
+                            @if ($powerbi_url != '')
+                                @iframe(['src_url' => $powerbi_url, 'width' => 1380, 'height' => 900])
+                                @endiframe
+                            @endif
                         </p>
                     @endrole
                 </div>
@@ -44,5 +45,5 @@
         </div>
 
     </div>
-</div>
+
 @endsection

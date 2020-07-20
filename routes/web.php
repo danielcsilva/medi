@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('users', 'UserController');
-Route::get('/dashboard/bi/{url}', 'HomeController@dashboardPowerBI');
+Route::get('/dashboard/bi', 'HomeController@dashboardPowerBI');
 
 Route::group(['middleware' => ['role:SuperAdmin|Diretoria|Operacional|Médico|Coordenação|Supervisão|Gerência']], function () {
     

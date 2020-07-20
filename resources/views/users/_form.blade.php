@@ -22,7 +22,7 @@
 
 @role('Cliente') 
     @if (Auth::user()->powerbi_url != '')
-        Para acessar seu dashboard utilize o link: <a href="{!! Auth::user()->powerbi_url !!}" target="_blank">Dashboard</a>
+        Para acessar seu dashboard utilize o link: <a href="/home" target="_blank">Dashboard</a>
     @endif
 @else
     <div class="form-row mb-4 mt-4">

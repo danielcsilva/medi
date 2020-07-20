@@ -124,8 +124,8 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            <div class="container">
+        <main class="pt-4">
+            <div class="container-fluid">
 
                 @if (session('success'))
                     <div class="alert alert-success">

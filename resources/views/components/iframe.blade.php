@@ -1,1 +1,1 @@
-<iframe src="http://{{ $src_url }} " frameborder="0" width="100%" height="100%"></iframe>
+<iframe src="{{ $src_url }}" frameborder="0" width="{{ $width }}" height="{{ $height }}" allowfullscreen="false"></iframe>
