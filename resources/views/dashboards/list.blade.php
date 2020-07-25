@@ -18,6 +18,6 @@
     </div>
 </div>
 
-@livewire('data-tables', ['editRoute' => 'dashboards', 'routeParam' => 'dashboard', 'model' => $model, 'columns' => ['label', 'dashboard_link', 'active'], 'labels' => ['Título', 'Link', 'Ativo']])
+@livewire('data-tables', ['editRoute' => 'dashboards', 'routeParam' => 'dashboard', 'model' => $model, 'columns' => ['label', 'dashboard_link', 'active', 'company.name'], 'labels' => ['Título', 'Link', 'Ativo', 'Cliente']])
 
 @endsection

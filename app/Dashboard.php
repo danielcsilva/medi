@@ -8,7 +8,7 @@ class Dashboard extends Model
 {
     protected $fillable = ['label', 'dashboard_link', 'company_id', 'active'];
 
-    public function companies()
+    public function company()
     {
         return $this->belongsTo('App\Company');
     }
