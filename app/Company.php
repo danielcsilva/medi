@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Company == customer for Medi Consultoria
+ */
 class Company extends Model
 {
     protected $fillable = ['name', 'email', 'cnpj', 'telephone', 'contract'];
@@ -26,6 +29,16 @@ class Company extends Model
     public function setCnpjAttribute($value)
     {        
         return $this->attributes['cnpj'] = str_replace(['.', '-', '/'], '', $value);
+    }
+
+    public function users()
+    {
+        return $this->hasMany('App\User', 'company_id');
+    }
+
+    public function dashboards()
+    {
+        return $this->hasMany('App\Dashboard', 'company_id');
     }
 
 }

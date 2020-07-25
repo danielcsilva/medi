@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('users', 'UserController');
-Route::get('/dashboard/bi', 'HomeController@dashboardPowerBI');
+Route::get('/dashboard/bi/{id}', 'HomeController@loadDashboard');
 
 Route::group(['middleware' => ['role:SuperAdmin|Diretoria|Operacional|Médico|Coordenação|Supervisão|Gerência']], function () {
     
@@ -34,6 +34,7 @@ Route::group(['middleware' => ['role:SuperAdmin|Diretoria|Operacional|Médico|Co
     Route::resource('riskgrades', 'RiskGradeController');
     Route::resource('statusprocess', 'ProcessStatusController');
     Route::resource('processtypes', 'ProcessTypeController');
+    Route::resource('dashboards', 'DashboardController');
     
     Route::resource('roles', 'RolesController');
     

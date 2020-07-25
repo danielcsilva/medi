@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CompanyStore extends FormRequest
+class StoreDashboard extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,18 +24,10 @@ class CompanyStore extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'telephone' => '',
-            'contract' => 'required',
-            'email' => 'email',
-            'cnpj' => 'required'
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'contract.required' => 'O contrato é obrigatório!'
+            'label' => 'required',
+            'dashboard_link' => 'required',
+            'company_id' => '',
+            'active' => ''
         ];
     }
 }

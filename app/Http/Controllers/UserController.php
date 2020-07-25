@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use App\Http\Requests\UserStore;
 use App\User;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.new', ['roles' => Role::where('name', '<>', 'SuperAdmin')->get()]);
+        return view('users.new', ['roles' => Role::where('name', '<>', 'SuperAdmin')->get(), 'companies' => Company::all()]);
     }
 
     /**
@@ -75,7 +76,7 @@ class UserController extends Controller
      */
     public function edit($user)
     {
-        return view('users.edit', ['user' => User::findOrFail($user), 'roles' => Role::where('name', '<>', 'SuperAdmin')->get()]);
+        return view('users.edit', ['user' => User::findOrFail($user), 'roles' => Role::where('name', '<>', 'SuperAdmin')->get(), 'companies' => Company::all()]);
     }
 
     /**

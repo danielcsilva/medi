@@ -92,6 +92,7 @@
                                         Sistema <span class="caret"></span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('dashboards.index') }}">Painéis (Dashboards)</a>
                                         <a class="dropdown-item" href="{{ route('users.index') }}">Usuários</a>
                                         <a class="dropdown-item" href="{{ route('roles.index') }}">Grupos de Usuários</a>
                                     </div>

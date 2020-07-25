@@ -225,3 +225,22 @@ Breadcrumbs::for('roles', function ($trail, $content = null) {
     $trail->push(($content == null ? 'Novo Grupo' : $content->name ?? ''));
 
 });
+
+
+Breadcrumbs::for('dashboards', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    
+    if ($content == 'list'){
+        $trail->push('Painéis (dashboards)');
+    } else {
+        $trail->push('Painéis', route('dashboards.index'));
+    }
+
+    if ($content == null) {
+        $trail->push('Novo Painel (dashboards)');
+    } else if(is_object($content)){
+        $trail->push($content->label);
+    }
+
+});
