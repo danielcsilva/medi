@@ -64,7 +64,7 @@
 
 <div class="form-row mb-4 mt-4">
     <div class="col-4">
-        <label for="">Cliente {{ $user->company->id }}</label>
+        <label for="">Cliente</label>
         <select class="form-control" name="company_id">
             @if ($companies)
                 <option value=""></option>
