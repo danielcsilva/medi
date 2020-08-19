@@ -41,7 +41,11 @@ class RolesController extends Controller
     {
         $validationData = $request->validated();
         
-        Role::create($validationData);
+        $role = Role::create($validationData);
+
+        if (isset($validationData['permissions'])) {
+            $role->syncPermissions($validationData['permissions']);
+        }
 
         return redirect()->route('roles.index')->with('success', 'Grupo adicionado!');
     }

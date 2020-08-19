@@ -13,7 +13,7 @@
 <select class="form-control" multiple name="permissions[]" style="height: 400px;">
     @if ($permissions)
             @foreach($permissions as $permission)
-                <option value="{{ $permission->id }}" {{ in_array($permission->id, $role->permissions->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $permission->name }}</option>
+                <option value="{{ $permission->id }}" {{ in_array($permission->id, (isset($role) ? $role->permissions->pluck('id')->toArray() : [])  ) ? 'selected' : '' }}>{{ $permission->name }}</option>
             @endforeach
     @endif
 </select>
