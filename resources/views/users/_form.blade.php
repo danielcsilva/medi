@@ -62,16 +62,18 @@
     </div>    
 </div>
 
-<div class="row mb-4 mt-4 col-6">
-    <label for="">Cliente</label>
-    <select class="form-control" name="company_id">
-        @if ($companies)
-            <option value=""></option>
-            @foreach($companies as $company)
-                <option value="{{ $company->id }}" {{ old('company_id', $company->id ?? null) == (isset($user->company->id) && $user->company->id) ? 'selected' : '' }}>{{ $company->name }}</option>
-            @endforeach
-        @endif
-    </select>
+<div class="form-row mb-4 mt-4">
+    <div class="col-4">
+        <label for="">Cliente {{ $user->company->id }}</label>
+        <select class="form-control" name="company_id">
+            @if ($companies)
+                <option value=""></option>
+                @foreach($companies as $company)
+                    <option value="{{ $company->id }}" {{ old('company_id', $company->id ?? null) == (isset($user->company->id) ? $user->company->id : null) ? 'selected' : '' }}>{{ $company->name }}</option>
+                @endforeach
+            @endif
+        </select>
+    </div>
 </div>
 
 <div class="form-row mb-4 mt-4">
