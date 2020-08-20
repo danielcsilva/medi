@@ -467,7 +467,7 @@
     </div>
 </div>
 
-@can('Editar Entrevistas')
+@can('Visualizar Entrevistas')
 
     <div class="row mb-4" style="margin-top:60px;">
         <div class="col-6"><h4>Dados da Entrevista</h4></div>
@@ -485,7 +485,7 @@
         </div>
         <div class="col">
             <label for="">Entrevistado por</label>
-            <input type="text" class="form-control" name="interviewed_by" value="{{ Auth::user()->name }}">
+            <input type="text" class="form-control" name="interviewed_by" value="{{ old('interviewed_by', $accession->interviewed_by ?? null) }}">
         </div>
     </div>
 
