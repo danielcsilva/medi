@@ -61,13 +61,23 @@
                                         Processos <span class="caret"></span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        
+                                        @can(['Visualizar Processos', 'Editar Processos'])
                                         <a class="dropdown-item" href="{{ route('accessions.create') }}">Novo</a>
-                                        <a class="dropdown-item" href="{{ route('accessions.index') }}">Em andamento</a>
-                                        <a class="dropdown-item" href="{{ route('accessions.index') }}">Liberado para Entrevista</a>
+                                        <a class="dropdown-item" href="{{ route('accessions.index') }}">Em andamento</a>                                        
+                                        <a class="dropdown-item" href="{{ route('accessions.index') }}">Liberado para Entrevista</a>                                        
+                                        @endcan
+
+                                        @role('Médico')                                        
                                         <a class="dropdown-item" href="{{ route('accessions.index') }}">Avaliar Grau de Risco</a>
+                                        @endrole
+                                        
+                                        @can(['Visualizar Processos', 'Editar Processos'])
                                         <a class="dropdown-item" href="{{ route('accessions.index') }}">Finalizados</a>
+                                        @endcan
                                     </div>
                                 </li>    
+                                @hasrole('SuperAdmin|Diretoria|Operacional|Coordenação|Supervisão|Gerência')
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         Cadastros <span class="caret"></span>
@@ -85,7 +95,7 @@
                                         <a class="dropdown-item" href="{{ route('processtypes.index') }}">Tipos de Movimentação</a>
                                     </div>
                                 </li>
-                                
+                                @endrole
                                 @can('Editar Usuários')
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

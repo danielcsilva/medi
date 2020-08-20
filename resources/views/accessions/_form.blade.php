@@ -17,7 +17,9 @@
                 <option value="{{ $customer->id }}" @if(old('company_id', $accession->company_id ?? null) == $customer->id) selected @endif> {{ $customer->name }}</option>
             @endforeach
         </select>
-        
+        @if($errors->has('company_id'))
+            <div class="alert alert-danger small">{{ $errors->first('company_id') }}</div>
+        @endif
     </div>
     <div class="col-3">
         <label for="">Parceiro Administradora</label>
@@ -72,7 +74,7 @@
 <div id="repeater-colaborator">
     <div class="form-row mb-4 mt-4">
         <div class="col-3">
-            <input type="text" name="beneficiary_cpf[]" class="form-control cpf" placeholder="CPF" value="{{ old('beneficiary_cpf.0', $beneficiaries[0]->cpf ?? null) }}" required>            
+            <input type="text" name="beneficiary_cpf[]" class="form-control cpf" placeholder="CPF" value="{{ old('beneficiary_cpf.0', $beneficiaries[0]->cpf ?? null) }}">            
             @if($errors->has('beneficiary_cpf.0'))
                 <div class="alert alert-danger small">{{ $errors->first('beneficiary_cpf.0') }}</div>
             @endif

@@ -1,6 +1,6 @@
 <div class="form-row mb-4 mt-4">
     <div class="col-4">
-        <input type="text" name="name" class="form-control  @error('name') is-invalid @enderror" placeholder="Nome da inconsistência" value="{{ old('name', $user->name ?? null) }}">
+        <input type="text" name="name" class="form-control  @error('name') is-invalid @enderror" placeholder="Nome do usuário" value="{{ old('name', $user->name ?? null) }}">
         @error('name')
         <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
@@ -62,6 +62,7 @@
     </div>    
 </div>
 
+@can('Editar Grupo de Usuários')
 <div class="form-row mb-4 mt-4">
     <div class="col-4">
         <label for="">Cliente</label>
@@ -75,6 +76,7 @@
         </select>
     </div>
 </div>
+@endcan
 
 <div class="form-row mb-4 mt-4">
     <div class="col-4">
