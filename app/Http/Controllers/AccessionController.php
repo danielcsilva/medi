@@ -69,7 +69,7 @@ class AccessionController extends Controller
             'proposal_number' => 'required',
             'received_at' => 'required',
             'company_id' => 'required',
-            'beneficiary_cpf.*' => 'required',
+            'beneficiary_cpf.*' => 'required|min:13',
             'beneficiary_name.*' => 'required',
             'beneficiary_height.*' => 'required',
             'beneficiary_weight.*' => 'required',
@@ -83,19 +83,20 @@ class AccessionController extends Controller
             'contacted_comments' => ''
         ],
         [
-            'proposal_number' => 'O número da proposta é obrigatório!',
-            'received_at' => 'A data de recebimento é obrigatória!',
-            'company_id' => 'Escolher um Cliente é obrigatório!',
-            'beneficiary_cpf.*' => 'O CPF é obrigatório!',
-            'beneficiary_name.*' => 'O nome do beneficiário é obrigatório!' ,
-            'beneficiary_height.*' => 'A altura é obrigatória!',
-            'beneficiary_weight.*' => 'O peso é obrigatório!',
-            'beneficiary_gender.*' => 'O campo sexo é obrigatório!',
-            'beneficiary_telephone.*' => 'O Telefone é obrigatório!',
-            'address_cep.*' => 'Cep obrigatório!',
-            'address_address.*' => 'Endereço obrigatório!',
-            'address_city.*' => 'Cidade obrigatório!',
-            'address_state.*' => 'Estado (UF) obrigatório!'           
+            'proposal_number.required' => 'O número da proposta é obrigatório!',
+            'received_at.required' => 'A data de recebimento é obrigatória!',
+            'company_id.required' => 'Escolher um Cliente é obrigatório!',
+            'beneficiary_cpf.*.required' => 'O CPF é obrigatório!',
+            'beneficiary_cpf.*.min' => 'O CPF deve ter 11 digitos!',
+            'beneficiary_name.*.required' => 'O nome do beneficiário é obrigatório!' ,
+            'beneficiary_height.*.required' => 'A altura é obrigatória!',
+            'beneficiary_weight.*.required' => 'O peso é obrigatório!',
+            'beneficiary_gender.*.required' => 'O campo sexo é obrigatório!',
+            'beneficiary_telephone.*.required' => 'O Telefone é obrigatório!',
+            'address_cep.*.required' => 'Cep obrigatório!',
+            'address_address.*.required' => 'Endereço obrigatório!',
+            'address_city.*.required' => 'Cidade obrigatório!',
+            'address_state.*.required' => 'Estado (UF) obrigatório!'           
         ])->validate();
 
     }
