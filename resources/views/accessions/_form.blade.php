@@ -456,7 +456,7 @@
         <select class="form-control" multiple name="inconsistencies[]" style="height: 200px;">
             @if ($inconsistencies)
                     @foreach($inconsistencies as $inconsistency)
-                        <option value="{{ $inconsistency->id }}" {{ ( isset($accession) && in_array($inconsistency->id, $accession->inconsistencies->pluck('id')->toArray()) ? 'selected' : '' ) }}>{{ $inconsistency->name }}</option>
+                        <option value="{{ $inconsistency->id }}" {{ ( isset($accession->inconsistencies) && in_array($inconsistency->id, $accession->inconsistencies->pluck('id')->toArray()) ? 'selected' : '' ) }}>{{ $inconsistency->name }}</option>
                     @endforeach
             @endif
         </select>
