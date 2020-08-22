@@ -69,7 +69,7 @@ class AccessionController extends Controller
             'proposal_number' => 'required',
             'received_at' => 'required',
             'company_id' => 'required',
-            'beneficiary_cpf.*' => 'required|min:13',
+            'beneficiary_cpf.*' => 'required|min:13|cpf',
             'beneficiary_name.*' => 'required',
             'beneficiary_height.*' => 'required',
             'beneficiary_weight.*' => 'required',

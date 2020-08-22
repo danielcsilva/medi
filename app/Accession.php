@@ -15,12 +15,6 @@ class Accession extends Model
                            'broker_partner', 'entity', 'contacted_date', 'contacted_comments'
                         ];
 
-
-    public function inconsistencies()
-    {
-        return $this->belongsToMany('App\Inconsistency', 'acession_inconsistency');
-    }
-
     public function financier()
     {
         return $this->hasOne('App\Beneficiary', 'accession_id');
