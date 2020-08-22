@@ -442,107 +442,13 @@
     </div>
 </div>
 
-<div class="row mb-4" style="margin-top:60px;">
-    <div class="col-6"><h4>Dados sobre o Contato</h4></div>
-</div>
-
-<div class="row mb-4 mt-4">
-    <div class="col-3">
-        <label for="">Data do Contato</label>
-        <input type="text" class="form-control date-br" name="contacted_date" value="{{ old('contacted_date', $accession->contacted_date ?? null) }}">
-    </div>
-    <div class="col-4">
-        <label>Informar inconsistência(s)</label>
-        <select class="form-control" multiple name="inconsistencies[]" style="height: 200px;">
-            @if ($inconsistencies)
-                    @foreach($inconsistencies as $inconsistency)
-                        <option value="{{ $inconsistency->id }}" {{ ( isset($accession->inconsistencies) && in_array($inconsistency->id, $accession->inconsistencies->pluck('id')->toArray()) ? 'selected' : '' ) }}>{{ $inconsistency->name }}</option>
-                    @endforeach
-            @endif
-        </select>
-    </div>
-    <div class="col">
-        <label for="health-declaration-comments">Comentários do Contato</label>
-        <textarea name="contacted_comments" class="form-control" id="" cols="30" rows="8">{{ old('contacted_comments', $accession->contacted_comments ?? null) }}</textarea>
-    </div>
-</div>
-
-@can('Visualizar Entrevistas')
-
-    <div class="row mb-4" style="margin-top:60px;">
-        <div class="col-6"><h4>Dados da Entrevista</h4></div>
-    </div>
-
-
-    <div class="row mb-4 mt-4">
-        <div class="col">
-            <label for="">Nome do Entrevistado</label>
-            <input type="text" class="form-control" name="interviewed_name" value="{{ old('interviewed_name', $accession->interviewed_name ?? null) }}">
-        </div>
-        <div class="col">
-            <label for="">Data da Entrevista</label>
-            <input type="text" class="form-control date-br" name="interview_date" value="{{ old('interview_date', $accession->interview_date ?? null) }}">
-        </div>
-        <div class="col">
-            <label for="">Entrevistado por</label>
-            <input type="text" class="form-control" name="interviewed_by" value="{{ old('interviewed_by', $accession->interviewed_by ?? null) }}">
-        </div>
-    </div>
-
-    <div class="row mb-4 mt-4">
-        <div class="col">
-            <label for="">Comentários da Entrevista</label>
-            <textarea name="interview_comments" class="form-control" id="" cols="30" rows="8">{{ old('interview_comments', $accession->interview_comments ?? null) }}</textarea>
-        </div>
-    </div>
-
-    <div class="row mb-4 mt-4">
-        <div class="col">
-            <label for="">Entrevista validada </label>
-            <input type="checkbox" name="interview_validated" class="" {{ old('interview_validated', $accession->interview_validated ?? 0) !== 0 ? 'checked' : ''}} value="1">
-        </div>
-    </div>
-
-@endcan
-
-@can('Avaliar Processos Clinicamente')
-    
-    <div class="row mb-4" style="margin-top:60px;">
-        <div class="col-6"><h4>Classificação Médica</h4></div>
-    </div>
-
-    <div class="row mb-4 mt-4">
-        
-        <div class="col">
-            <label for="">Grau de Risco</label>
-            <select class="form-control" name="risk_grade_id">
-                @if ($riskgrades)
-                    <option value=""></option>
-                    @foreach($riskgrades as $risk)
-                        <option value="{{ $risk->id }}" {{ old('risk_grade_id', $risk->id ?? null) === (isset($accession) && $accession->risk_grade_id) ? 'selected' : '' }}>{{ $risk->risk }}</option>
-                    @endforeach
-                @endif
-            </select>
-        </div>
-    
-        <div class="col">
-            <label for="">Sugestão de Tratamento</label>
-            <select class="form-control" name="suggestion_id">
-                @if ($suggestions)
-                    <option value=""></option>
-                    @foreach($suggestions as $suggestion)
-                        <option value="{{ $suggestion->id }}" {{ old('suggestion_id', $suggestion->id ?? null) === (isset($accession) && $accession->suggestion_id) ? 'selected' : '' }}>{{ $suggestion->suggestion }}</option>
-                    @endforeach
-                @endif
-            </select>
-        </div>
-
-    </div>
-@endcan
 
 <div class="form-row mb-4 mt-4">
-    <div class="col">
+    <div class="col-1">
         <button type="submit" class="btn btn-primary">Salvar Processo</button>
+    </div>
+    <div class="col-2">
+        <button type="submit" class="btn btn-success">Liberar para Contato</button>
     </div>
 </div>
 
