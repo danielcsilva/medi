@@ -23,7 +23,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "inputmask": "^5.0.5",
+        "imask": "^6.0.5",
         "jquery-mask-plugin": "^1.14.16",
         "jquery-validation": "^1.19.2"
     }

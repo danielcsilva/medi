@@ -11,7 +11,7 @@
     </div>
     <div class="col-6">
         <label for="">Cliente</label>        
-        <select id="inputState" class="form-control" name="company_id" required1>
+        <select id="inputState" class="form-control" name="company_id" required>
             <option value="">selecione</option>
             @foreach($customers as $customer)
                 <option value="{{ $customer->id }}" @if(old('company_id', $accession->company_id ?? null) == $customer->id) selected @endif> {{ $customer->name }}</option>
@@ -43,7 +43,7 @@
     <div class="col-3">
         <label for="">Nº da Proposta</label>
 
-        <input type="text" name="proposal_number" class="form-control" value="{{ old('proposal_number', $accession->proposal_number ?? null) }}" required1>
+        <input type="text" name="proposal_number" class="form-control" value="{{ old('proposal_number', $accession->proposal_number ?? null) }}" required>
     </div>
     <div class="col-3">
         <label for="">Início da Vigência</label>
@@ -415,7 +415,8 @@
 
 <div id="comments-by-item" style="display:none;">
     <label>Em caso de existência de doença, especifique o item, subitem e proponente</label>
-    @for($i = 0; $i < 5; $i++)
+    
+    {{-- @for($i = 0; $i < 5; $i++)
         <div class="form-row mb-1 mt-1">
             <div class="col-1">
                 # {{ $i + 1 }}
@@ -432,7 +433,8 @@
                 <input type="text" name="period_item[]" class="form-control" placeholder="período da doença" value="{{ old('period_item.' . $i, $specifics[$i]->period_item ?? null) ?? null }}" />
             </div>
         </div>
-    @endfor
+    @endfor --}}
+    
 </div>
 
 <div class="form-row mb-4 mt-4" id="health-declaration-comments" style="display:none;">
@@ -443,12 +445,12 @@
 </div>
 
 
-<div class="form-row mb-4 mt-4">
-    <div class="col-1">
-        <button type="submit" class="btn btn-primary">Salvar Processo</button>
+<div class="row mb-4 mt-4">
+    <div class="col-2">
+        <button type="submit" class="btn btn-primary text-nowrap">Salvar Processo</button>
     </div>
     <div class="col-2">
-        <button type="submit" class="btn btn-success">Liberar para Contato</button>
+        <button type="submit" class="btn btn-success text-nowrap">Liberar para Contato</button>
     </div>
 </div>
 

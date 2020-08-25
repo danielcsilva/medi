@@ -179,7 +179,7 @@ class AccessionController extends Controller
     public function update(Request $request, $accession_id)
     {
         
-        if (Auth::user()->hasRole('Médico')) {
+        if (Auth::user()->can('Avaliar Processos Clinicamente')) {
             
             $accession = Accession::find($accession_id);
             $this->setMedicAnalysis($request, $accession);
