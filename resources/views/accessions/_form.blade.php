@@ -163,16 +163,23 @@
     <div class="form-row mb-4 mt-4">
         <div class="col-2">
             <label for="">Altura</label>
-            <input type="number" name="beneficiary_height[]" step=".01" value="{{ old('beneficiary_height.0', $beneficiaries[0]->height ?? null) }}" class="form-control" placeholder="Altura" required1>
+            <input type="number" name="beneficiary_height[]" step=".01" value="{{ old('beneficiary_height.0', $beneficiaries[0]->height ?? null) }}" class="form-control height" placeholder="Altura">
             @if($errors->has('beneficiary_height.0'))
                 <div class="alert alert-danger small">{{ $errors->first('beneficiary_height.0') }}</div>
             @endif
         </div>
         <div class="col-2">
             <label for="">Peso</label>
-            <input type="number" name="beneficiary_weight[]" step=".01" value="{{ old('beneficiary_weight.0', $beneficiaries[0]->weight ?? null) }}" class="form-control" placeholder="Peso" required1>
+            <input type="number" name="beneficiary_weight[]" step=".01" value="{{ old('beneficiary_weight.0', $beneficiaries[0]->weight ?? null) }}" class="form-control weight" placeholder="Peso">
             @if($errors->has('beneficiary_weight.0'))
                 <div class="alert alert-danger small">{{ $errors->first('beneficiary_weight.0') }}</div>
+            @endif
+        </div>
+        <div class="col-2">
+            <label for="">IMC</label>
+            <input type="number" name="beneficiary_imc[]" step=".01" value="{{ old('beneficiary_imc.0', $beneficiaries[0]->imc ?? null) }}" class="form-control imc-calc" placeholder="Peso">
+            @if($errors->has('beneficiary_imc.0'))
+                <div class="alert alert-danger small">{{ $errors->first('beneficiary_imc.0') }}</div>
             @endif
         </div>
     </div>

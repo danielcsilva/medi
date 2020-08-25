@@ -191,6 +191,14 @@ $(document).ready(function($){
         setSpecifics(btn.parents('tr:first').index() + 1, btn.val());
     })
 
+    $(document).on('change', 'input.weight', function(e){
+        
+        let weight = $(e.target).val();
+        let height = $(e.target).parents('div.form-row').find('.height:first').val();
+        
+        $(e.target).parents('div.form-row').find('.imc-calc:first').val( imcCalc(weight, height).toFixed(2) );
+    })
+
 });
 
 function setSpecifics(item_number, item_value) {
@@ -234,7 +242,9 @@ function orderSpecifics() {
 
 }
 
-
+function imcCalc(weight, height) {
+    return weight / (height * height);
+}
 
 function changeHealthDeclaration() {
 
