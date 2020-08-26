@@ -15,6 +15,7 @@
         "fideloper/proxy": "^4.0",
         "geekcom/validator-docs": "^3.4",
         "laravel/framework": "^6.2",
+        "laravel/passport": "^9.3",
         "laravel/tinker": "^2.0",
         "livewire/livewire": "1.0.4",
         "spatie/laravel-permission": "^3.11"
