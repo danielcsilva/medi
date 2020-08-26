@@ -37,62 +37,25 @@ class Accession extends Model
 
     public function getReceivedAtAttribute($value)
     {
-        return DateTime::createFromFormat('Y-m-d', $value)->format('d/m/Y');
+        return DateTime::createFromFormat('Y-m-d', $value)->format('d.m.Y');
+    }
+    
+    public function setReceivedAtAttribute($value)
+    {
+        $this->attributes['received_at'] = DateTime::createFromFormat('d.m.Y', $value)->format('Y-m-d');
     }
 
     public function getInitialValidityAttribute($value)
     {
         $date = DateTime::createFromFormat('Y-m-d', $value);
         if ($date) {
-             return $date->format('d/m/Y');
+             return $date->format('d.m.Y');
         }
     }
 
     public function setInitialValidityAttribute($value)
     {
-        $this->attributes['initial_validity'] = DateTime::createFromFormat('d/m/Y', $value)->format('Y-m-d');
-    }
-
-    public function getContactedDateAttribute($value)
-    {
-        $date = null;
-
-        try {
-            
-            $date = DateTime::createFromFormat('Y-m-d', $value)->format('d/m/Y');
-
-        } catch(Throwable $t){
-
-        }
-        
-        return $date;
-    }
-
-
-    public function setContactedDateAttribute($value)
-    {
-        $this->attributes['contacted_date'] = DateTime::createFromFormat('d/m/Y', $value)->format('Y-m-d');
-    }
-
-    public function getInterviewDateAttribute($value)
-    {
-        $date = null;
-
-        try {
-            
-            $date = DateTime::createFromFormat('Y-m-d', $value)->format('d/m/Y');
-
-        } catch(Throwable $t){
-
-        }
-        
-        return $date;
-    }
-
-
-    public function setInterviewDateAttribute($value)
-    {
-        $this->attributes['interview_date'] = DateTime::createFromFormat('d/m/Y', $value)->format('Y-m-d');
+        $this->attributes['initial_validity'] = DateTime::createFromFormat('d.m.Y', $value)->format('Y-m-d');
     }
     
 }

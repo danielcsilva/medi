@@ -179,29 +179,20 @@ class AccessionController extends Controller
     public function update(Request $request, $accession_id)
     {
         
-        if (Auth::user()->can('Avaliar Processos Clinicamente')) {
-            
-            $accession = Accession::find($accession_id);
-            $this->setMedicAnalysis($request, $accession);
+        $this->accessionValidate($request);
 
-        } else {
+        $beneficiaries = $request->get('beneficiary_cpf');
+        $telephones = $request->get('beneficiary_telephone');
 
-            $this->accessionValidate($request);
+        $this->accessionTransaction($request, $beneficiaries, $telephones, $accession_id);
+        // try {
+                
 
-            $beneficiaries = $request->get('beneficiary_cpf');
-            $telephones = $request->get('beneficiary_telephone');
+        // } catch(Throwable $t) {
 
-            try {
-                 
-                $this->accessionTransaction($request, $beneficiaries, $telephones, $accession_id);
-    
-            } catch(Throwable $t) {
-    
-                return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
-    
-            }
-        }
-    
+        //     return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
+
+        // }
         
         return redirect()->route('accessions.index')->with('success', 'Processo de Adesão editado com sucesso!');
     }
@@ -212,8 +203,7 @@ class AccessionController extends Controller
     public function accessionTransaction($request, $beneficiaries, $telephones, $accession_id = null)
     {
         DB::transaction(function() use ($request, $beneficiaries, $telephones, $accession_id) {
-                
-
+                            
             if ($accession_id !== null) { // edit
             
                 Accession::where('id', $accession_id)->update(['financier_id' => null]);
@@ -225,15 +215,15 @@ class AccessionController extends Controller
                 Telephone::where('accession_id', $accession_id)->delete();
 
                 // Detach inconsistencies
-                $oldAccession = Accession::find($accession_id);
-                $oldAccession->inconsistencies()->detach();
+                // $oldAccession = Accession::find($accession_id);
+                // $oldAccession->inconsistencies()->detach();
 
                Accession::where('id', $accession_id)->delete();
             }
 
             $accession = Accession::create([
                 'proposal_number' => $request->get('proposal_number'),
-                'received_at' => DateTime::createFromFormat('d/m/Y', $request->get('received_at'))->format('Y-m-d'),
+                'received_at' => $request->get('received_at'),
                 'company_id' => $request->get('company_id'),
                 'comments' => $request->get('health_declaration_comments') ?? '',
                 'quiz_id' => $request->get('health_declaration'),
@@ -264,7 +254,7 @@ class AccessionController extends Controller
                     'name' => $request->get('beneficiary_name')[$k], 
                     'email' => $request->get('beneficiary_email')[$k], 
                     'cpf' => $v, 
-                    'birth_date' => DateTime::createFromFormat('d/m/Y', $request->get('beneficiary_birth_date')[$k])->format('Y-m-d'), 
+                    'birth_date' => DateTime::createFromFormat('d.m.Y', $request->get('beneficiary_birth_date')[$k])->format('Y-m-d'), 
                     'height' => $height, 
                     'weight' => $weight, 
                     'imc' => $imc, 
@@ -288,16 +278,15 @@ class AccessionController extends Controller
                 if ($k == 0) {
                     $field = 'holder_answer';
                 }
-
+                
                 if ($request->get('question')) {
-
+                    
                     $questions = $request->get('question');
-
                     foreach($questions as $k1 => $v1) {
-
+                        
                         HealthDeclarationAnswer::create([
                             'question' => $request->get('question')[$k1],
-                            'answer' => $request->get($field)[$k1],
+                            'answer' => $request->input($field)[$k1],
                             'beneficiary_id' => $beneficiary->id,
                             'accession_id' => $accession->id
                         ]);
@@ -333,9 +322,9 @@ class AccessionController extends Controller
 
             }
 
-            $this->setContact($request, $accession);
-            $this->setInterview($request, $accession);
-            $this->setMedicAnalysis($request, $accession);
+            // $this->setContact($request, $accession);
+            // $this->setInterview($request, $accession);
+            // $this->setMedicAnalysis($request, $accession);
 
             $accession->save();
         });
