@@ -15935,6 +15935,7 @@ $(document).ready(function ($) {
     }
   });
   $('#addColaborator').on('click', function (e) {
+    window.livewire.emit('dependentAdded');
     e.preventDefault();
     dependents += 1;
     var items = $('#repeater-colaborator').clone(true);

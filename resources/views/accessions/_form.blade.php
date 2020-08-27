@@ -356,7 +356,9 @@
 
 @endcan 
 
-<div class="form-row mb-4 mt-4">
+@livewire('healthdeclaration', ['accession' => $accession ?? null])
+
+{{-- <div class="form-row mb-4 mt-4">
     <div class="col-6">
         <label for="health-declaration">Escolha um Modelo de DS</label>
         <select id="health-declaration" class="form-control" name="health_declaration">
@@ -418,12 +420,12 @@
     @foreach($specifics as $specific_k => $specific_v)
         <input type="hidden" id="specific-item-{{ ($specific_k + 1) }}" value="{{ old('comment_number.' . ($specific_k + 1), $specific_v->comment_number ?? null) }}" />
     @endforeach
-@endif
+@endif --}}
 
-<div id="comments-by-item" style="display:none;">
+{{-- <div id="comments-by-item" style="display:none;">
     <label>Em caso de existência de doença, especifique o item, subitem e proponente</label>
     
-    {{-- @for($i = 0; $i < 5; $i++)
+    @for($i = 0; $i < 5; $i++)
         <div class="form-row mb-1 mt-1">
             <div class="col-1">
                 # {{ $i + 1 }}
@@ -440,9 +442,9 @@
                 <input type="text" name="period_item[]" class="form-control" placeholder="período da doença" value="{{ old('period_item.' . $i, $specifics[$i]->period_item ?? null) ?? null }}" />
             </div>
         </div>
-    @endfor --}}
+    @endfor
     
-</div>
+</div> --}}
 
 <div class="form-row mb-4 mt-4" id="health-declaration-comments" style="display:none;">
     <div class="col">
