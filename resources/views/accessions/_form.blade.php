@@ -356,7 +356,7 @@
 
 @endcan 
 
-@livewire('healthdeclaration', ['accession' => $accession ?? null])
+@livewire('healthdeclaration', ['accession' => $accession ?? null, 'beneficiaries' => $beneficiaries ?? null])
 
 {{-- <div class="form-row mb-4 mt-4">
     <div class="col-6">
@@ -445,13 +445,6 @@
     @endfor
     
 </div> --}}
-
-<div class="form-row mb-4 mt-4" id="health-declaration-comments" style="display:none;">
-    <div class="col">
-        <label for="health-declaration-comments">Comentários da DS</label>
-        <textarea name="health_declaration_comments" class="form-control" id="" cols="30" rows="5">{{ old('health_declaration_comments', $accession->comments ?? null) }}</textarea>
-    </div>
-</div>
 
 
 <div class="row mb-4 mt-4">

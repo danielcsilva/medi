@@ -132,19 +132,6 @@ $(document).ready(function($){
         }
     });
 
-    $(document).on('change', '#health-declaration', function(e){
-
-        openHealthDeclaration($(e.target).val());        
-        $('#health-declaration-comments').show();
-        // $('#comments-by-item').show();
-
-    });    
-
-
-    if ($('#health-declaration').find('option:selected').val() > 0) {
-        $('#health-declaration').trigger('change');
-    }
-
 
     $(document).on('change', '.specific-items', function(e){
         var choose = $(e.target).val();
@@ -172,27 +159,27 @@ $(document).ready(function($){
     });
 
 
-    $(document).on('click', '.ds-btn', function(e){
-        e.preventDefault();
+    // $(document).on('click', '.ds-btn', function(e){
+    //     e.preventDefault();
 
-        const btn = $(e.target);
+    //     const btn = $(e.target);
 
-        if (btn.text() == 'Não') {
-            btn.text('Sim');
-            btn.val('S');
-            btn.removeClass('btn-secondary');
-            btn.addClass('btn-primary');
+    //     if (btn.text() == 'Não') {
+    //         btn.text('Sim');
+    //         btn.val('S');
+    //         btn.removeClass('btn-secondary');
+    //         btn.addClass('btn-primary');
             
-        } else {
+    //     } else {
 
-            btn.text('Não');
-            btn.val('N');
-            btn.removeClass('btn-primary');
-            btn.addClass('btn-secondary');
-        }
+    //         btn.text('Não');
+    //         btn.val('N');
+    //         btn.removeClass('btn-primary');
+    //         btn.addClass('btn-secondary');
+    //     }
 
-        setSpecifics(btn.parents('tr:first').index() + 1, btn.val());
-    })
+    //     setSpecifics(btn.parents('tr:first').index() + 1, btn.val());
+    // })
 
     $(document).on('change', 'input.weight', function(e){
         
@@ -249,124 +236,6 @@ function imcCalc(weight, height) {
     return weight / (height * height);
 }
 
-function changeHealthDeclaration() {
-
-    var table = $('#health-declaration-table');
-    var num_dependents = 0;
-    
-    if ($('#health-declaration-table').find('tbody > tr').length > 0) {
-
-        num_dependents = dependents + 3;
-
-        var head = table.find('thead').clone(); 
-        var body = table.find('tbody').clone();
-        
-        //console.log(head.find('th').length);
-        //console.log(num_dependents);
-
-        if (head.find('th').length > num_dependents) {
-            
-            head.find('th:eq('+ (head.find('th').length - 1) + ')').remove();
-            
-            body.find('tr').each(function(i,o){
-                $(o).find('td:eq('+ (head.find('td').length - 1) +')').remove();  
-            });
-
-        } else if (num_dependents > head.find('th').length) {
-            
-                
-            head.find('tr:first').append("<th>Dependente " + ((head.find('th').length - 3) + 1) + "</th>")
-            
-            body.find('tr').each(function(i,o){
-                // $(o).append("<td><input class='form-control col-4 text-center' type='text' required name=\"dependent_" + (head.find('th').length - 3) + "[]\" value='N'></td>");
-                $(o).append("<td><button class='btn btn-secondary ds-btn' name=\"dependent_" + (head.find('th').length - 3) + "[]\" value='N'>Não</button></td>");  
-
-                console.log('aqui')
-            });
-
-        }
-    
-        table.find('thead').html(head.html());
-        table.find('tbody').html(body.html());
-        
-    } 
-    
-}
-
-
-function openHealthDeclaration(model_id) {
-    
-    var item_number = 0;
-
-    $.ajax({
-        url: '/api/quizzes/' + model_id,
-        success: function(results) {
-            
-            var table = "<thead>";
-            table += "<tr>";
-            table += "<th>#</th>";
-            table += "<th>Pergunta</th>";
-            for(var j = 0; j <= dependents; j++){
-                if (j == 0) {
-                    table += "<th>Titular</th>";
-                } else {
-                    table += "<th>Dependente " + j + "</th>";
-                }
-            }
-            table += "</tr>";
-            table += "</thead><tbody>";
-            for(var i in results.questions) {
-                item_number++;
-                table += "<tr><td><input type=\"hidden\" name=\"item_number[]\" value=\""+ item_number +"\" />" + item_number + "</td>";
-                table += "<td><input type=\"hidden\" name=\"question[]\" value=\""+ results.questions[i].question +"\" />" + results.questions[i].question + "</td>";
-                for(var j = 0; j <= dependents; j++){
-                    let button_value = 'N';
-                    let button_label = 'Não';
-
-                    if (j == 0) {
-                        
-                        if ( $('#holder_answer\\.' + (item_number - 1)).length > 0 &&  $('#holder_answer\\.' + (item_number - 1)).val() != 'N') {
-                            button_value = 'S';
-                            button_label = 'Sim';
-                        }
-
-                        table += "<td><button class='btn btn-secondary ds-btn' name=\"holder_answer[]\" value=\""+ button_value +"\">" + button_label + "</button></td>";
-                    } else {
-
-                        if ( $('#dependent_' + j + '\\.' + (item_number - 1)).length > 0 && $('#dependent_' + j + '\\.' + (item_number - 1)).val() != 'N') {
-                            button_value = 'S';
-                            button_label = 'Sim';
-                        }
-
-                        table += "<td><button class='btn btn-secondary ds-btn' name=\"dependent_" + j + "[]\" value=\""+ button_value +"\">" + button_label + "</button></td>";
-                    }
-                }
-                table += "</tr>";
-            }
-            table += "</tbody>";
-
-            // $('.specific-items').each(function(index,obj){
-            //     for(i in results.questions) {
-            //         if ($(obj).find('option[value='+ (parseInt(i) + 1 ) +']').length == 0) {
-            //             // console.log($('#specific-item-' + (parseInt(i) + 1)).val(), index);
-            //             var selected = ($('#specific-item-' + (parseInt(i) + 1)).val() != undefined && (index + 1) == (parseInt(i) + 1) ? "selected" : "");
-            //             if (selected == 'selected') {
-            //                 $(obj).append('<option value="'+ $('#specific-item-' + (parseInt(i) + 1)).val() +'" '+ selected +'>Item ' + ($('#specific-item-' + (parseInt(i) + 1)).val()) + '</option>')
-            //             } else {
-            //                 $(obj).append('<option value="'+ (parseInt(i) + 1) +'">Item ' + (parseInt(i) + 1) + '</option>');
-            //             }
-            //         }
-            //     } 
-            // });
-
-            $('#health-declaration-table').html(table);
-
-            // $('#comments-by-item').show();
-
-        }
-    })
-
-}
 
 function recountDependents() {    
 

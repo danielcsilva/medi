@@ -184,7 +184,7 @@ class AccessionController extends Controller
         $beneficiaries = $request->get('beneficiary_cpf');
         $telephones = $request->get('beneficiary_telephone');
 
-        $this->accessionTransaction($request, $beneficiaries, $telephones, $accession_id);
+        // $this->accessionTransaction($request, $beneficiaries, $telephones, $accession_id);
         // try {
                 
 
@@ -273,11 +273,7 @@ class AccessionController extends Controller
                 ]);    
                 
                 //Health Declaration
-                $field = 'dependent_' . $k;
-
-                if ($k == 0) {
-                    $field = 'holder_answer';
-                }
+                $field = 'beneficiary_' . $k;
                 
                 if ($request->get('question')) {
                     
