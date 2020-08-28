@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class HealthDeclarationAnswer extends Model
 {
-    protected $fillable = ['question', 'answer', 'accession_id', 'beneficiary_id'];
+    protected $fillable =['question', 'answer', 'accession_id', 'beneficiary_id'];
 
     public function accession()
     {

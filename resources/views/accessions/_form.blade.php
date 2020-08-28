@@ -80,7 +80,7 @@
             @endif
         </div>
         <div class="col-5">
-            <input type="text" name="beneficiary_name[]" id="beneficiary-name" class="form-control" value="{{ old('beneficiary_name.0', $beneficiaries[0]->name ?? null) }}" placeholder="Nome do beneficiário titular" required>            
+            <input type="text" name="beneficiary_name[]" id="beneficiary-name" class="form-control beneficiaries" value="{{ old('beneficiary_name.0', $beneficiaries[0]->name ?? null) }}" placeholder="Nome do beneficiário titular" required>            
             @if($errors->has('beneficiary_name.0'))
                 <div class="alert alert-danger small">{{ $errors->first('beneficiary_name.0') }}</div>
             @endif

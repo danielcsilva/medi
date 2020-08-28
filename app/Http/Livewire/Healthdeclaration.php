@@ -12,7 +12,7 @@ use Livewire\Component;
 class Healthdeclaration extends Component
 {
     public $numberOfDependents = 1;
-    public $answers = '';
+    public $answers;
     public $accession;
     public $quiz;
     public $quizzes;
@@ -26,7 +26,9 @@ class Healthdeclaration extends Component
     protected $listeners = [
         'dependentAdded' => 'addNewDependent', 
         'dependentDeleted' => 'removeDependent',
-        'quizChanged'
+        'quizChanged',
+        'addSpecific',
+        'removeSpecific'
     ];
 
     public function addNewDependent() 
@@ -37,6 +39,41 @@ class Healthdeclaration extends Component
     public function removeDependent()
     {
         $this->numberOfDependents--;
+    }
+
+    public function addSpecific($beneficiary_name, $index, $question)
+    {
+        $exists = false;
+
+        foreach($this->specifics as $spec) {
+            if ($spec['comment_number'] == ($index + 1)) {
+                $exists = true;
+            }
+        }
+
+        if (!$exists) {
+
+            $specific = [
+                'beneficiary_name' => $beneficiary_name, 
+                'beneficiary_id' => '',
+                'comment_item' => '',
+                'period_item' => '',
+                'comment_number' => $index + 1
+            ];
+    
+            $this->specifics[] = $specific;
+        }
+    }
+
+    public function removeSpecific($beneficiary_name, $index, $question)
+    {
+
+        foreach($this->specifics as $kSpec => $spec) {
+            if ($spec['comment_number'] == ($index + 1) && $spec['beneficiary_name'] == $beneficiary_name) {                
+                unset($this->specifics[$kSpec]);
+            }
+        }
+
     }
 
     public function quizChanged($quiz_id)
@@ -60,14 +97,30 @@ class Healthdeclaration extends Component
             
             foreach($this->answers as $keyAnswer => $answer) {
                 foreach($beneficiaries as $k => $beneficiary) {
-                    $this->answerBeneficiary[$answer->question]['beneficiary_' . $k] = ['short' => $answer->answer, 'long' => ($answer->answer == 'S' ? 'Sim' : 'Não')];
+                    $this->answerBeneficiary[$answer->question]['beneficiary_' . $k] = [
+                        'short' => $answer->answer, 
+                        'long' => ($answer->answer == 'S' ? 'Sim' : 'Não'),
+                        'beneficiary_name' => $beneficiary->name
+                    ];
                     
                     if ($answer->answer == 'S') {
-                        $this->specifics[] = [
-                            'item' => $keyAnswer, 
-                            'beneficiary' => $beneficiary->name, 
-                            'beneficiary_id' => $beneficiary->id
+                        
+                        $specific = [
+                            'beneficiary_name' => $beneficiary->name 
                         ];
+
+                        foreach($this->actualSpecifics as $spec) {
+                            if ($beneficiary->id == $spec->beneficiary_id) {
+
+                                $specific['comment_number'] = $spec->comment_number;
+                                $specific['comment_item'] = $spec->comment_item;
+                                $specific['period_item'] = $spec->period_item;
+                                
+                            }
+                        }
+
+                        $this->specifics[] = $specific;
+
                     }
                 }
 
@@ -92,7 +145,6 @@ class Healthdeclaration extends Component
             'beneficiaries' => $this->beneficiaries,
             'answersQuiz' => $this->answerBeneficiary,
             'specifics' => $this->specifics,
-            'actual_specifics' => $this->actualSpecifics,
             'numberOfDependents' => $this->numberOfDependents
         ]);
 

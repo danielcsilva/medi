@@ -36,13 +36,13 @@
                                 @for($i = 0; $i < $numberOfDependents; $i++)
                                     @if (isset($answersQuiz[$question->question]['beneficiary_' . $i]['short']) && $answersQuiz[$question->question]['beneficiary_' . $i]['short'] == 'S' )
                                         <td>
-                                            <button class="btn btn-primary ds-btn">Sim</button> 
-                                            <input type="hidden" name="beneficiary_{{ $i }}[]" value="S">
+                                            <button wire:ignore class="btn btn-primary ds-btn">Sim</button> 
+                                            <input type="hidden" data-index="{{ $k }}" data-beneficiary="{{ $i }}" data-question="{{ $question->question }}" name="beneficiary_{{ $i }}[]" value="S">
                                         </td>
                                     @else 
                                         <td>
-                                            <button class="btn btn-secondary ds-btn">Não</button> 
-                                            <input type="hidden" name="beneficiary_{{ $i }}[]" value="N">
+                                            <button wire:ignore class="btn btn-secondary ds-btn">Não</button> 
+                                            <input type="hidden" data-index="{{ $k }}" data-beneficiary="{{ $i }}" data-question="{{ $question->question }}" name="beneficiary_{{ $i }}[]" value="N">
                                         </td>
                                     @endif                                    
                                 @endfor
@@ -58,15 +58,20 @@
         <div class="form-row mb-1 mt-1">
             <div class="col-1">
                 <label for="">Item</label>
-                <input name="comment_number[]" class="specific-items form-control" type="text" value="{{ $keySpecific + 2 }}" /> 
+                <input name="comment_number[]" class="specific-items form-control" type="text" value="{{ $specific['comment_number'] }}" /> 
+            </div>
+            <div class="col">
+                <label for="">Beneficiário</label>
+                <input type="text" class="form-control" value="{{ $specific['beneficiary_name'] }}" />
+                {{-- <input type="hidden" name="beneficiary_id[]" class="form-control" placeholder="especificação" value="{{ old('beneficiary_id.' . $keySpecific, $specific['beneficiary_id'] ?? null) ?? null }}" /> --}}
             </div>
             <div class="col">
                 <label for="">Comentário</label>
-                <input type="text" name="comment_item[]" class="form-control" placeholder="especificação" value="{{ old('comment_item.' . $keySpecific, $actual_specifics[$keySpecific]->comment_item ?? null) ?? null }}" />
+                <input type="text" name="comment_item[]" class="form-control" placeholder="especificação" value="{{ old('comment_item.' . $keySpecific, $specific['comment_item'] ?? null) ?? null }}" />
             </div>
             <div class="col">
                 <label for="">Período</label>
-                <input type="text" name="period_item[]" class="form-control" placeholder="período da doença" value="{{ old('period_item.' . $keySpecific, $actual_specifics[$keySpecific]->period_item ?? null) ?? null }}" />
+                <input type="text" name="period_item[]" class="form-control" placeholder="período da doença" value="{{ old('period_item.' . $keySpecific, $specific['period_item'] ?? null) ?? null }}" />
             </div>
         </div>
     @endforeach
@@ -91,6 +96,9 @@
             e.preventDefault();
 
             const btn = $(e.target);
+            let beneficiary_index = $(e.target).next('input').data('beneficiary');
+            let questionIndex = $(e.target).next('input').data('index');
+            let question = $(e.target).next('input').data('question');
 
             if (btn.text() == 'Não') {
                 btn.text('Sim');
@@ -99,13 +107,23 @@
                 btn.addClass('btn-primary');
                 btn.next('input').val('S');
 
+                
+
+                console.log('ADD', $('.beneficiaries:eq('+ beneficiary_index +')').val(), beneficiary_index, questionIndex, question)
+                window.livewire.emit('addSpecific', $('.beneficiaries:eq('+ beneficiary_index +')').val(), questionIndex, question)
+
             } else {
 
                 btn.text('Não');
                 btn.val('N');
                 btn.removeClass('btn-primary');
                 btn.addClass('btn-secondary');
-                btn.next('input').val('N');
+                btn.next('input').val('N'); 
+
+                console.log('REMOVE', $('.beneficiaries:eq('+ beneficiary_index +')').val(), beneficiary_index, questionIndex, question)
+
+
+                window.livewire.emit('removeSpecific', $('.beneficiaries:eq('+ beneficiary_index +')').val(), questionIndex, question)
 
             }
         })

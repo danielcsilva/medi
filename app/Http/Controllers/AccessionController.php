@@ -278,15 +278,24 @@ class AccessionController extends Controller
                 if ($request->get('question')) {
                     
                     $questions = $request->get('question');
-                    foreach($questions as $k1 => $v1) {
+                    foreach($questions as $k1 => $v1) { // questions of Health Declaration
                         
                         HealthDeclarationAnswer::create([
                             'question' => $request->get('question')[$k1],
-                            'answer' => $request->input($field)[$k1],
+                            'answer' => $request->get($field)[$k1],
                             'beneficiary_id' => $beneficiary->id,
                             'accession_id' => $accession->id
                         ]);
-
+                        
+                        if ($request->get($field)[$k1] == 'S') { // specific points on Helth Declaration
+                            HealthDeclarationSpecific::create([
+                                'comment_number' => $request->get('comment_number')[$k],
+                                'comment_item' => $request->get('comment_item')[$k],
+                                'period_item' => $request->get('period_item')[$k],
+                                'accession_id' => $accession->id,
+                                'beneficiary_id' => $beneficiary->id
+                            ]);
+                        }
                     }
 
                 }
@@ -298,25 +307,25 @@ class AccessionController extends Controller
 
             }
 
-            if ($request->get('comment_number')) {
+            // if ($request->get('comment_number')) {
 
-                $specifics = $request->get('comment_number');
+            //     $specifics = $request->get('comment_number');
                 
-                foreach($specifics as $specific_k => $specific_v) {
+            //     foreach($specifics as $specific_k => $specific_v) {
 
-                    if ($request->get('comment_item')[$specific_k] !== null) {
+            //         if ($request->get('comment_item')[$specific_k] !== null) {
 
-                        HealthDeclarationSpecific::create([
-                            'comment_number' => $request->get('comment_number')[$specific_k],
-                            'comment_item' => $request->get('comment_item')[$specific_k],
-                            'period_item' => $request->get('period_item')[$specific_k],
-                            'accession_id' => $accession->id
-                        ]);
+            //             HealthDeclarationSpecific::create([
+            //                 'comment_number' => $request->get('comment_number')[$specific_k],
+            //                 'comment_item' => $request->get('comment_item')[$specific_k],
+            //                 'period_item' => $request->get('period_item')[$specific_k],
+            //                 'accession_id' => $accession->id
+            //             ]);
 
-                    }
-                }
+            //         }
+            //     }
 
-            }
+            // }
 
             // $this->setContact($request, $accession);
             // $this->setInterview($request, $accession);
