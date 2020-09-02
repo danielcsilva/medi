@@ -184,15 +184,15 @@ class AccessionController extends Controller
         $beneficiaries = $request->get('beneficiary_cpf');
         $telephones = $request->get('beneficiary_telephone');
 
-        // $this->accessionTransaction($request, $beneficiaries, $telephones, $accession_id);
-        // try {
-                
+        try {
+            
+            $this->accessionTransaction($request, $beneficiaries, $telephones, $accession_id);
 
-        // } catch(Throwable $t) {
+        } catch(Throwable $t) {
 
-        //     return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
+            return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
 
-        // }
+        }
         
         return redirect()->route('accessions.index')->with('success', 'Processo de Adesão editado com sucesso!');
     }
@@ -201,7 +201,7 @@ class AccessionController extends Controller
      * Accession Transaction
      */
     public function accessionTransaction($request, $beneficiaries, $telephones, $accession_id = null)
-    {
+    {   dd($request->all());
         DB::transaction(function() use ($request, $beneficiaries, $telephones, $accession_id) {
                             
             if ($accession_id !== null) { // edit
@@ -274,7 +274,7 @@ class AccessionController extends Controller
                 
                 //Health Declaration
                 $field = 'beneficiary_' . $k;
-                
+                dd($request->get('question'));
                 if ($request->get('question')) {
                     
                     $questions = $request->get('question');
@@ -284,7 +284,8 @@ class AccessionController extends Controller
                             'question' => $request->get('question')[$k1],
                             'answer' => $request->get($field)[$k1],
                             'beneficiary_id' => $beneficiary->id,
-                            'accession_id' => $accession->id
+                            'accession_id' => $accession->id,
+                            'quiz_id' => $accession->quiz_id
                         ]);
                         
                         if ($request->get($field)[$k1] == 'S') { // specific points on Helth Declaration
@@ -293,7 +294,8 @@ class AccessionController extends Controller
                                 'comment_item' => $request->get('comment_item')[$k],
                                 'period_item' => $request->get('period_item')[$k],
                                 'accession_id' => $accession->id,
-                                'beneficiary_id' => $beneficiary->id
+                                'beneficiary_id' => $beneficiary->id,
+                                'quiz_id' => $accession->quiz_id
                             ]);
                         }
                     }

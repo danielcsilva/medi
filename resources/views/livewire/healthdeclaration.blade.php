@@ -1,5 +1,4 @@
 <div>
-
     <div class="row">
         <div class="col-6">
             <label for="health-declaration">Escolha um Modelo de DS</label>
@@ -32,17 +31,17 @@
                     @if ($quiz_questions)
                         @foreach ($quiz_questions->questions as $k => $question)
                             <tr>
-                                <td>{{ $k + 1 }}</td><td>{{ $question->question }}</td>                            
+                            <td>{{ $k + 1 }}</td><td>{{ $question->question }}</td>                            
                                 @for($i = 0; $i < $numberOfDependents; $i++)
                                     @if (isset($answersQuiz[$question->question]['beneficiary_' . $i]['short']) && $answersQuiz[$question->question]['beneficiary_' . $i]['short'] == 'S' )
                                         <td>
-                                            <button wire:ignore class="btn btn-primary ds-btn">Sim</button> 
-                                            <input type="hidden" data-index="{{ $k }}" data-beneficiary="{{ $i }}" data-question="{{ $question->question }}" name="beneficiary_{{ $i }}[]" value="S">
+                                            <button type="button" wire:click.prevent="answerQuestion({{ $question->id }}, {{ $i }}, 'N', {{ $k }})" class="btn btn-primary">Sim</button> 
+                                            <input type="hidden" data-index="{{ $k }}" data-beneficiary="{{ $i }}" data-question="{{ $question->question }}" name="beneficiary_{{ $i }}[{{ $k }}]" value="S">
                                         </td>
                                     @else 
                                         <td>
-                                            <button wire:ignore class="btn btn-secondary ds-btn">Não</button> 
-                                            <input type="hidden" data-index="{{ $k }}" data-beneficiary="{{ $i }}" data-question="{{ $question->question }}" name="beneficiary_{{ $i }}[]" value="N">
+                                            <button type="button" wire:click.prevent="answerQuestion({{ $question->id }}, {{ $i }}, 'S', {{ $k }})" class="btn btn-secondary">Não</button> 
+                                            <input type="hidden" data-index="{{ $k }}" data-beneficiary="{{ $i }}" data-question="{{ $question->question }}" name="beneficiary_{{ $i }}[{{ $k }}]" value="N">
                                         </td>
                                     @endif                                    
                                 @endfor
@@ -54,27 +53,31 @@
         </div>
     </div>
 
-    @foreach ($specifics as $keySpecific => $specific)
-        <div class="form-row mb-1 mt-1">
-            <div class="col-1">
-                <label for="">Item</label>
-                <input name="comment_number[]" class="specific-items form-control" type="text" value="{{ $specific['comment_number'] }}" /> 
+    @if (count($specifics) > 0)
+        @foreach ($specifics as $keySpecific => $specific)
+            <div class="form-row mb-1 mt-1">
+                <div class="col-1">
+                    <label for="">Item</label>
+                    <input name="specific_comment_number[]" class="specific-items form-control" type="text" value="{{ $specific['comment_number'] }}" /> 
+                </div>
+                <div class="col">
+                    <label for="">Beneficiário</label>
+                    <input type="text" class="form-control" value="{{ $specific['beneficiary_name'] }}" />
+                    <input type="hidden" name="specific_quiz_id[]" class="form-control" placeholder="especificação" value="{{ old('specific_quiz_id.' . $keySpecific, $specific['quiz_id'] ?? null) ?? null }}" />
+                    <input type="hidden" name="specific_question_id[]" class="form-control" placeholder="especificação" value="{{ old('specific_question_id.' . $keySpecific, $specific['question_id'] ?? null) ?? null }}" />
+                
+                </div>
+                <div class="col">
+                    <label for="">Comentário</label>
+                    <input type="text" name="specific_comment_item[]" class="form-control" placeholder="especificação" value="{{ old('specific_comment_item.' . $keySpecific, $specific['comment_item'] ?? null) ?? null }}" />
+                </div>
+                <div class="col">
+                    <label for="">Período</label>
+                    <input type="text" name="specific_period_item[]" class="form-control" placeholder="período da doença" value="{{ old('specific_period_item.' . $keySpecific, $specific['period_item'] ?? null) ?? null }}" />
+                </div>
             </div>
-            <div class="col">
-                <label for="">Beneficiário</label>
-                <input type="text" class="form-control" value="{{ $specific['beneficiary_name'] }}" />
-                {{-- <input type="hidden" name="beneficiary_id[]" class="form-control" placeholder="especificação" value="{{ old('beneficiary_id.' . $keySpecific, $specific['beneficiary_id'] ?? null) ?? null }}" /> --}}
-            </div>
-            <div class="col">
-                <label for="">Comentário</label>
-                <input type="text" name="comment_item[]" class="form-control" placeholder="especificação" value="{{ old('comment_item.' . $keySpecific, $specific['comment_item'] ?? null) ?? null }}" />
-            </div>
-            <div class="col">
-                <label for="">Período</label>
-                <input type="text" name="period_item[]" class="form-control" placeholder="período da doença" value="{{ old('period_item.' . $keySpecific, $specific['period_item'] ?? null) ?? null }}" />
-            </div>
-        </div>
-    @endforeach
+        @endforeach
+    @endif
     
     <div class="form-row mb-4 mt-4" id="health-declaration-comments">
         <div class="col">
@@ -92,41 +95,41 @@
             window.livewire.emit('quizChanged', e.target.value);
         })
 
-        $(document).on('click', '.ds-btn', function(e){
-            e.preventDefault();
+        // $(document).on('click', '.ds-btn', function(e){
+        //     e.preventDefault();
 
-            const btn = $(e.target);
-            let beneficiary_index = $(e.target).next('input').data('beneficiary');
-            let questionIndex = $(e.target).next('input').data('index');
-            let question = $(e.target).next('input').data('question');
+        //     const btn = $(e.target);
+        //     let beneficiary_index = $(e.target).next('input').data('beneficiary');
+        //     let questionIndex = $(e.target).next('input').data('index');
+        //     let question = $(e.target).next('input').data('question');
 
-            if (btn.text() == 'Não') {
-                btn.text('Sim');
-                btn.val('S');
-                btn.removeClass('btn-secondary');
-                btn.addClass('btn-primary');
-                btn.next('input').val('S');
+        //     if (btn.text() == 'Não') {
+        //         btn.text('Sim');
+        //         btn.val('S');
+        //         btn.removeClass('btn-secondary');
+        //         btn.addClass('btn-primary');
+        //         btn.next('input').val('S');
 
                 
 
-                console.log('ADD', $('.beneficiaries:eq('+ beneficiary_index +')').val(), beneficiary_index, questionIndex, question)
-                window.livewire.emit('addSpecific', $('.beneficiaries:eq('+ beneficiary_index +')').val(), questionIndex, question)
+        //         console.log('ADD', $('.beneficiaries:eq('+ beneficiary_index +')').val(), beneficiary_index, questionIndex, question)
+        //         window.livewire.emit('addSpecific', $('.beneficiaries:eq('+ beneficiary_index +')').val(), questionIndex, question)
 
-            } else {
+        //     } else {
 
-                btn.text('Não');
-                btn.val('N');
-                btn.removeClass('btn-primary');
-                btn.addClass('btn-secondary');
-                btn.next('input').val('N'); 
+        //         btn.text('Não');
+        //         btn.val('N');
+        //         btn.removeClass('btn-primary');
+        //         btn.addClass('btn-secondary');
+        //         btn.next('input').val('N'); 
 
-                console.log('REMOVE', $('.beneficiaries:eq('+ beneficiary_index +')').val(), beneficiary_index, questionIndex, question)
+        //         console.log('REMOVE', $('.beneficiaries:eq('+ beneficiary_index +')').val(), beneficiary_index, questionIndex, question)
 
 
-                window.livewire.emit('removeSpecific', $('.beneficiaries:eq('+ beneficiary_index +')').val(), questionIndex, question)
+        //         window.livewire.emit('removeSpecific', $('.beneficiaries:eq('+ beneficiary_index +')').val(), questionIndex, question)
 
-            }
-        })
+        //     }
+        // })
 
     });
 </script>
