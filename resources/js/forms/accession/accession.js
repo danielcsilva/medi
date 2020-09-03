@@ -159,28 +159,6 @@ $(document).ready(function($){
     });
 
 
-    // $(document).on('click', '.ds-btn', function(e){
-    //     e.preventDefault();
-
-    //     const btn = $(e.target);
-
-    //     if (btn.text() == 'Não') {
-    //         btn.text('Sim');
-    //         btn.val('S');
-    //         btn.removeClass('btn-secondary');
-    //         btn.addClass('btn-primary');
-            
-    //     } else {
-
-    //         btn.text('Não');
-    //         btn.val('N');
-    //         btn.removeClass('btn-primary');
-    //         btn.addClass('btn-secondary');
-    //     }
-
-    //     setSpecifics(btn.parents('tr:first').index() + 1, btn.val());
-    // })
-
     $(document).on('change', 'input.weight', function(e){
         
         let weight = $(e.target).val();

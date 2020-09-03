@@ -54,6 +54,9 @@
     </div>
 
     @if (count($specifics) > 0)
+        @php
+            asort($specifics)
+        @endphp
         @foreach ($specifics as $keySpecific => $specific)
             <div class="form-row mb-1 mt-1">
                 <div class="col-1">
@@ -95,41 +98,7 @@
             window.livewire.emit('quizChanged', e.target.value);
         })
 
-        // $(document).on('click', '.ds-btn', function(e){
-        //     e.preventDefault();
-
-        //     const btn = $(e.target);
-        //     let beneficiary_index = $(e.target).next('input').data('beneficiary');
-        //     let questionIndex = $(e.target).next('input').data('index');
-        //     let question = $(e.target).next('input').data('question');
-
-        //     if (btn.text() == 'Não') {
-        //         btn.text('Sim');
-        //         btn.val('S');
-        //         btn.removeClass('btn-secondary');
-        //         btn.addClass('btn-primary');
-        //         btn.next('input').val('S');
-
-                
-
-        //         console.log('ADD', $('.beneficiaries:eq('+ beneficiary_index +')').val(), beneficiary_index, questionIndex, question)
-        //         window.livewire.emit('addSpecific', $('.beneficiaries:eq('+ beneficiary_index +')').val(), questionIndex, question)
-
-        //     } else {
-
-        //         btn.text('Não');
-        //         btn.val('N');
-        //         btn.removeClass('btn-primary');
-        //         btn.addClass('btn-secondary');
-        //         btn.next('input').val('N'); 
-
-        //         console.log('REMOVE', $('.beneficiaries:eq('+ beneficiary_index +')').val(), beneficiary_index, questionIndex, question)
-
-
-        //         window.livewire.emit('removeSpecific', $('.beneficiaries:eq('+ beneficiary_index +')').val(), questionIndex, question)
-
-        //     }
-        // })
+        
 
     });
 </script>

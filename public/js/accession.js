@@ -16012,23 +16012,7 @@ $(document).ready(function ($) {
         console.log($(o));
       });
     }
-  }); // $(document).on('click', '.ds-btn', function(e){
-  //     e.preventDefault();
-  //     const btn = $(e.target);
-  //     if (btn.text() == 'Não') {
-  //         btn.text('Sim');
-  //         btn.val('S');
-  //         btn.removeClass('btn-secondary');
-  //         btn.addClass('btn-primary');
-  //     } else {
-  //         btn.text('Não');
-  //         btn.val('N');
-  //         btn.removeClass('btn-primary');
-  //         btn.addClass('btn-secondary');
-  //     }
-  //     setSpecifics(btn.parents('tr:first').index() + 1, btn.val());
-  // })
-
+  });
   $(document).on('change', 'input.weight', function (e) {
     var weight = $(e.target).val();
     var height = $(e.target).parents('div.form-row').find('.height:first').val();

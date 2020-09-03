@@ -114,6 +114,7 @@ class Healthdeclaration extends Component
             $this->removeSpecific($this->beneficiaries[$beneficiary_index]->name, $question_id);
 
         }
+
     }
 
     public function mount($accession, $beneficiaries)
@@ -190,8 +191,7 @@ class Healthdeclaration extends Component
 
     public function render()
     {
-        
-        // dd($this->specifics);
+
         return view('livewire.healthdeclaration', [
             'quizzes' => $this->quizzes, 
             'actual_quiz' => $this->quiz,
