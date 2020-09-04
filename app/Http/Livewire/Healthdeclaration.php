@@ -100,7 +100,7 @@ class Healthdeclaration extends Component
 
         if ($answer == 'S') {
 
-            $this->answerBeneficiary[$question->question]['beneficiary_' . $beneficiary_index] = [
+            $this->answerBeneficiary[$question->id]['beneficiary_' . $beneficiary_index] = [
                 'short' => $answer, 
                 'long' => ($answer == 'S' ? 'Sim' : 'Não'),
                 'beneficiary_name' => $this->beneficiaries[$beneficiary_index]->name
@@ -109,7 +109,7 @@ class Healthdeclaration extends Component
             $this->addSpecific($this->beneficiaries[$beneficiary_index]->name, $question_index, $question_id);
 
         } else {
-            unset($this->answerBeneficiary[$question->question]['beneficiary_' . $beneficiary_index]);
+            unset($this->answerBeneficiary[$question->id]['beneficiary_' . $beneficiary_index]);
 
             $this->removeSpecific($this->beneficiaries[$beneficiary_index]->name, $question_id);
 

@@ -29,21 +29,21 @@
                 </thead>
                 <tbody>
                     @if ($quiz_questions)
+                        {{-- {{ dd($answersQuiz) }} --}}
                         @foreach ($quiz_questions->questions as $k => $question)
                             <tr>
                             <td>{{ $k + 1 }}</td><td>{{ $question->question }}</td>                            
                                 @for($i = 0; $i < $numberOfDependents; $i++)
-                                    @if (isset($answersQuiz[$question->question]['beneficiary_' . $i]['short']) && $answersQuiz[$question->question]['beneficiary_' . $i]['short'] == 'S' )
-                                        <td>
+                                <td>
+                                    @if (isset($answersQuiz[$question->id]['beneficiary_' . $i]['short']) && $answersQuiz[$question->id]['beneficiary_' . $i]['short'] == 'S' )
                                             <button type="button" wire:click.prevent="answerQuestion({{ $question->id }}, {{ $i }}, 'N', {{ $k }})" class="btn btn-primary">Sim</button> 
-                                            <input type="hidden" data-index="{{ $k }}" data-beneficiary="{{ $i }}" data-question="{{ $question->question }}" name="beneficiary_{{ $i }}[{{ $k }}]" value="S">
-                                        </td>
+                                            <input type="hidden" data-index="{{ $k }}" name="beneficiary_{{ $i }}[{{ $k }}]" value="S">
                                     @else 
-                                        <td>
                                             <button type="button" wire:click.prevent="answerQuestion({{ $question->id }}, {{ $i }}, 'S', {{ $k }})" class="btn btn-secondary">Não</button> 
-                                            <input type="hidden" data-index="{{ $k }}" data-beneficiary="{{ $i }}" data-question="{{ $question->question }}" name="beneficiary_{{ $i }}[{{ $k }}]" value="N">
-                                        </td>
-                                    @endif                                    
+                                            <input type="hidden" data-index="{{ $k }}" name="beneficiary_{{ $i }}[{{ $k }}]" value="N">
+                                    @endif
+                                    <input type="hidden" name="question[]" value="{{ $question->id }}">                                    
+                                </td>
                                 @endfor
                             </tr>
                         @endforeach
@@ -97,8 +97,6 @@
         $(document).on('change', '#health-declaration', function(e){
             window.livewire.emit('quizChanged', e.target.value);
         })
-
-        
 
     });
 </script>

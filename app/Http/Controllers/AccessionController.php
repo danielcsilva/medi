@@ -201,7 +201,8 @@ class AccessionController extends Controller
      * Accession Transaction
      */
     public function accessionTransaction($request, $beneficiaries, $telephones, $accession_id = null)
-    {   dd($request->all());
+    {   
+        // dd($request->all());
         DB::transaction(function() use ($request, $beneficiaries, $telephones, $accession_id) {
                             
             if ($accession_id !== null) { // edit
@@ -221,6 +222,11 @@ class AccessionController extends Controller
                Accession::where('id', $accession_id)->delete();
             }
 
+            $to_contact = false;
+            if ($request->has('to_contact') && $request->get('to_contact') == 1) {
+                $to_contact = true;
+            }
+
             $accession = Accession::create([
                 'proposal_number' => $request->get('proposal_number'),
                 'received_at' => $request->get('received_at'),
@@ -232,7 +238,8 @@ class AccessionController extends Controller
                 'initial_validity' => $request->get('initial_validity'),
                 'consult_partner' => $request->get('consult_partner'),
                 'broker_partner' => $request->get('broker_partner'),
-                'entity' => $request->get('entity')
+                'entity' => $request->get('entity'),
+                'to_contact' => $to_contact
             ]);
                
             foreach($telephones as $tel) {
@@ -274,8 +281,8 @@ class AccessionController extends Controller
                 
                 //Health Declaration
                 $field = 'beneficiary_' . $k;
-                dd($request->get('question'));
-                if ($request->get('question')) {
+                
+                if ($request->get('beneficiary_0')) {
                     
                     $questions = $request->get('question');
                     foreach($questions as $k1 => $v1) { // questions of Health Declaration
@@ -285,17 +292,19 @@ class AccessionController extends Controller
                             'answer' => $request->get($field)[$k1],
                             'beneficiary_id' => $beneficiary->id,
                             'accession_id' => $accession->id,
-                            'quiz_id' => $accession->quiz_id
+                            'quiz_id' => $accession->quiz_id,
+                            'question_id' => $v1
                         ]);
                         
                         if ($request->get($field)[$k1] == 'S') { // specific points on Helth Declaration
                             HealthDeclarationSpecific::create([
-                                'comment_number' => $request->get('comment_number')[$k],
-                                'comment_item' => $request->get('comment_item')[$k],
-                                'period_item' => $request->get('period_item')[$k],
+                                'comment_number' => $request->get('specific_comment_number')[$k1],
+                                'comment_item' => $request->get('specific_comment_item')[$k1],
+                                'period_item' => $request->get('specific_period_item')[$k1],
                                 'accession_id' => $accession->id,
                                 'beneficiary_id' => $beneficiary->id,
-                                'quiz_id' => $accession->quiz_id
+                                'quiz_id' => $accession->quiz_id,
+                                'question_id' => $v1
                             ]);
                         }
                     }

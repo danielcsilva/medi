@@ -363,8 +363,11 @@
     <div class="col-2">
         <button type="submit" class="btn btn-primary text-nowrap">Salvar Processo</button>
     </div>
-    <div class="col-2">
-        <button type="submit" class="btn btn-success text-nowrap">Liberar para Contato</button>
+    <div class="col">
+        <div class="form-check form-check-inline mt-2">
+            <input class="form-check-input" type="checkbox" name="to_contact" {{ (old('to_contact', $accession->to_contact ?? null) ? 'checked' : '')  }} value="1">
+            <label class="form-check-label" for="">Liberado para contato?</label>
+        </div>
     </div>
 </div>
 
