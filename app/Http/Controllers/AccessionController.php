@@ -222,9 +222,9 @@ class AccessionController extends Controller
                Accession::where('id', $accession_id)->delete();
             }
 
-            $to_contact = false;
-            if ($request->has('to_contact') && $request->get('to_contact') == 1) {
-                $to_contact = true;
+            $to_contact = 0;
+            if ($request->has('to_contact') && $request->get('to_contact') == '1') {
+                $to_contact = 1;
             }
 
             $accession = Accession::create([
@@ -266,7 +266,8 @@ class AccessionController extends Controller
                     'weight' => $weight, 
                     'imc' => $imc, 
                     'gender' => $request->get('beneficiary_gender')[$k],
-                    'accession_id' => $accession->id
+                    'accession_id' => $accession->id,
+                    'age' => $request->get('beneficiary_age')[$k]
                 ]);                    
 
                 Address::create([

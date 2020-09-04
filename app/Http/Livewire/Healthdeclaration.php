@@ -87,7 +87,7 @@ class Healthdeclaration extends Component
         $this->answerBeneficiary = [];
 
         $this->quiz = Quiz::where('id', $quiz_id)->first();
-        $this->questions = Quiz::with('questions:question,description')->where('id', $this->quiz->id)->first();
+        $this->questions = Quiz::with('questions')->where('id', $this->quiz->id)->first();
         
         $this->refreshQuiz();
         $this->refreshQuizSpecifics();
@@ -120,6 +120,7 @@ class Healthdeclaration extends Component
     public function mount($accession, $beneficiaries)
     {
         $this->answerBeneficiary = [];
+        $this->accession = $accession;
 
         if ($accession !== null) {
 
@@ -140,49 +141,58 @@ class Healthdeclaration extends Component
 
     public function refreshQuiz()
     {
-        
-        foreach($this->answers as $keyAnswer => $answer) {
 
-            if ($answer->quiz_id == $this->quiz->id) {
+        if (isset($this->answers) && count($this->answers) > 0) {
 
-                foreach($this->beneficiaries as $k => $beneficiary) {
-                    $this->answerBeneficiary[$answer->question]['beneficiary_' . $k] = [
-                        'short' => $answer->answer, 
-                        'long' => ($answer->answer == 'S' ? 'Sim' : 'Não'),
-                        'beneficiary_name' => $beneficiary->name
-                    ];
-                }
+            foreach($this->answers as $keyAnswer => $answer) {
+    
+                if ($answer->quiz_id == $this->quiz->id) {
+    
+                    foreach($this->beneficiaries as $k => $beneficiary) {
+                        $this->answerBeneficiary[$answer->question]['beneficiary_' . $k] = [
+                            'short' => $answer->answer, 
+                            'long' => ($answer->answer == 'S' ? 'Sim' : 'Não'),
+                            'beneficiary_name' => $beneficiary->name
+                        ];
+                    }
+    
+                } 
+                
+            }
 
-            } 
-            
         }
     }
 
     public function refreshQuizSpecifics()
     {
         $specific = [];
+        $this->specifics = [];
+        
+        if (isset($this->actualSpecifics) && count($this->actualSpecifics) > 0){
 
-        foreach($this->questions->questions as $question) {
-
-            foreach($this->actualSpecifics as $spec) {
-
-                foreach($this->beneficiaries as $beneficiary) {
-                    
-                    if ($beneficiary->id == $spec->beneficiary_id 
-                        && $question->id == $spec->question_id 
-                        && $spec->accession_id == $this->accession->id
-                        && $spec->quiz_id == $this->quiz->id) {
-                            
-                        $specific['beneficiary_name'] = $beneficiary->name;
-                        $specific['comment_number'] = $spec->comment_number;
-                        $specific['comment_item'] = $spec->comment_item;
-                        $specific['period_item'] = $spec->period_item;
-                        $specific['quiz_id'] = $this->quiz->id;
-                        $specific['question_id'] = $spec->question_id;
+            foreach($this->questions->questions as $question) {
+    
+                foreach($this->actualSpecifics as $spec) {
+    
+                    foreach($this->beneficiaries as $beneficiary) {
                         
-                        $this->specifics[] = $specific;
+                        if ($beneficiary->id == $spec->beneficiary_id 
+                            && $question->id == $spec->question_id 
+                            && $spec->accession_id == $this->accession->id
+                            && $spec->quiz_id == $this->quiz->id) {
+                                
+                            $specific['beneficiary_name'] = $beneficiary->name;
+                            $specific['comment_number'] = $spec->comment_number;
+                            $specific['comment_item'] = $spec->comment_item;
+                            $specific['period_item'] = $spec->period_item;
+                            $specific['quiz_id'] = $this->quiz->id;
+                            $specific['question_id'] = $spec->question_id;
+                            
+                            $this->specifics[] = $specific;
+                        }
                     }
                 }
+    
             }
 
         }

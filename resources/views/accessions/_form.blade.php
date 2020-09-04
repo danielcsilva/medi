@@ -95,14 +95,16 @@
     
     <div class="form-row mb-4 mt-4">
         <div class="col">
-            <input type="text" name="beneficiary_birth_date[]" value="{{ old('beneficiary_birth_date.0', $beneficiaries[0]->birth_date ?? null) }}" class="form-control date-br" placeholder="Data de Nasc." required>
+            <label for="">Data de Nascimento</label>
+            <input type="text" name="beneficiary_birth_date[]" value="{{ old('beneficiary_birth_date.0', $beneficiaries[0]->birth_date ?? null) }}" class="form-control date-br birth-date" placeholder="Data de Nasc." required>
             @if($errors->has('beneficiary_birth_date.0'))
                 <div class="alert alert-danger small">{{ $errors->first('beneficiary_birth_date.0') }}</div>
             @endif
         </div>
         <div class="col">        
+            <label for="">Sexo</label>
             <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="beneficiary_gender[]" required1>
-                <option value="">Sexo</option>
+                <option value="">Escolha</option>
                 <option value="M" {{ (old('beneficiary_gender.0', $beneficiaries[0]->gender ?? null) == 'M' ? 'selected' : '') }}>Masculino</option>
                 <option value="F" {{ (old('beneficiary_gender.0', $beneficiaries[0]->gender ?? null) == 'F' ? 'selected' : '') }}>Feminino</option>
             </select>
@@ -111,9 +113,13 @@
             @endif
         </div>
         <div class="col">
-            <div class="form-check form-check-inline mt-2">
+            <label for="">Idade</label>
+            <input type="text" name="beneficiary_age[]" value="{{ old('beneficiary_age.0', $beneficiaries[0]->age ?? null) }}" class="form-control idade" placeholder="Idade" required>
+        </div>
+        <div class="col">
+            <div class="form-check form-check-inline" style="padding-top:35px;">
                 <input class="form-check-input financier" type="radio" name="beneficiary_financier[]" {{ old('beneficiary_financier.0', (isset($accession->financier_id) && $accession->financier_id == $beneficiaries[0]->id ? 1 : '' )) == 1 ? "checked" : "" }} value="1">
-                <label class="form-check-label" for="financier">Financiador</label>
+                <label class="form-check-label" for="financier">Responsável Financeiro</label>
             </div>
         </div>
     </div>

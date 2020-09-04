@@ -30,7 +30,8 @@ class StoreBeneficiary extends FormRequest
             'height' => 'required',
             'weight' => 'required',
             'imc' => 'required',
-            'gender' => 'required'
+            'gender' => 'required',
+            'age' => ''
         ];
     }
 

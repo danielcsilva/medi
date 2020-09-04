@@ -12,7 +12,8 @@ class Accession extends Model
     protected $fillable = ['proposal_number', 'financier_id', 'company_id', 
                            'quiz_id', 'health_plan_id', 'received_at', 'comments',
                            'admin_partner', 'initial_validity', 'consult_partner', 
-                           'broker_partner', 'entity', 'contacted_date', 'contacted_comments'
+                           'broker_partner', 'entity', 'contacted_date', 'contacted_comments',
+                           'to_contact'
                         ];
 
     public function financier()

@@ -8,7 +8,7 @@ function applyMasks() {
     var datesBR = document.getElementsByClassName('date-br');
 
     Array.prototype.forEach.call(datesBR, function(element) {
-        var phoneMask = new IMask(element, {
+        var customMaskdatesBR = new IMask(element, {
             mask: Date,
             min: new Date(1900, 0, 1),
             max: new Date(new Date().getFullYear() + 1, 0, 1),
@@ -19,7 +19,7 @@ function applyMasks() {
     var telephones = document.getElementsByClassName('telephone');
 
     Array.prototype.forEach.call(telephones, function(element) {
-        var phoneMask = new IMask(element, {
+        var customMasktelephones = new IMask(element, {
         mask: '(00)00000-0000',
         placeholder: {
                 show: 'always'
@@ -30,8 +30,19 @@ function applyMasks() {
     var cpfs = document.getElementsByClassName('cpf');
 
     Array.prototype.forEach.call(cpfs, function(element) {
-        var phoneMask = new IMask(element, {
+        var customMaskcpfs = new IMask(element, {
         mask: '000.000.000-00',
+        placeholder: {
+                show: 'always'
+            }
+        });
+    });
+
+    var ceps = document.getElementsByClassName('cep');
+
+    Array.prototype.forEach.call(ceps, function(element) {
+        var customMaskceps = new IMask(element, {
+        mask: '00000-000',
         placeholder: {
                 show: 'always'
             }
@@ -167,6 +178,15 @@ $(document).ready(function($){
         $(e.target).parents('div.form-row').find('.imc-calc:first').val( imcCalc(weight, height).toFixed(2) );
     })
 
+
+    $(document).on('blur', '.birth-date', function(e){
+        _calculateAge(e);
+    })
+
+    $('.birth-date').each(function(i,o){
+         $(o).blur()
+    })
+
 });
 
 function setSpecifics(item_number, item_value) {
@@ -212,6 +232,27 @@ function orderSpecifics() {
 
 function imcCalc(weight, height) {
     return weight / (height * height);
+}
+
+// function calcAge(e) {
+//     let birth_date = parseDate(e.target.value);
+//     const today = new Date();
+//     const diffTime = Math.abs(birth_date - today);
+//     const diffYears = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 365)); 
+//     $(e.target).parents('div.form-row').find('.idade:first').val(diffYears - 1);
+// }
+
+function _calculateAge(e) { // birthday is a date
+    var birthday = parseDate(e.target.value)
+    var ageDifMs = Date.now() - birthday.getTime();
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    $(e.target).parents('div.form-row').find('.idade:first').val( Math.abs(ageDate.getUTCFullYear() - 1970) );
+}
+
+function parseDate(input) {
+    var parts = input.match(/(\d+)/g);
+    // note parts[1]-1
+    return new Date(parts[2], parts[1]-1, parts[0]);
 }
 
 
