@@ -37,5 +37,7 @@ Route::group(['middleware' => ['role:SuperAdmin|Diretoria|Operacional|Médico|Co
     Route::resource('dashboards', 'DashboardController');
     
     Route::resource('roles', 'RolesController');
+
+    Route::get('/tocontact/accessions', 'AccessionController@toContact');
     
 });

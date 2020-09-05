@@ -37,6 +37,7 @@ class DataTables extends Component
         $this->booleans = $booleans;
         $this->edit = $edit;
         $this->delete = $delete;
+        $this->filter = $filter;
 
         $this->emit('rewriteTable', 'rewrite');
     }
@@ -44,9 +45,14 @@ class DataTables extends Component
     public function render()
     {
         $this->emit('rewriteTable', 'rewrite');
-        
+                
+        $rows = $this->model::whereLike($this->columns, $this->search);
+        if (!empty($this->filter)) {
+            $rows = $rows->where($this->filter);
+        }
+
         return view('livewire.data-tables', [
-            'rows' => $this->model::whereLike($this->columns, $this->search)->paginate($this->perPage),
+            'rows' => $rows->paginate($this->perPage),
             'labels' => $this->labels,
             'routeParam' => $this->routeParam,
             'editRoute' => $this->editRoute,

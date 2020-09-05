@@ -144,30 +144,30 @@ $(document).ready(function($){
     });
 
 
-    $(document).on('change', '.specific-items', function(e){
-        var choose = $(e.target).val();
-        if (choose != '') {
+    // $(document).on('change', '.specific-items', function(e){
+    //     var choose = $(e.target).val();
+    //     if (choose != '') {
 
-            var count = 0;
-            $('.specific-items').each(function(i,o) {
-                if ($(o).val() == choose) {
-                    count++;
-                    if (count > 1) {
-                        alert('Você não pode escolher o mesmo Item da DS');
-                        $(e.target).val('');
-                    }
-                }
-            })
+    //         var count = 0;
+    //         $('.specific-items').each(function(i,o) {
+    //             if ($(o).val() == choose) {
+    //                 count++;
+    //                 if (count > 1) {
+    //                     alert('Você não pode escolher o mesmo Item da DS');
+    //                     $(e.target).val('');
+    //                 }
+    //             }
+    //         })
             
-        } else {
-            $(e.target).val('');
-            $(e.target).find('option').each(function(i,o){
-                $(o).attr('selected', "");
-                $(o).removeAttr('selected');
-                console.log($(o));
-            });
-        }
-    });
+    //     } else {
+    //         $(e.target).val('');
+    //         $(e.target).find('option').each(function(i,o){
+    //             $(o).attr('selected', "");
+    //             $(o).removeAttr('selected');
+    //             console.log($(o));
+    //         });
+    //     }
+    // });
 
 
     $(document).on('change', 'input.weight', function(e){
@@ -189,46 +189,46 @@ $(document).ready(function($){
 
 });
 
-function setSpecifics(item_number, item_value) {
+// function setSpecifics(item_number, item_value) {
 
-    const row = "<div class=\"form-row mb-1 mt-1\">";
-    const endRow = "</div>";
-    const fieldNumber = "<div class=\"col-1\"><input id=\"specific-"+ item_number +"\" type=\"text\" name=\"comment_number[]\" class=\"form-control comment-number\" placeholder=\"\" value=\"\" /></div>";
-    const fieldItem = "<div class=\"col-6\"><input type=\"text\" name=\"comment_item[]\" class=\"form-control\" placeholder=\"comentário\" value=\"\" /></div>";
-    const fieldPeriod = "<div class=\"col-3\"><input type=\"text\" name=\"comment_period[]\" class=\"form-control\" placeholder=\"período\" value=\"\" /></div>";
+//     const row = "<div class=\"form-row mb-1 mt-1\">";
+//     const endRow = "</div>";
+//     const fieldNumber = "<div class=\"col-1\"><input id=\"specific-"+ item_number +"\" type=\"text\" name=\"comment_number[]\" class=\"form-control comment-number\" placeholder=\"\" value=\"\" /></div>";
+//     const fieldItem = "<div class=\"col-6\"><input type=\"text\" name=\"comment_item[]\" class=\"form-control\" placeholder=\"comentário\" value=\"\" /></div>";
+//     const fieldPeriod = "<div class=\"col-3\"><input type=\"text\" name=\"comment_period[]\" class=\"form-control\" placeholder=\"período\" value=\"\" /></div>";
     
-    const specifics = $('#comments-by-item');
+//     const specifics = $('#comments-by-item');
     
-    // console.log(specifics.find('.comment-number:eq("'+ item_number +'")').length, item_number);
+//     // console.log(specifics.find('.comment-number:eq("'+ item_number +'")').length, item_number);
     
-    if (specifics.find('#specific-'+ item_number).length == 0 && item_value === 'S') {
-        specifics.append(row + fieldNumber + fieldItem + fieldPeriod + endRow);
-        specifics.find('#specific-'+ item_number).val(item_number);
-        specifics.show();
-    } else if (item_value === 'N') {
-        specifics.find('#specific-'+ item_number).parents('div.form-row:first').remove();
-    }
+//     if (specifics.find('#specific-'+ item_number).length == 0 && item_value === 'S') {
+//         specifics.append(row + fieldNumber + fieldItem + fieldPeriod + endRow);
+//         specifics.find('#specific-'+ item_number).val(item_number);
+//         specifics.show();
+//     } else if (item_value === 'N') {
+//         specifics.find('#specific-'+ item_number).parents('div.form-row:first').remove();
+//     }
 
-    if (specifics.find('input').length === 0) {
-        specifics.hide();
-    }
+//     if (specifics.find('input').length === 0) {
+//         specifics.hide();
+//     }
 
-    orderSpecifics();
-}
+//     orderSpecifics();
+// }
 
-function orderSpecifics() {
+// function orderSpecifics() {
     
-    $('#comments-by-item').find('div.form-row').each(function(i,o){
+//     $('#comments-by-item').find('div.form-row').each(function(i,o){
 
-        if ( parseInt($(o).find('.comment-number').attr('id').replace('specific-', '')) <  (i + 1) ){
-            let obj = $(o).clone();
-            $('#comments-by-item').find('label').after(obj);
-            $(o).remove();
-        }
+//         if ( parseInt($(o).find('.comment-number').attr('id').replace('specific-', '')) <  (i + 1) ){
+//             let obj = $(o).clone();
+//             $('#comments-by-item').find('label').after(obj);
+//             $(o).remove();
+//         }
         
-    })
+//     })
 
-}
+// }
 
 function imcCalc(weight, height) {
     return weight / (height * height);

@@ -39,7 +39,13 @@ class AccessionController extends Controller
         
         $filter = request()->all();
 
-        return view('accessions.list', ['model' => Accession::class, 'filter' => $filter]);
+        return view('accessions.list', ['model' => Accession::class, 'filter' => []]);
+
+    }
+
+    public function toContact()
+    {
+        return view('accessions.list', ['model' => Accession::class, 'filter' => ['to_contact' => true]]);
 
     }
 
