@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col">    
-        {{ Breadcrumbs::render('accessions', 'list') }}                
+        {{ Breadcrumbs::render('accessions', $breadcrumb ?? 'list') }}                
     </div>
     @can('Editar Processos')
     <div class="col">

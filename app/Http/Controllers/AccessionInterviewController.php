@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Accession;
 use Illuminate\Http\Request;
 
 class AccessionInterviewController extends Controller
@@ -13,7 +14,15 @@ class AccessionInterviewController extends Controller
      */
     public function index()
     {
-        //
+        return view('accessions.list', [
+            'model' => Accession::class, 
+            'filter' => [
+                'to_interview' => true
+            ],
+            'editRoute' => 'interview',
+            'routeParam' => 'interview',
+            'breadcrumb' => 'Processos para Entrevista'
+        ]);
     }
 
     /**

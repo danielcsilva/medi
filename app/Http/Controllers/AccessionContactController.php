@@ -9,10 +9,13 @@ use App\Company;
 use App\HealthDeclarationAnswer;
 use App\HealthDeclarationSpecific;
 use App\HealthPlan;
+use App\Inconsistency;
 use App\Quiz;
-use App\RiskGrade;
 use App\Telephone;
 use Illuminate\Http\Request;
+
+use App\AccessionContact;
+use Illuminate\Support\Facades\Auth;
 
 class AccessionContactController extends Controller
 {
@@ -23,7 +26,15 @@ class AccessionContactController extends Controller
      */
     public function index()
     {
-        //
+        return view('accessions.list', [
+            'model' => Accession::class, 
+            'filter' => [
+                'to_contact' => true
+            ],
+            'editRoute' => 'tocontact',
+            'routeParam' => 'tocontact',
+            'breadcrumb' => 'Processos para Contato'
+        ]);
     }
 
     /**
@@ -77,7 +88,9 @@ class AccessionContactController extends Controller
         
         $accessionInstace = Accession::findOrFail($id);
 
-        return view('accessions.accession', [
+        $inconsistencies = Inconsistency::all();
+
+        return view('accessions.contact', [
             'customers' => $customers, 
             'beneficiaries' => $beneficiaries, 
             'telephones' => $telephones, 
@@ -87,7 +100,8 @@ class AccessionContactController extends Controller
             'addresses' => $addresses, 
             'answers' => $answers, 
             'specifics' => $specifics,
-            'step' => 'Contato'
+            'step' => 'Contato',
+            'inconsistencies' => $inconsistencies
         ]);
     }
 
@@ -100,7 +114,29 @@ class AccessionContactController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $accession = Accession::findOrFail($id);
+
+        AccessionContact::create([
+            'contacted_date' => $request->get('contacted_date'),
+            'contacted_comments' => $request->get('contacted_comments'), 
+            'inconsistency_id' => null, 
+            'user_id' => Auth::user()->id, 
+            'accession_id' => $accession->id
+        ]);
+
+        if ($request->get('inconsistencies') !== null) {
+            $accession->inconsistencies()->sync($request->get('inconsistencies'));
+        }        
+
+        if ($request->get('to_interview') !== null) {
+            $accession->to_interview = $request->get('to_interview');
+        }
+
+        $accession->save();
+        
+
+        return redirect()->route('tocontact.index')->with('success', 'Contato do Processo de Adesão criado com sucesso!');
+
     }
 
     /**

@@ -63,19 +63,19 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     
                                     @can('Editar Processos')
-                                    <a class="dropdown-item" href="{{ route('accessions.create') }}">Novo</a>
-                                    <a class="dropdown-item" href="{{ route('accessions.index') }}">Em andamento</a>            
-                                    <a class="dropdown-item" href="{{ url('/tocontact/accessions') }}">Liberado para Contato</a>
-                                    <a class="dropdown-item" href="{{ route('accessions.index') }}">Liberado para Entrevista</a>
+                                        <a class="dropdown-item" href="{{ route('accessions.create') }}">Novo</a>
+                                        <a class="dropdown-item" href="{{ route('accessions.index') }}">Em andamento</a>            
+                                        <a class="dropdown-item" href="{{ route('tocontact.index') }}">Liberado para Contato</a>
+                                        <a class="dropdown-item" href="{{ route('interview.index') }}">Liberado para Entrevista</a>
                                     @endcan
 
                                     @can('Avaliar Processos Clinicamente')                                        
-                                    <a class="dropdown-item" href="{{ route('accessions.index') }}">Avaliar Grau de Risco</a>
+                                        <a class="dropdown-item" href="{{ route('accessions.index') }}">Avaliar Grau de Risco</a>
                                     @endcan
                                     
-                                    @can('Editar Processos')
+                                    {{-- @can('Visualizar Processos')
                                     <a class="dropdown-item" href="{{ route('accessions.index') }}">Finalizados</a>
-                                    @endcan
+                                    @endcan --}}
                                 </div>
                             </li>    
                             

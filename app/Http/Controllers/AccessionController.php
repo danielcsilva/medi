@@ -41,20 +41,8 @@ class AccessionController extends Controller
             'model' => Accession::class, 
             'filter' => [], 
             'editRoute' => 'accessions',
-            'routeParam' => 'accession'
-        ]);
-
-    }
-
-    public function toContact()
-    {
-        return view('accessions.list', [
-            'model' => Accession::class, 
-            'filter' => [
-                'to_contact' => true
-            ],
-            'editRoute' => 'tocontact',
-            'routeParam' => 'tocontact'
+            'routeParam' => 'accession',
+            'breadcrumb' => 'Processos'
         ]);
 
     }
@@ -363,50 +351,8 @@ class AccessionController extends Controller
                 
             }
 
-            // if ($request->get('comment_number')) {
-
-            //     $specifics = $request->get('comment_number');
-                
-            //     foreach($specifics as $specific_k => $specific_v) {
-
-            //         if ($request->get('comment_item')[$specific_k] !== null) {
-
-            //             HealthDeclarationSpecific::create([
-            //                 'comment_number' => $request->get('comment_number')[$specific_k],
-            //                 'comment_item' => $request->get('comment_item')[$specific_k],
-            //                 'period_item' => $request->get('period_item')[$specific_k],
-            //                 'accession_id' => $accession->id
-            //             ]);
-
-            //         }
-            //     }
-
-            // }
-
-            // $this->setContact($request, $accession);
-            // $this->setInterview($request, $accession);
-            // $this->setMedicAnalysis($request, $accession);
-
             $accession->save();
         });
-    }
-
-    public function setContact($request, $accession)
-    {
-        //Contact
-        if ($request->get('inconsistencies')) {
-            $accession->inconsistencies()->sync($request->get('inconsistencies'));
-        }
-
-        if ($request->get('contacted_date')) {
-            $accession->contacted_date = $request->get('contacted_date');
-        }
-
-        if ($request->get('contacted_comments')) {
-            $accession->contacted_comments = $request->get('contacted_comments');
-        }
-
-        $accession->save();
     }
 
     public function setInterview($request, $accession) 

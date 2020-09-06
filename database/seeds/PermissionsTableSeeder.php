@@ -17,6 +17,10 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'Visualizar Processos']);
         Permission::create(['name' => 'Editar Processos']);
 
+        //Contatos
+        Permission::create(['name' => 'Visualizar Contatos']);
+        Permission::create(['name' => 'Editar Contatos']);
+
         //Entrevistas
         Permission::create(['name' => 'Visualizar Entrevistas']);
         Permission::create(['name' => 'Editar Entrevistas']);

@@ -79,11 +79,7 @@ Breadcrumbs::for('accessions', function ($trail, $content = null) {
 
     $trail->push('Dashboard', route('home'));
     
-    if ($content === 'list'){
-        $trail->push('Processos');
-    } else {
-        $trail->push('Processos', route('accessions.index'));
-    }
+    $trail->push($content ?? 'Processos', route('accessions.index'));
 
     if ($content == null) {
         $trail->push('Novo Processo');
