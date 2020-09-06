@@ -79,7 +79,7 @@ Breadcrumbs::for('accessions', function ($trail, $content = null) {
 
     $trail->push('Dashboard', route('home'));
     
-    if ($content == 'list'){
+    if ($content === 'list'){
         $trail->push('Processos');
     } else {
         $trail->push('Processos', route('accessions.index'));
@@ -90,6 +90,14 @@ Breadcrumbs::for('accessions', function ($trail, $content = null) {
     } else if(is_object($content)){
         $trail->push($content->proposal_number . ' - ' . ($content->company->name ?? ''));
     }
+
+});
+
+Breadcrumbs::for('accessions-contact', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    $trail->push('Processos para Contato', url('/tocontact/accessions'));
+    $trail->push($content->proposal_number . ' - ' . ($content->company->name ?? ''));
 
 });
 

@@ -1,7 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    
+
+<div class="row">
+    <div class="col">    
+        {{ Breadcrumbs::render('accessions-contact', $accession) }}                
+    </div>
+</div>
+
 @can('Visualizar Processos')
 
 <div class="alert alert-dark">Você está na etapa: {{ $step }}</div>
@@ -121,7 +127,7 @@
         </div>
         <div class="col">
             <div class="form-check form-check-inline" style="padding-top:35px;">
-                <input readonly class="form-check-input financier" type="radio" disabled name="beneficiary_financier[]" {{ old('beneficiary_financier.0', (isset($accession->financier_id) && $accession->financier_id == $beneficiaries[0]->id ? 1 : '' )) == 1 ? "checked" : "" }} value="1">
+                <input disabled class="form-check-input financier" type="radio" disabled name="beneficiary_financier[]" {{ old('beneficiary_financier.0', (isset($accession->financier_id) && $accession->financier_id == $beneficiaries[0]->id ? 1 : '' )) == 1 ? "checked" : "" }} value="1">
                 <label class="form-check-label" for="financier">Responsável Financeiro</label>
             </div>
         </div>
@@ -282,8 +288,8 @@
                     </div>
                     <div class="col">
                         <div class="form-check form-check-inline mt-2">
-                        <input readonly class="form-check-input financier" type="radio" name="beneficiary_financier[]" {{ old('beneficiary_financier.0', (isset($accession->financier_id) && $accession->financier_id == $v->id ? $k + 1 : '')) == ($k + 1) ? "checked" : "" }} value="{{ $k }}">
-                            <label class="form-check-label" for="financier">Financiador</label>
+                        <input disabled class="form-check-input financier" type="radio" name="beneficiary_financier[]" {{ old('beneficiary_financier.0', (isset($accession->financier_id) && $accession->financier_id == $v->id ? $k + 1 : '')) == ($k + 1) ? "checked" : "" }} value="{{ $k }}">
+                            <label class="form-check-label" for="financier">Responsável Financeiro</label>
                         </div>
                     </div>
                 </div>
