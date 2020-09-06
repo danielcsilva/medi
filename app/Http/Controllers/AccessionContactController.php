@@ -2,6 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Accession;
+use App\Address;
+use App\Beneficiary;
+use App\Company;
+use App\HealthDeclarationAnswer;
+use App\HealthDeclarationSpecific;
+use App\HealthPlan;
+use App\Quiz;
+use App\RiskGrade;
+use App\Telephone;
 use Illuminate\Http\Request;
 
 class AccessionContactController extends Controller
@@ -56,7 +66,29 @@ class AccessionContactController extends Controller
      */
     public function edit($id)
     {
-        //
+        $customers = Company::all();
+        $healthplans = HealthPlan::all();
+        $quizzes = Quiz::all();
+        $beneficiaries = Beneficiary::where('accession_id', $id)->get();
+        $telephones = Telephone::where('accession_id', $id)->get();
+        $addresses = Address::where('accession_id', $id)->get();
+        $answers = HealthDeclarationAnswer::where('accession_id', $id)->get();
+        $specifics = HealthDeclarationSpecific::where('accession_id', $id)->get();
+        
+        $accessionInstace = Accession::findOrFail($id);
+
+        return view('accessions.accession', [
+            'customers' => $customers, 
+            'beneficiaries' => $beneficiaries, 
+            'telephones' => $telephones, 
+            'healthplans' => $healthplans, 
+            'quizzes' => $quizzes, 
+            'accession' => $accessionInstace,
+            'addresses' => $addresses, 
+            'answers' => $answers, 
+            'specifics' => $specifics,
+            'step' => 'Contato'
+        ]);
     }
 
     /**

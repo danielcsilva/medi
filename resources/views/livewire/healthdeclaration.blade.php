@@ -1,13 +1,17 @@
 <div>
     <div class="row">
         <div class="col-6">
-            <label for="health-declaration">Escolha um Modelo de DS</label>
-            <select id="health-declaration" class="form-control" name="health_declaration">
-                <option value="">...</option>
-                @foreach($quizzes as $quiz)
-                    <option value="{{ $quiz->id }}" @if(old('health_declaration', $actual_quiz->id ?? null) == $quiz->id) selected @endif> {{ $quiz->name }}</option>
-                @endforeach
-            </select>
+            @if ($canEdit) 
+                <label for="health-declaration">Escolha um Modelo de DS</label>
+                <select id="health-declaration" class="form-control" name="health_declaration">
+                    <option value="">...</option>
+                    @foreach($quizzes as $quiz)
+                        <option value="{{ $quiz->id }}" @if(old('health_declaration', $actual_quiz->id ?? null) == $quiz->id) selected @endif> {{ $quiz->name }}</option>
+                    @endforeach
+                </select>
+            @else 
+                <p class="font-weight-bold">{{ $quiz->name }}</p>
+            @endif
         </div>
     </div>
 
@@ -21,7 +25,7 @@
                             @if ($i == 0)
                                 <th>Titular</th>
                             @else
-                                <th>Dependente {{ $i + 1 }}</th>
+                                <th>Dependente {{ $i }}</th>
                             @endif
 
                         @endfor
@@ -34,7 +38,7 @@
                             <tr>
                             <td>{{ $k + 1 }}</td><td>{{ $question->question }}</td>                            
                                 @for($i = 0; $i < $numberOfDependents; $i++)
-                                <td>
+                                <td>                                    
                                     @if (isset($answersQuiz[$question->id]['beneficiary_' . $i]['short']) && $answersQuiz[$question->id]['beneficiary_' . $i]['short'] == 'S' )
                                             <button type="button" wire:click.prevent="answerQuestion({{ $question->id }}, {{ $i }}, 'N', {{ $k }})" class="btn btn-primary">Sim</button> 
                                             <input type="hidden" data-index="{{ $k }}" name="beneficiary_{{ $i }}[{{ $k }}]" value="S">
@@ -42,9 +46,9 @@
                                             <button type="button" wire:click.prevent="answerQuestion({{ $question->id }}, {{ $i }}, 'S', {{ $k }})" class="btn btn-secondary">Não</button> 
                                             <input type="hidden" data-index="{{ $k }}" name="beneficiary_{{ $i }}[{{ $k }}]" value="N">
                                     @endif
-                                    <input type="hidden" name="question[]" value="{{ $question->id }}">                                    
                                 </td>
                                 @endfor
+                                <input type="hidden" name="question[]" value="{{ $question->id }}">                                    
                             </tr>
                         @endforeach
                     @endif
@@ -61,22 +65,23 @@
             <div class="form-row mb-1 mt-1">
                 <div class="col-1">
                     <label for="">Item</label>
-                    <input name="specific_comment_number[]" class="specific-items form-control" type="text" value="{{ $specific['comment_number'] }}" /> 
+                    <input readonly name="specific_comment_number[]" {{ !$canEdit ? 'readonly' : '' }} class="specific-items form-control" type="text" value="{{ $specific['comment_number'] }}" /> 
                 </div>
                 <div class="col">
                     <label for="">Beneficiário</label>
-                    <input type="text" class="form-control" value="{{ $specific['beneficiary_name'] }}" />
+                    <input type="text" readonly class="form-control" value="{{ $specific['beneficiary_name'] }}" {{ !$canEdit ? 'readonly' : '' }} />
                     <input type="hidden" name="specific_quiz_id[]" class="form-control" placeholder="especificação" value="{{ old('specific_quiz_id.' . $keySpecific, $specific['quiz_id'] ?? null) ?? null }}" />
-                    <input type="hidden" name="specific_question_id[]" class="form-control" placeholder="especificação" value="{{ old('specific_question_id.' . $keySpecific, $specific['question_id'] ?? null) ?? null }}" />
+                    <input type="hidden" name="specific_question_id[]" class="form-control" value="{{ old('specific_question_id.' . $keySpecific, $specific['question_id'] ?? null) ?? null }}" />
+                    <input type="hidden" name="specific_beneficiary_index[]" class="form-control" value="{{ old('specific_beneficiary_index.' . $keySpecific, $specific['beneficiary_index'] ?? null) ?? null }}" />
                 
                 </div>
                 <div class="col">
                     <label for="">Comentário</label>
-                    <input type="text" name="specific_comment_item[]" class="form-control" placeholder="especificação" value="{{ old('specific_comment_item.' . $keySpecific, $specific['comment_item'] ?? null) ?? null }}" />
+                    <input type="text" name="specific_comment_item[]" {{ !$canEdit ? 'readonly' : '' }} class="form-control" placeholder="especificação" value="{{ old('specific_comment_item.' . $keySpecific, $specific['comment_item'] ?? null) ?? null }}" required />
                 </div>
                 <div class="col">
                     <label for="">Período</label>
-                    <input type="text" name="specific_period_item[]" class="form-control" placeholder="período da doença" value="{{ old('specific_period_item.' . $keySpecific, $specific['period_item'] ?? null) ?? null }}" />
+                    <input type="text" name="specific_period_item[]" {{ !$canEdit ? 'readonly' : '' }} class="form-control" placeholder="período da doença" value="{{ old('specific_period_item.' . $keySpecific, $specific['period_item'] ?? null) ?? null }}" required />
                 </div>
             </div>
         @endforeach
@@ -85,7 +90,7 @@
     <div class="form-row mb-4 mt-4" id="health-declaration-comments">
         <div class="col">
             <label for="health-declaration-comments">Comentários da DS</label>
-            <textarea name="health_declaration_comments" class="form-control" id="" cols="30" rows="5">{{ old('health_declaration_comments', $accession->comments ?? null) }}</textarea>
+            <textarea {{ !$canEdit ? 'readonly' : '' }} name="health_declaration_comments" class="form-control" id="" cols="30" rows="5">{{ old('health_declaration_comments', $accession->comments ?? null) }}</textarea>
         </div>
     </div>
 </div>

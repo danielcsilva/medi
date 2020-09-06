@@ -13,7 +13,7 @@ class Accession extends Model
                            'quiz_id', 'health_plan_id', 'received_at', 'comments',
                            'admin_partner', 'initial_validity', 'consult_partner', 
                            'broker_partner', 'entity', 'contacted_date', 'contacted_comments',
-                           'to_contact'
+                           'to_contact', 'holder_id'
                         ];
 
     public function financier()
@@ -34,6 +34,11 @@ class Accession extends Model
     public function suggestion()
     {
         return $this->belongsTo('App\Suggestion', 'suggestion_id');
+    }
+
+    public function healthplan()
+    {
+        return $this->belongsTo('App\HealthPlan', 'health_plan_id');
     }
 
     public function getReceivedAtAttribute($value)

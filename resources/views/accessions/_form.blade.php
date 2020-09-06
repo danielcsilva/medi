@@ -268,13 +268,15 @@
                 
                 <div class="form-row mb-4 mt-4">
                     <div class="col">
+                        <label for="">Data de Nascimento</label>
                         <input type="text" name="beneficiary_birth_date[]" value="{{ old('beneficiary_birth_date.' . $k, $v->birth_date ?? null) }}" class="form-control date-br" placeholder="Data de Nasc." required>
                         @if($errors->has('beneficiary_birth_date.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('beneficiary_birth_date.'.$k) }}</div>
                         @endif
                     </div>
-                    <div class="col">        
-                        <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="beneficiary_gender[]" required1>
+                    <div class="col">   
+                        <label for="">Sexo</label>     
+                        <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="beneficiary_gender[]" required>
                             <option value="">Sexo</option>
                             <option value="M" @if(old('beneficiary_gender.' . $k, $v->gender ?? null) == 'M') selected @endif>Masculino</option>
                             <option value="F" @if(old('beneficiary_gender.' . $k, $v->gender ?? null) == 'F') selected @endif>Feminino</option>
@@ -284,9 +286,13 @@
                         @endif
                     </div>
                     <div class="col">
-                        <div class="form-check form-check-inline mt-2">
-                        <input class="form-check-input financier" type="radio" name="beneficiary_financier[]" {{ old('beneficiary_financier.0', (isset($accession->financier_id) && $accession->financier_id == $v->id ? $k + 1 : '')) == ($k + 1) ? "checked" : "" }} value="{{ $k }}">
-                            <label class="form-check-label" for="financier">Financiador</label>
+                        <label for="">Idade</label>
+                        <input type="text" name="beneficiary_age[]" value="{{ old('beneficiary_age.' . $k, $beneficiaries[$k]->age ?? null) }}" class="form-control idade" placeholder="Idade" required>
+                    </div>
+                    <div class="col">
+                        <div class="form-check form-check-inline" style="padding-top:35px;">
+                        <input class="form-check-input financier" type="radio" name="beneficiary_financier[]" {{ old('beneficiary_financier.'.$k, (isset($accession->financier_id) && isset($v->id) && $accession->financier_id == $v->id ? $k + 1 : '')) == ($k + 1) ? "checked" : "" }} value="{{ $k }}">
+                            <label class="form-check-label" for="financier">Responsável Financeiro</label>
                         </div>
                     </div>
                 </div>
@@ -363,7 +369,6 @@
 @endcan 
 
 @livewire('healthdeclaration', ['accession' => $accession ?? null, 'beneficiaries' => $beneficiaries ?? null])
-
 
 <div class="row mb-4 mt-4">
     <div class="col-2">

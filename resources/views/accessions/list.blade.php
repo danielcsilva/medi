@@ -21,8 +21,8 @@
 </div>
 
 @livewire('data-tables', [
-    'editRoute' => 'accessions', 
-    'routeParam' => 'accession', 
+    'editRoute' => $editRoute, 
+    'routeParam' => $routeParam, 
     'model' => $model, 
     'columns' => [
         'proposal_number', 

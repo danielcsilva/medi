@@ -36,16 +36,26 @@ class AccessionController extends Controller
      */
     public function index()
     {
-        
-        $filter = request()->all();
 
-        return view('accessions.list', ['model' => Accession::class, 'filter' => []]);
+        return view('accessions.list', [
+            'model' => Accession::class, 
+            'filter' => [], 
+            'editRoute' => 'accessions',
+            'routeParam' => 'accession'
+        ]);
 
     }
 
     public function toContact()
     {
-        return view('accessions.list', ['model' => Accession::class, 'filter' => ['to_contact' => true]]);
+        return view('accessions.list', [
+            'model' => Accession::class, 
+            'filter' => [
+                'to_contact' => true
+            ],
+            'editRoute' => 'tocontact',
+            'routeParam' => 'tocontact'
+        ]);
 
     }
 
@@ -60,10 +70,15 @@ class AccessionController extends Controller
         $healthplans = HealthPlan::all();
         $quizzes = Quiz::all();
 
-        return view('accessions.new', ['customers' => $customers, 'healthplans' => $healthplans, 
-                                       'quizzes' => $quizzes, 'specifics' => '',
-                                       'inconsistencies' => Inconsistency::all(), 'riskgrades' => RiskGrade::all(),
-                                       'suggestions' => Suggestion::all() ]);
+        return view('accessions.new', [
+            'customers' => $customers, 
+            'healthplans' => $healthplans, 
+            'quizzes' => $quizzes, 
+            'specifics' => '',
+            'inconsistencies' => Inconsistency::all(), 
+            'riskgrades' => RiskGrade::all(),
+            'suggestions' => Suggestion::all() 
+        ]);
     }
 
 
@@ -120,10 +135,11 @@ class AccessionController extends Controller
 
         $beneficiaries = $request->get('beneficiary_cpf');
         $telephones = $request->get('beneficiary_telephone');
+        $specifics = $request->get('specific_comment_number');
     
         try {
 
-            $this->accessionTransaction($request, $beneficiaries, $telephones);
+            $this->accessionTransaction($request, $beneficiaries, $telephones, null, $specifics);
             
         } catch(Throwable $t) {
 
@@ -164,15 +180,22 @@ class AccessionController extends Controller
         
         $accessionInstace = Accession::findOrFail($accession);
 
-        $inconsistencies = Inconsistency::all();
+        // $inconsistencies = Inconsistency::all();
 
-        return view('accessions.edit', ['customers' => $customers, 'beneficiaries' => $beneficiaries, 
-                                        'telephones' => $telephones, 'healthplans' => $healthplans, 
-                                        'quizzes' => $quizzes, 'accession' => $accessionInstace,
-                                        'addresses' => $addresses, 'answers' => $answers, 'specifics' => $specifics,
-                                        'inconsistencies' => $inconsistencies, 'riskgrades' => RiskGrade::all(),
-                                        'suggestions' => Suggestion::all()
-                                    ]);
+        return view('accessions.edit', [
+            'customers' => $customers, 
+            'beneficiaries' => $beneficiaries, 
+            'telephones' => $telephones, 
+            'healthplans' => $healthplans, 
+            'quizzes' => $quizzes, 
+            'accession' => $accessionInstace,
+            'addresses' => $addresses, 
+            'answers' => $answers, 
+            'specifics' => $specifics,
+            // 'inconsistencies' => $inconsistencies, 
+            'riskgrades' => RiskGrade::all(),
+            'suggestions' => Suggestion::all()
+        ]);
     }
 
     /**
@@ -189,14 +212,15 @@ class AccessionController extends Controller
 
         $beneficiaries = $request->get('beneficiary_cpf');
         $telephones = $request->get('beneficiary_telephone');
+        $specifics = $request->get('specific_comment_number');
 
         try {
             
-            $this->accessionTransaction($request, $beneficiaries, $telephones, $accession_id);
+            $this->accessionTransaction($request, $beneficiaries, $telephones, $accession_id, $specifics);
 
         } catch(Throwable $t) {
 
-            return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
+             return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
 
         }
         
@@ -206,10 +230,10 @@ class AccessionController extends Controller
     /**
      * Accession Transaction
      */
-    public function accessionTransaction($request, $beneficiaries, $telephones, $accession_id = null)
+    public function accessionTransaction($request, $beneficiaries, $telephones, $accession_id = null, $specifics = [])
     {   
         // dd($request->all());
-        DB::transaction(function() use ($request, $beneficiaries, $telephones, $accession_id) {
+        DB::transaction(function() use ($request, $beneficiaries, $telephones, $accession_id, $specifics) {
                             
             if ($accession_id !== null) { // edit
             
@@ -245,7 +269,8 @@ class AccessionController extends Controller
                 'consult_partner' => $request->get('consult_partner'),
                 'broker_partner' => $request->get('broker_partner'),
                 'entity' => $request->get('entity'),
-                'to_contact' => $to_contact
+                'to_contact' => $to_contact,
+                'holder_id' => 999
             ]);
                
             foreach($telephones as $tel) {
@@ -274,7 +299,11 @@ class AccessionController extends Controller
                     'gender' => $request->get('beneficiary_gender')[$k],
                     'accession_id' => $accession->id,
                     'age' => $request->get('beneficiary_age')[$k]
-                ]);                    
+                ]);
+                
+                if ($k == 0) { //Holder
+                    $accession->holder_id = $beneficiary->id;                
+                }
 
                 Address::create([
                     'cep' => $request->get('address_cep')[$k],
@@ -289,7 +318,7 @@ class AccessionController extends Controller
                 //Health Declaration
                 $field = 'beneficiary_' . $k;
                 
-                if ($request->get('beneficiary_0')) {
+                if ($request->get('beneficiary_' . $k) !== null) {
                     
                     $questions = $request->get('question');
                     foreach($questions as $k1 => $v1) { // questions of Health Declaration
@@ -303,26 +332,35 @@ class AccessionController extends Controller
                             'question_id' => $v1
                         ]);
                         
-                        if ($request->get($field)[$k1] == 'S') { // specific points on Helth Declaration
-                            HealthDeclarationSpecific::create([
-                                'comment_number' => $request->get('specific_comment_number')[$k1],
-                                'comment_item' => $request->get('specific_comment_item')[$k1],
-                                'period_item' => $request->get('specific_period_item')[$k1],
-                                'accession_id' => $accession->id,
-                                'beneficiary_id' => $beneficiary->id,
-                                'quiz_id' => $accession->quiz_id,
-                                'question_id' => $v1
-                            ]);
-                        }
+                        
                     }
-
+                    // dd($specifics);
+ 
                 }
+
+
 
                 // beneficiaries index from _form view
                 if (isset($request->get('beneficiary_financier')[0]) && $request->get('beneficiary_financier')[0] == ($k + 1)) {                    
                     $accession->financier_id = $beneficiary->id;
                 }
 
+            }
+
+
+            foreach($specifics as $kSpecific => $specific) {
+                // specific points on Helth Declaration
+                HealthDeclarationSpecific::create([
+                    'comment_number' => $request->get('specific_comment_number')[$kSpecific],
+                    'comment_item' => $request->get('specific_comment_item')[$kSpecific],
+                    'period_item' => $request->get('specific_period_item')[$kSpecific],
+                    'accession_id' => $accession->id,
+                    'beneficiary_id' => null,
+                    'beneficiary_index' => $request->get('specific_beneficiary_index')[$kSpecific],
+                    'quiz_id' => $accession->quiz_id,
+                    'question_id' => $request->get('specific_question_id')[$kSpecific]
+                ]);
+                
             }
 
             // if ($request->get('comment_number')) {
@@ -421,16 +459,16 @@ class AccessionController extends Controller
     {
         try {
 
-            $oldAccession = Accession::find($accession_id);
-            $oldAccession->inconsistencies()->detach();
-
+            // $oldAccession = Accession::find($accession_id);
+            // $oldAccession->inconsistencies()->detach();
+            
             HealthDeclarationSpecific::where('accession_id', $accession_id)->delete(); 
             HealthDeclarationAnswer::where('accession_id', $accession_id)->delete();
             Address::where('accession_id', $accession_id)->delete();
-            Beneficiary::where('accession_id', $accession_id)->delete();
             Telephone::where('accession_id', $accession_id)->delete();
+            Beneficiary::where('accession_id', $accession_id)->delete();
             Accession::where('id', $accession_id)->delete();
-
+            
         } catch(Throwable $t) {
 
             return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());

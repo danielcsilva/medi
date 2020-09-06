@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Accession;
+use App\Beneficiary;
 use App\HealthDeclarationAnswer;
 use App\HealthDeclarationSpecific;
 use App\HealthQuestion;
@@ -17,10 +18,11 @@ class Healthdeclaration extends Component
     public $quiz;
     public $quizzes;
     public $questions;
-    public $beneficiaries;
+    public $beneficiaries = [];
     public $answerBeneficiary;
     public $specifics = [];
     public $actualSpecifics;
+    public $edit = true;
 
 
     protected $listeners = [
@@ -41,12 +43,13 @@ class Healthdeclaration extends Component
         $this->numberOfDependents--;
     }
 
-    public function addSpecific($beneficiary_name, $index, $question_id)
+    public function addSpecific($beneficiary_name, $index, $question_id, $beneficiary_index)
     {
         $exists = false;
         
         foreach($this->specifics as $spec) {
-            if ($spec['beneficiary_name'] == $beneficiary_name 
+            if ($spec['beneficiary_name'] == $beneficiary_name
+                && $spec['beneficiary_index'] == $beneficiary_index 
                 && $spec['quiz_id'] == $this->quiz->id 
                 && $spec['question_id'] == $question_id) {
 
@@ -58,6 +61,7 @@ class Healthdeclaration extends Component
 
             $specific = [
                 'beneficiary_name' => $beneficiary_name,
+                'beneficiary_index' => $beneficiary_index,
                 'comment_item' => '',
                 'period_item' => '',
                 'quiz_id' => $this->quiz->id,
@@ -69,10 +73,11 @@ class Healthdeclaration extends Component
         }
     }
 
-    public function removeSpecific($beneficiary_name, $question_id)
+    public function removeSpecific($beneficiary_name, $question_id, $beneficiary_index)
     {
         foreach($this->specifics as $k => $spec) {
             if ($spec['beneficiary_name'] == $beneficiary_name 
+                && $spec['beneficiary_index'] == $beneficiary_index 
                 && $spec['quiz_id'] == $this->quiz->id 
                 && $spec['question_id'] == $question_id) {
                     
@@ -88,7 +93,7 @@ class Healthdeclaration extends Component
 
         $this->quiz = Quiz::where('id', $quiz_id)->first();
         $this->questions = Quiz::with('questions')->where('id', $this->quiz->id)->first();
-        
+
         $this->refreshQuiz();
         $this->refreshQuizSpecifics();
     }
@@ -96,31 +101,37 @@ class Healthdeclaration extends Component
     public function answerQuestion($question_id, $beneficiary_index, $answer, $question_index)
     {
         
-        $question = HealthQuestion::findOrFail($question_id);
-
-        if ($answer == 'S') {
-
-            $this->answerBeneficiary[$question->id]['beneficiary_' . $beneficiary_index] = [
-                'short' => $answer, 
-                'long' => ($answer == 'S' ? 'Sim' : 'Não'),
-                'beneficiary_name' => $this->beneficiaries[$beneficiary_index]->name
-            ];
-
-            $this->addSpecific($this->beneficiaries[$beneficiary_index]->name, $question_index, $question_id);
-
-        } else {
-            unset($this->answerBeneficiary[$question->id]['beneficiary_' . $beneficiary_index]);
-
-            $this->removeSpecific($this->beneficiaries[$beneficiary_index]->name, $question_id);
-
+        if ($this->edit) {
+            
+            $question = HealthQuestion::findOrFail($question_id);
+    
+            if ($answer == 'S') {
+    
+                $this->answerBeneficiary[$question->id]['beneficiary_' . $beneficiary_index] = [
+                    'short' => $answer, 
+                    'long' => ($answer == 'S' ? 'Sim' : 'Não'),
+                    'beneficiary_name' =>  $beneficiary_index == 0 ? 'Titular' : 'Dependente ' . $beneficiary_index,
+                    'beneficiary_id' => ''
+                 ];
+    
+                $this->addSpecific($beneficiary_index == 0 ? 'Titular' : 'Dependente ' . $beneficiary_index, $question_index, $question_id, $beneficiary_index);
+    
+            } else {
+                unset($this->answerBeneficiary[$question->id]['beneficiary_' . $beneficiary_index]);
+    
+                $this->removeSpecific($beneficiary_index == 0 ? 'Titular' : 'Dependente ' . $beneficiary_index, $question_id, $beneficiary_index);
+    
+            }
         }
+
 
     }
 
-    public function mount($accession, $beneficiaries)
+    public function mount($accession, $beneficiaries, $edit = true)
     {
         $this->answerBeneficiary = [];
         $this->accession = $accession;
+        $this->edit = $edit;
 
         if ($accession !== null) {
 
@@ -129,8 +140,12 @@ class Healthdeclaration extends Component
             $this->answers = HealthDeclarationAnswer::where('accession_id', $accession->id)->get();
             $this->questions = Quiz::with('questions')->where('id', $this->quiz->id)->first(); // Quiz with questions
             $this->actualSpecifics = HealthDeclarationSpecific::where('accession_id', $accession->id)->get();
-            $this->beneficiaries = $beneficiaries;            
+            $this->beneficiaries = $beneficiaries;
 
+            if ($beneficiaries !== null) {
+                $this->numberOfDependents = count($beneficiaries);
+            }
+            
             $this->refreshQuiz();
             $this->refreshQuizSpecifics();
         }
@@ -142,25 +157,30 @@ class Healthdeclaration extends Component
     public function refreshQuiz()
     {
 
-        if (isset($this->answers) && count($this->answers) > 0) {
-
-            foreach($this->answers as $keyAnswer => $answer) {
-    
-                if ($answer->quiz_id == $this->quiz->id) {
-    
-                    foreach($this->beneficiaries as $k => $beneficiary) {
-                        $this->answerBeneficiary[$answer->question]['beneficiary_' . $k] = [
+        foreach($this->beneficiaries as $k => $beneficiary) {
+            
+            foreach($this->questions->questions as $question) {
+                            
+                $answers = HealthDeclarationAnswer::where(['quiz_id' => $this->quiz->id, 'beneficiary_id' => $beneficiary->id, 'question_id' => $question->id])->get();
+                
+                if ($answers) {
+                    foreach($answers as $answer) {
+                                               
+                        $this->answerBeneficiary[$question->id]['beneficiary_' . $k] = [
                             'short' => $answer->answer, 
                             'long' => ($answer->answer == 'S' ? 'Sim' : 'Não'),
-                            'beneficiary_name' => $beneficiary->name
+                            'beneficiary_name' => $k == 0 ? 'Titular' : 'Dependente ' . $k,
+                            'beneficiary_id' => $beneficiary->id
                         ];
+
                     }
-    
-                } 
-                
+
+                }
+                        
             }
 
         }
+
     }
 
     public function refreshQuizSpecifics()
@@ -172,24 +192,21 @@ class Healthdeclaration extends Component
 
             foreach($this->questions->questions as $question) {
     
-                foreach($this->actualSpecifics as $spec) {
-    
-                    foreach($this->beneficiaries as $beneficiary) {
-                        
-                        if ($beneficiary->id == $spec->beneficiary_id 
-                            && $question->id == $spec->question_id 
-                            && $spec->accession_id == $this->accession->id
-                            && $spec->quiz_id == $this->quiz->id) {
-                                
-                            $specific['beneficiary_name'] = $beneficiary->name;
-                            $specific['comment_number'] = $spec->comment_number;
-                            $specific['comment_item'] = $spec->comment_item;
-                            $specific['period_item'] = $spec->period_item;
-                            $specific['quiz_id'] = $this->quiz->id;
-                            $specific['question_id'] = $spec->question_id;
+                foreach($this->actualSpecifics as $k => $spec) {
                             
-                            $this->specifics[] = $specific;
-                        }
+                    if ($question->id == $spec->question_id 
+                        && $spec->accession_id == $this->accession->id
+                        && $spec->quiz_id == $this->quiz->id) {
+                            
+                        $specific['beneficiary_name'] = $spec->beneficiary_index == 0 ? 'Titular' : 'Dependente ' . $spec->beneficiary_index;
+                        $specific['beneficiary_index'] = $spec->beneficiary_index;
+                        $specific['comment_number'] = $spec->comment_number;
+                        $specific['comment_item'] = $spec->comment_item;
+                        $specific['period_item'] = $spec->period_item;
+                        $specific['quiz_id'] = $this->quiz->id;
+                        $specific['question_id'] = $spec->question_id;
+                        
+                        $this->specifics[] = $specific;
                     }
                 }
     
@@ -211,7 +228,8 @@ class Healthdeclaration extends Component
             'beneficiaries' => $this->beneficiaries,
             'answersQuiz' => $this->answerBeneficiary,
             'specifics' => $this->specifics,
-            'numberOfDependents' => $this->numberOfDependents
+            'numberOfDependents' => $this->numberOfDependents,
+            'canEdit' => $this->edit
         ]);
 
     }

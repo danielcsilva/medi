@@ -15966,8 +15966,7 @@ $(document).ready(function ($) {
     var fieldset = $.parseHTML('<fieldset class="form-group dependent"><span class="count">#' + dependents + '</span><span class="delete-dependent">' + deleteBtn + '</span></fieldset>');
     $(fieldset).append(items);
     $('#dependents').append(fieldset);
-    applyMasks();
-    changeHealthDeclaration();
+    applyMasks(); // changeHealthDeclaration();
   });
   $(document).on('click', '.delete-dependent', function (e) {
     $('#toDelete').val($(e.target).parents('fieldset:first').index());
@@ -15976,8 +15975,7 @@ $(document).ready(function ($) {
     e.preventDefault();
     var toRemove = $('#toDelete').val();
     $('fieldset:eq(' + toRemove + ')').remove();
-    recountDependents();
-    changeHealthDeclaration();
+    recountDependents(); // changeHealthDeclaration();
   });
   $(document).on('keyup', '.cep:first', function (e) {
     var objInput = $(e.target);

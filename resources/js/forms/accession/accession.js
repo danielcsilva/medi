@@ -105,7 +105,7 @@ $(document).ready(function($){
         $('#dependents').append(fieldset);
         
         applyMasks();
-        changeHealthDeclaration();
+        // changeHealthDeclaration();
     })
 
 
@@ -121,7 +121,7 @@ $(document).ready(function($){
         $('fieldset:eq('+ toRemove +')').remove();
         
         recountDependents();
-        changeHealthDeclaration();
+        // changeHealthDeclaration();
     });
 
     $(document).on('keyup', '.cep:first', function(e){
