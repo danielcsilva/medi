@@ -60,9 +60,9 @@
         <div class="row mb-4 mt-4">
             <div class="col-3">
                 <label for="">Nome do Entrevistado</label>
-                <input type="text" class="form-control" name="interviewed_name" value="{{ old('interviewed_name') }}">
+                <input type="text" class="form-control" name="interviewed_name" value="{{ old('interviewed_name') }}" required>
                 <label for="" class="mt-2">Data da Entrevista</label>
-                <input type="text" class="form-control date-br" name="interview_date" value="{{ old('interview_date') }}">
+                <input type="text" class="form-control date-br" name="interview_date" value="{{ old('interview_date', date('d.m.Y')) }}" required>
                 <label for="" class="mt-2">Entrevistado por</label>
                 <input type="text" disabled class="form-control" name="interviewed_by" value="{{ Auth::user()->name }}">
             </div>
@@ -78,7 +78,7 @@
             </div>
             <div class="col">
                 <label for="">Comentários da Entrevista</label>
-                <textarea name="interview_comments" class="form-control" id="" cols="30" rows="8">{{ old('interview_comments') }}</textarea>
+                <textarea name="interview_comments" class="form-control" id="" cols="30" rows="8" required>{{ old('interview_comments') }}</textarea>
             </div>
         </div>
 
