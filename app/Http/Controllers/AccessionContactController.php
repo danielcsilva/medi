@@ -87,8 +87,11 @@ class AccessionContactController extends Controller
         $specifics = HealthDeclarationSpecific::where('accession_id', $id)->get();
         
         $accessionInstace = Accession::findOrFail($id);
-
+        
         $inconsistencies = Inconsistency::all();
+
+        $contacts = AccessionContact::with('inconsistencies')->where('accession_id', $id)->get();
+
 
         return view('accessions.contact', [
             'customers' => $customers, 
@@ -101,7 +104,8 @@ class AccessionContactController extends Controller
             'answers' => $answers, 
             'specifics' => $specifics,
             'step' => 'Contato',
-            'inconsistencies' => $inconsistencies
+            'inconsistencies' => $inconsistencies,
+            'contacts' => $contacts ?? []
         ]);
     }
 
@@ -112,11 +116,11 @@ class AccessionContactController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $accession_id)
     {
-        $accession = Accession::findOrFail($id);
+        $accession = Accession::findOrFail($accession_id);
 
-        AccessionContact::create([
+        $accessionContact = AccessionContact::create([
             'contacted_date' => $request->get('contacted_date'),
             'contacted_comments' => $request->get('contacted_comments'), 
             'inconsistency_id' => null, 
@@ -125,7 +129,7 @@ class AccessionContactController extends Controller
         ]);
 
         if ($request->get('inconsistencies') !== null) {
-            $accession->inconsistencies()->sync($request->get('inconsistencies'));
+            $accessionContact->inconsistencies()->sync($request->get('inconsistencies'));
         }        
 
         if ($request->get('to_interview') !== null) {

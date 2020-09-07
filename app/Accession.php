@@ -41,6 +41,11 @@ class Accession extends Model
         return $this->belongsTo('App\HealthPlan', 'health_plan_id');
     }
 
+    public function inconsistencies()
+    {
+        return $this->morphToMany('App\Inconsistency', 'inconsistent');
+    }
+
     public function getReceivedAtAttribute($value)
     {
         return DateTime::createFromFormat('Y-m-d', $value)->format('d.m.Y');

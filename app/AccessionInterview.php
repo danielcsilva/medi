@@ -14,8 +14,7 @@ class AccessionInterview extends Model
             'interview_comments', 
             'interview_validated', 
             'user_id', 
-            'accession_id',
-            'inconsistency_id'
+            'accession_id'
     ];
 
     public function user()
@@ -28,9 +27,10 @@ class AccessionInterview extends Model
         return $this->belongsTo('App\Accession', 'accession_id');
     }
 
-    public function inconsistency()
+    public function inconsistencies()
     {
-        return $this->belongsTo('App\Inconsistency', 'inconsistency_id');
+        return $this->morphToMany('App\Inconsistency', 'inconsistent');
     }
+
 }
 

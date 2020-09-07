@@ -10,6 +10,16 @@ class Inconsistency extends Model
 
     public function accessions()
     {
-        return $this->belongsToMany('App\Accession', 'acession_inconsistency');
+        return $this->morphedByMany('App\Accession', 'inconsistent');
+    }
+
+    public function accessionContacts()
+    {
+        return $this->morphedByMany('App\AccessionContact', 'inconsistent');
+    }
+
+    public function accessionInterviews()
+    {
+        return $this->morphedByMany('App\AccessionInterview', 'inconsistent');
     }
 }

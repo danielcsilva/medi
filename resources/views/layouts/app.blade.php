@@ -65,7 +65,11 @@
                                     @can('Editar Processos')
                                         <a class="dropdown-item" href="{{ route('accessions.create') }}">Novo</a>
                                         <a class="dropdown-item" href="{{ route('accessions.index') }}">Em andamento</a>            
+                                    @endcan
+                                    @can('Editar Contatos')
                                         <a class="dropdown-item" href="{{ route('tocontact.index') }}">Liberado para Contato</a>
+                                    @endcan
+                                    @can('Editar Entrevistas')
                                         <a class="dropdown-item" href="{{ route('interview.index') }}">Liberado para Entrevista</a>
                                     @endcan
 
