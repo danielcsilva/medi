@@ -217,7 +217,7 @@ class AccessionController extends Controller
     /**
      * Accession Transaction
      */
-    public function accessionTransaction($request, $beneficiaries, $telephones, $accession_id = null, $specifics = [])
+    public function accessionTransaction($request, $beneficiaries, $telephones, $accession_id = null, $specifics = null)
     {   
         // dd($request->all());
         DB::transaction(function() use ($request, $beneficiaries, $telephones, $accession_id, $specifics) {
@@ -334,19 +334,22 @@ class AccessionController extends Controller
 
             }
 
+            if ($specifics !== null) {
 
-            foreach($specifics as $kSpecific => $specific) {
-                // specific points on Helth Declaration
-                HealthDeclarationSpecific::create([
-                    'comment_number' => $request->get('specific_comment_number')[$kSpecific],
-                    'comment_item' => $request->get('specific_comment_item')[$kSpecific],
-                    'period_item' => $request->get('specific_period_item')[$kSpecific],
-                    'accession_id' => $accession->id,
-                    'beneficiary_id' => null,
-                    'beneficiary_index' => $request->get('specific_beneficiary_index')[$kSpecific],
-                    'quiz_id' => $accession->quiz_id,
-                    'question_id' => $request->get('specific_question_id')[$kSpecific]
-                ]);
+                foreach($specifics as $kSpecific => $specific) {
+                    // specific points on Helth Declaration
+                    HealthDeclarationSpecific::create([
+                        'comment_number' => $request->get('specific_comment_number')[$kSpecific],
+                        'comment_item' => $request->get('specific_comment_item')[$kSpecific],
+                        'period_item' => $request->get('specific_period_item')[$kSpecific],
+                        'accession_id' => $accession->id,
+                        'beneficiary_id' => null,
+                        'beneficiary_index' => $request->get('specific_beneficiary_index')[$kSpecific],
+                        'quiz_id' => $accession->quiz_id,
+                        'question_id' => $request->get('specific_question_id')[$kSpecific]
+                    ]);
+                    
+                }
                 
             }
 

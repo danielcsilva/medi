@@ -91,11 +91,18 @@ class Healthdeclaration extends Component
     {
         $this->answerBeneficiary = [];
 
-        $this->quiz = Quiz::where('id', $quiz_id)->first();
-        $this->questions = Quiz::with('questions')->where('id', $this->quiz->id)->first();
+        if (is_numeric($quiz_id)) {
 
-        $this->refreshQuiz();
-        $this->refreshQuizSpecifics();
+            $this->quiz = Quiz::where('id', $quiz_id)->first();
+            $this->questions = Quiz::with('questions')->where('id', $this->quiz->id)->first();
+    
+            $this->refreshQuiz();
+            $this->refreshQuizSpecifics();
+
+        } else {
+            $this->questions = [];
+            $this->quiz = null;
+        }
     }
 
     public function answerQuestion($question_id, $beneficiary_index, $answer, $question_index)

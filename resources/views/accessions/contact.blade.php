@@ -93,7 +93,7 @@
                 </div>
                 <div class="col">
                     <div class="form-check form-check-inline mt-2">
-                        <input class="form-check-input" type="text" id="to-interview" name="to_interview" value="{{ old('to_interview', $accession->to_interview ?? 0)  }}">
+                        <input class="form-check-input" type="hidden" id="to-interview" name="to_interview" value="">
                     </div>
                 </div>
                 @endif

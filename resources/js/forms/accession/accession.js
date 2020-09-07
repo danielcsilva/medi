@@ -1,5 +1,4 @@
 window.$ = window.jQuery = require('jquery');
-import IMask from 'imask';
 
 var dependents = 0;
 

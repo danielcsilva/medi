@@ -15,6 +15,7 @@ use App\Telephone;
 
 
 use App\AccessionInterview;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
 use App\Accession;
@@ -123,27 +124,59 @@ class AccessionInterviewController extends Controller
     {   
         $accession = Accession::findOrFail($accession_id);
 
-        $interview = AccessionInterview::create([
-            'interviewed_name' => $request->get('interviewed_name'), 
-            'interview_date' => $request->get('interview_date'), 
-            'interviewed_by' => Auth::user()->name, 
-            'interview_comments' => $request->get('interview_comments'), 
-            'interview_validated' => $request->get('interview_validated'), 
-            'user_id' => Auth::user()->id, 
-            'accession_id' => $accession_id
-        ]);
+        $msg = "";
+
+        $oldInterviews = AccessionInterview::where('accession_id', $accession_id);
+
+        if (!$oldInterviews) {
+                        
+            Validator::make($request->all(), 
+            [
+                'interviewed_name' => 'required', 
+                'interview_date' => 'required', 
+                'interviewed_by' => '', 
+                'interview_comments' => 'required', 
+                'interview_validated' => '', 
+                'user_id' => '', 
+                'accession_id' => ''
+            ],
+            [
+                'interviewed_name.required' => 'Nome do Entrevistado é obrigatório', 
+                'interview_date.required' => 'Data da Entrevista é obrigatório', 
+                'interview_comments.required' => 'Comentários da Entrevista é obrigatório', 
+            ])->validate();
+
+        }
+
+        if ($request->get('interviewed_name') !== null && $request->get('interview_comments') !== null) {
+            
+            $interview = AccessionInterview::create([
+                'interviewed_name' => $request->get('interviewed_name'), 
+                'interview_date' => $request->get('interview_date'), 
+                'interviewed_by' => Auth::user()->name, 
+                'interview_comments' => $request->get('interview_comments'), 
+                'interview_validated' => false, 
+                'user_id' => Auth::user()->id, 
+                'accession_id' => $accession_id
+            ]);
+            
+            $msg = 'Entrevista do Processo de Adesão criada com sucesso!';
+
+        }
 
         if ($request->get('inconsistencies') !== null) {
             $interview->inconsistencies()->sync($request->get('inconsistencies'));
         }        
 
-        if ($request->get('to_medic_analysis') !== null) {
+        if ($request->get('to_medic_analysis') !== null && $request->get('to_medic_analysis') == "1") {
             $accession->to_medic_analysis = $request->get('to_medic_analysis');
+            $msg .= "Processo com o Nº de proposta ". $accession->proposal_number ." liberado para Análise Médica";
         }
 
-        $accession->save();        
+        $accession->save();      
+        
 
-        return redirect()->route('tocontact.index')->with('success', 'Entrevista do Processo de Adesão criada com sucesso!');
+        return redirect()->route('interview.index')->with('success', $msg);
         
     }
 

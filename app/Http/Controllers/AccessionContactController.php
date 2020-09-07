@@ -119,6 +119,7 @@ class AccessionContactController extends Controller
     public function update(Request $request, $accession_id)
     {
         $accession = Accession::findOrFail($accession_id);
+        $msg = "";
 
         $oldContacts = AccessionContact::where('accession_id', $accession_id);
 
@@ -146,7 +147,8 @@ class AccessionContactController extends Controller
                 'user_id' => Auth::user()->id, 
                 'accession_id' => $accession->id
             ]);
-
+            
+            $msg = 'Contato do Processo de Adesão criado com sucesso!';
         }   
 
         if ($request->get('inconsistencies') !== null) {
@@ -155,12 +157,13 @@ class AccessionContactController extends Controller
 
         if ($request->get('to_interview') !== null) {
             $accession->to_interview = $request->get('to_interview');
+            $msg .= "Processo com o Nº de proposta ". $accession->proposal_number ." liberado para Entrevista";
         }
 
         $accession->save();
         
 
-        return redirect()->route('tocontact.index')->with('success', 'Contato do Processo de Adesão criado com sucesso!');
+        return redirect()->route('tocontact.index')->with('success', $msg);
 
     }
 

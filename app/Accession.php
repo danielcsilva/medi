@@ -13,7 +13,7 @@ class Accession extends Model
                            'quiz_id', 'health_plan_id', 'received_at', 'comments',
                            'admin_partner', 'initial_validity', 'consult_partner', 
                            'broker_partner', 'entity', 'contacted_date', 'contacted_comments',
-                           'to_contact', 'holder_id'
+                           'to_contact', 'holder_id', 'to_medic_analysis'
                         ];
 
     public function financier()

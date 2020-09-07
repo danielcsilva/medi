@@ -1,6 +1,8 @@
 window.$ = require('jquery')
 require('./bootstrap')
 
+import IMask from 'imask';
+
 var applyMasks = function() {
     // console.log('apllying masks...')
     var datesBR = document.getElementsByClassName('date-br');
@@ -78,3 +80,5 @@ var parseDate = function (input) {
 }
 
 window.parseDate = parseDate;
+
+applyMasks();

@@ -183,7 +183,7 @@
         </div>
         <div class="col-2">
             <label for="">IMC</label>
-            <input type="number" name="beneficiary_imc[]" step=".01" value="{{ old('beneficiary_imc.0', $beneficiaries[0]->imc ?? null) }}" class="form-control imc-calc" placeholder="Peso">
+            <input type="number" readonly name="beneficiary_imc[]" step=".01" value="{{ old('beneficiary_imc.0', $beneficiaries[0]->imc ?? null) }}" class="form-control imc-calc" placeholder="Peso">
             @if($errors->has('beneficiary_imc.0'))
                 <div class="alert alert-danger small">{{ $errors->first('beneficiary_imc.0') }}</div>
             @endif
