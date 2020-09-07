@@ -1,13 +1,10 @@
 <div class="row">
     <div class="col">    
-        {{ Breadcrumbs::render('accessions-contact', $accession) }}                
+        {{ Breadcrumbs::render($breadcrumbs, $accession) }}                
     </div>
 </div>
 
 @can('Visualizar Processos')
-
-<div class="alert alert-dark">Você está na etapa: {{ $step }}</div>
-<div class="alert alert-primary">Lembrete: Não é possível editar o Processo nesta etapa.</div>
 
 <div class="form-row mb-4 mt-4">
     <div class="col-3">

@@ -41,8 +41,7 @@ class AccessionController extends Controller
             'model' => Accession::class, 
             'filter' => [], 
             'editRoute' => 'accessions',
-            'routeParam' => 'accession',
-            'breadcrumb' => 'Processos'
+            'routeParam' => 'accession'
         ]);
 
     }
@@ -353,32 +352,6 @@ class AccessionController extends Controller
 
             $accession->save();
         });
-    }
-
-    public function setInterview($request, $accession) 
-    {
-        //Interview
-        if ($request->get('interviewed_name')) {
-            $accession->interviewed_name = $request->get('interviewed_name');
-        }
-
-        if ($request->get('interview_date')) {
-            $accession->interview_date = $request->get('interview_date');
-        }
-
-        if ($request->get('interviewed_by')) {
-            $accession->interviewed_by = $request->get('interviewed_by');
-        }
-
-        if ($request->get('interview_comments')) {
-            $accession->interview_comments = $request->get('interview_comments');
-        }
-        
-        if ($request->get('interview_validated')) {
-            $accession->interview_validated = $request->get('interview_validated');
-        }
-
-        $accession->save();
     }
 
     public function setMedicAnalysis($request, $accession)

@@ -79,11 +79,17 @@ Breadcrumbs::for('accessions', function ($trail, $content = null) {
 
     $trail->push('Dashboard', route('home'));
     
-    $trail->push($content ?? 'Processos', route('accessions.index'));
-
+    if ($content == 'list'){
+        $trail->push('Processos');
+    } else if(is_string($content)){
+        $trail->push('Processos ' . (strlen($content) > 0 ? '(' . $content . ')' : ''));
+    } else {
+        $trail->push('Processos', route('accessions.index'));
+    }
+    
     if ($content == null) {
         $trail->push('Novo Processo');
-    } else if(is_object($content)){
+    } else if(is_object($content)){        
         $trail->push($content->proposal_number . ' - ' . ($content->company->name ?? ''));
     }
 
@@ -92,7 +98,15 @@ Breadcrumbs::for('accessions', function ($trail, $content = null) {
 Breadcrumbs::for('accessions-contact', function ($trail, $content = null) {
 
     $trail->push('Dashboard', route('home'));
-    $trail->push('Processos para Contato', url('/tocontact/accessions'));
+    $trail->push('Processos para Contato', route('tocontact.index'));
+    $trail->push($content->proposal_number . ' - ' . ($content->company->name ?? ''));
+
+});
+
+Breadcrumbs::for('accessions-interview', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    $trail->push('Processos para Entrevista', route('interview.index'));
     $trail->push($content->proposal_number . ' - ' . ($content->company->name ?? ''));
 
 });

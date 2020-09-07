@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
 class AccessionContact extends Model
@@ -26,6 +27,16 @@ class AccessionContact extends Model
     public function inconsistencies()
     {
         return $this->morphToMany('App\Inconsistency', 'inconsistent');
+    }
+
+    public function setContactedDateAttribute($value)
+    {
+        $this->attributes['contacted_date'] = DateTime::createFromFormat('d.m.Y', $value)->format('Y-m-d');
+    }
+
+    public function getContactedDateAttribute($value)
+    {
+        return DateTime::createFromFormat('Y-m-d H:i:s', $value)->format('d.m.Y');
     }
 
 }

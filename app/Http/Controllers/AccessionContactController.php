@@ -15,6 +15,7 @@ use App\Telephone;
 use Illuminate\Http\Request;
 
 use App\AccessionContact;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
 class AccessionContactController extends Controller
@@ -33,7 +34,7 @@ class AccessionContactController extends Controller
             ],
             'editRoute' => 'tocontact',
             'routeParam' => 'tocontact',
-            'breadcrumb' => 'Processos para Contato'
+            'breadcrumb' => 'Liberados para Contato'
         ]);
     }
 
@@ -103,7 +104,6 @@ class AccessionContactController extends Controller
             'addresses' => $addresses, 
             'answers' => $answers, 
             'specifics' => $specifics,
-            'step' => 'Contato',
             'inconsistencies' => $inconsistencies,
             'contacts' => $contacts ?? []
         ]);
@@ -120,13 +120,34 @@ class AccessionContactController extends Controller
     {
         $accession = Accession::findOrFail($accession_id);
 
-        $accessionContact = AccessionContact::create([
-            'contacted_date' => $request->get('contacted_date'),
-            'contacted_comments' => $request->get('contacted_comments'), 
-            'inconsistency_id' => null, 
-            'user_id' => Auth::user()->id, 
-            'accession_id' => $accession->id
-        ]);
+        $oldContacts = AccessionContact::where('accession_id', $accession_id);
+
+        if (!$oldContacts) {
+                        
+            Validator::make($request->all(), 
+            [
+                'contacted_date' => 'required',
+                'contacted_comments' => 'required', 
+                'user_id' => '', 
+                'accession_id' => ''
+            ],
+            [
+                'contacted_date' => "Data do Contato é obrigatório",
+                'contacted_comments' => 'Comentário so Contato é obrigatório'
+            ])->validate();
+
+        }
+
+        if ($request->get('contacted_comments') !== null) {
+
+            $accessionContact = AccessionContact::create([
+                'contacted_date' => $request->get('contacted_date'),
+                'contacted_comments' => $request->get('contacted_comments'), 
+                'user_id' => Auth::user()->id, 
+                'accession_id' => $accession->id
+            ]);
+
+        }   
 
         if ($request->get('inconsistencies') !== null) {
             $accessionContact->inconsistencies()->sync($request->get('inconsistencies'));

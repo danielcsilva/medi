@@ -15884,47 +15884,6 @@ __webpack_require__.r(__webpack_exports__);
 window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
 var dependents = 0;
-
-function applyMasks() {
-  // console.log('apllying masks...')
-  var datesBR = document.getElementsByClassName('date-br');
-  Array.prototype.forEach.call(datesBR, function (element) {
-    var customMaskdatesBR = new imask__WEBPACK_IMPORTED_MODULE_0__["default"](element, {
-      mask: Date,
-      min: new Date(1900, 0, 1),
-      max: new Date(new Date().getFullYear() + 1, 0, 1),
-      lazy: false
-    });
-  });
-  var telephones = document.getElementsByClassName('telephone');
-  Array.prototype.forEach.call(telephones, function (element) {
-    var customMasktelephones = new imask__WEBPACK_IMPORTED_MODULE_0__["default"](element, {
-      mask: '(00)00000-0000',
-      placeholder: {
-        show: 'always'
-      }
-    });
-  });
-  var cpfs = document.getElementsByClassName('cpf');
-  Array.prototype.forEach.call(cpfs, function (element) {
-    var customMaskcpfs = new imask__WEBPACK_IMPORTED_MODULE_0__["default"](element, {
-      mask: '000.000.000-00',
-      placeholder: {
-        show: 'always'
-      }
-    });
-  });
-  var ceps = document.getElementsByClassName('cep');
-  Array.prototype.forEach.call(ceps, function (element) {
-    var customMaskceps = new imask__WEBPACK_IMPORTED_MODULE_0__["default"](element, {
-      mask: '00000-000',
-      placeholder: {
-        show: 'always'
-      }
-    });
-  });
-}
-
 $(document).ready(function ($) {
   applyMasks();
   recountDependents();
@@ -16029,61 +15988,7 @@ $(document).ready(function ($) {
   $('.birth-date').each(function (i, o) {
     $(o).blur();
   });
-}); // function setSpecifics(item_number, item_value) {
-//     const row = "<div class=\"form-row mb-1 mt-1\">";
-//     const endRow = "</div>";
-//     const fieldNumber = "<div class=\"col-1\"><input id=\"specific-"+ item_number +"\" type=\"text\" name=\"comment_number[]\" class=\"form-control comment-number\" placeholder=\"\" value=\"\" /></div>";
-//     const fieldItem = "<div class=\"col-6\"><input type=\"text\" name=\"comment_item[]\" class=\"form-control\" placeholder=\"comentário\" value=\"\" /></div>";
-//     const fieldPeriod = "<div class=\"col-3\"><input type=\"text\" name=\"comment_period[]\" class=\"form-control\" placeholder=\"período\" value=\"\" /></div>";
-//     const specifics = $('#comments-by-item');
-//     // console.log(specifics.find('.comment-number:eq("'+ item_number +'")').length, item_number);
-//     if (specifics.find('#specific-'+ item_number).length == 0 && item_value === 'S') {
-//         specifics.append(row + fieldNumber + fieldItem + fieldPeriod + endRow);
-//         specifics.find('#specific-'+ item_number).val(item_number);
-//         specifics.show();
-//     } else if (item_value === 'N') {
-//         specifics.find('#specific-'+ item_number).parents('div.form-row:first').remove();
-//     }
-//     if (specifics.find('input').length === 0) {
-//         specifics.hide();
-//     }
-//     orderSpecifics();
-// }
-// function orderSpecifics() {
-//     $('#comments-by-item').find('div.form-row').each(function(i,o){
-//         if ( parseInt($(o).find('.comment-number').attr('id').replace('specific-', '')) <  (i + 1) ){
-//             let obj = $(o).clone();
-//             $('#comments-by-item').find('label').after(obj);
-//             $(o).remove();
-//         }
-//     })
-// }
-
-function imcCalc(weight, height) {
-  return weight / (height * height);
-} // function calcAge(e) {
-//     let birth_date = parseDate(e.target.value);
-//     const today = new Date();
-//     const diffTime = Math.abs(birth_date - today);
-//     const diffYears = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 365)); 
-//     $(e.target).parents('div.form-row').find('.idade:first').val(diffYears - 1);
-// }
-
-
-function _calculateAge(e) {
-  // birthday is a date
-  var birthday = parseDate(e.target.value);
-  var ageDifMs = Date.now() - birthday.getTime();
-  var ageDate = new Date(ageDifMs); // miliseconds from epoch
-
-  $(e.target).parents('div.form-row').find('.idade:first').val(Math.abs(ageDate.getUTCFullYear() - 1970));
-}
-
-function parseDate(input) {
-  var parts = input.match(/(\d+)/g); // note parts[1]-1
-
-  return new Date(parts[2], parts[1] - 1, parts[0]);
-}
+});
 
 function recountDependents() {
   //if ($('fieldset.dependent').length > 0) {
