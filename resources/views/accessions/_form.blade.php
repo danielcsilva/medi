@@ -114,11 +114,11 @@
         </div>
         <div class="col">
             <label for="">Idade</label>
-            <input type="text" name="beneficiary_age[]" value="{{ old('beneficiary_age.0', $beneficiaries[0]->age ?? null) }}" class="form-control idade" placeholder="Idade" required>
+            <input type="text" readonly name="beneficiary_age[]" value="{{ old('beneficiary_age.0', $beneficiaries[0]->age ?? null) }}" class="form-control idade" placeholder="Idade" required>
         </div>
         <div class="col">
             <div class="form-check form-check-inline" style="padding-top:35px;">
-                <input class="form-check-input financier" type="radio" name="beneficiary_financier[]" {{ old('beneficiary_financier.0', (isset($accession->financier_id) && $accession->financier_id == $beneficiaries[0]->id ? 1 : '' )) == 1 ? "checked" : "" }} value="1">
+                <input class="form-check-input financier" type="radio" name="beneficiary_financier[]" {{ old('beneficiary_financier.0', (isset($accession->financier_id) && $accession->financier_id == $beneficiaries[0]->id ? 1 : '' )) == 1 ? "checked" : "" }} value="1" required>
                 <label class="form-check-label" for="financier">Responsável Financeiro</label>
             </div>
         </div>
@@ -287,11 +287,11 @@
                     </div>
                     <div class="col">
                         <label for="">Idade</label>
-                        <input type="text" name="beneficiary_age[]" value="{{ old('beneficiary_age.' . $k, $beneficiaries[$k]->age ?? null) }}" class="form-control idade" placeholder="Idade" required>
+                        <input type="text" readonly name="beneficiary_age[]" value="{{ old('beneficiary_age.' . $k, $beneficiaries[$k]->age ?? null) }}" class="form-control idade" placeholder="Idade" required>
                     </div>
                     <div class="col">
                         <div class="form-check form-check-inline" style="padding-top:35px;">
-                        <input class="form-check-input financier" type="radio" name="beneficiary_financier[]" {{ old('beneficiary_financier.'.$k, (isset($accession->financier_id) && isset($v->id) && $accession->financier_id == $v->id ? $k + 1 : '')) == ($k + 1) ? "checked" : "" }} value="{{ $k }}">
+                        <input class="form-check-input financier" type="radio" name="beneficiary_financier[]" {{ old('beneficiary_financier.'.$k, (isset($accession->financier_id) && isset($v->id) && $accession->financier_id == $v->id ? $k + 1 : '')) == ($k + 1) ? "checked" : "" }} value="{{ $k }}" required>
                             <label class="form-check-label" for="financier">Responsável Financeiro</label>
                         </div>
                     </div>

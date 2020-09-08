@@ -15,6 +15,7 @@ use App\RiskGrade;
 use App\Suggestion;
 use App\Telephone;
 use DateTime;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -83,10 +84,12 @@ class AccessionController extends Controller
             'beneficiary_weight.*' => 'required',
             'beneficiary_gender.*' => 'required',
             'beneficiary_telephone.*' => 'required',
+            'beneficiary_financier.*' => 'required',
+            'beneficiary_age.*' => 'required',
             'address_cep.*' => 'required',
             'address_address.*' => 'required',
             'address_city.*' => 'required',
-            'address_state.*' => 'required',
+            'address_state.*' => 'required',            
             'contacted_date' => '',
             'contacted_comments' => ''
         ],
@@ -101,6 +104,7 @@ class AccessionController extends Controller
             'beneficiary_weight.*.required' => 'O peso é obrigatório!',
             'beneficiary_gender.*.required' => 'O campo sexo é obrigatório!',
             'beneficiary_telephone.*.required' => 'O Telefone é obrigatório!',
+            'beneficiary_age.*.required' => 'Campo Idade é obrigatório!',
             'address_cep.*.required' => 'Cep obrigatório!',
             'address_address.*.required' => 'Endereço obrigatório!',
             'address_city.*.required' => 'Cidade obrigatório!',
@@ -219,9 +223,21 @@ class AccessionController extends Controller
      */
     public function accessionTransaction($request, $beneficiaries, $telephones, $accession_id = null, $specifics = null)
     {   
+        
         // dd($request->all());
         DB::transaction(function() use ($request, $beneficiaries, $telephones, $accession_id, $specifics) {
                             
+            $to_contact = 0;
+            if ($request->has('to_contact') && $request->get('to_contact') == '1') {
+                $to_contact = 1;
+            }
+            
+            $financier = $request->get('beneficiary_financier') ?? null;
+
+            if ($financier === null) {
+                
+            }
+
             if ($accession_id !== null) { // edit
             
                 Accession::where('id', $accession_id)->update(['financier_id' => null]);
@@ -236,29 +252,42 @@ class AccessionController extends Controller
                 // $oldAccession = Accession::find($accession_id);
                 // $oldAccession->inconsistencies()->detach();
 
-               Accession::where('id', $accession_id)->delete();
-            }
+                $accession = Accession::where('id', $accession_id)->first();
+                $accession->fill([
+                    'proposal_number' => $request->get('proposal_number'),
+                    'received_at' => $request->get('received_at'),
+                    'company_id' => $request->get('company_id'),
+                    'comments' => $request->get('health_declaration_comments') ?? '',
+                    'quiz_id' => $request->get('health_declaration'),
+                    'admin_partner' => $request->get('admin_partner'),
+                    'health_plan_id' => $request->get('health_plan_id'),
+                    'initial_validity' => $request->get('initial_validity'),
+                    'consult_partner' => $request->get('consult_partner'),
+                    'broker_partner' => $request->get('broker_partner'),
+                    'entity' => $request->get('entity'),
+                    'to_contact' => $to_contact,
+                    'holder_id' => 9999
+                ]);
+               
+            } else {
 
-            $to_contact = 0;
-            if ($request->has('to_contact') && $request->get('to_contact') == '1') {
-                $to_contact = 1;
-            }
+                $accession = Accession::create([
+                    'proposal_number' => $request->get('proposal_number'),
+                    'received_at' => $request->get('received_at'),
+                    'company_id' => $request->get('company_id'),
+                    'comments' => $request->get('health_declaration_comments') ?? '',
+                    'quiz_id' => $request->get('health_declaration'),
+                    'admin_partner' => $request->get('admin_partner'),
+                    'health_plan_id' => $request->get('health_plan_id'),
+                    'initial_validity' => $request->get('initial_validity'),
+                    'consult_partner' => $request->get('consult_partner'),
+                    'broker_partner' => $request->get('broker_partner'),
+                    'entity' => $request->get('entity'),
+                    'to_contact' => $to_contact,
+                    'holder_id' => 9999
+                ]);
 
-            $accession = Accession::create([
-                'proposal_number' => $request->get('proposal_number'),
-                'received_at' => $request->get('received_at'),
-                'company_id' => $request->get('company_id'),
-                'comments' => $request->get('health_declaration_comments') ?? '',
-                'quiz_id' => $request->get('health_declaration'),
-                'admin_partner' => $request->get('admin_partner'),
-                'health_plan_id' => $request->get('health_plan_id'),
-                'initial_validity' => $request->get('initial_validity'),
-                'consult_partner' => $request->get('consult_partner'),
-                'broker_partner' => $request->get('broker_partner'),
-                'entity' => $request->get('entity'),
-                'to_contact' => $to_contact,
-                'holder_id' => 999
-            ]);
+            }                    
                
             foreach($telephones as $tel) {
                 
@@ -322,13 +351,11 @@ class AccessionController extends Controller
                         
                     }
                     // dd($specifics);
- 
+                 
                 }
-
-
-
-                // beneficiaries index from _form view
-                if (isset($request->get('beneficiary_financier')[0]) && $request->get('beneficiary_financier')[0] == ($k + 1)) {                    
+                
+                // // beneficiaries index from _form view
+                if (isset($financier[0]) && $financier[0] == ($k + 1)){
                     $accession->financier_id = $beneficiary->id;
                 }
 

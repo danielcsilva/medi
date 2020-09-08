@@ -11049,29 +11049,7 @@ $(document).ready(function ($) {
         }
       });
     }
-  }); // $(document).on('change', '.specific-items', function(e){
-  //     var choose = $(e.target).val();
-  //     if (choose != '') {
-  //         var count = 0;
-  //         $('.specific-items').each(function(i,o) {
-  //             if ($(o).val() == choose) {
-  //                 count++;
-  //                 if (count > 1) {
-  //                     alert('Você não pode escolher o mesmo Item da DS');
-  //                     $(e.target).val('');
-  //                 }
-  //             }
-  //         })
-  //     } else {
-  //         $(e.target).val('');
-  //         $(e.target).find('option').each(function(i,o){
-  //             $(o).attr('selected', "");
-  //             $(o).removeAttr('selected');
-  //             console.log($(o));
-  //         });
-  //     }
-  // });
-
+  });
   $(document).on('change', 'input.weight', function (e) {
     var weight = $(e.target).val();
     var height = $(e.target).parents('div.form-row').find('.height:first').val();
@@ -11082,6 +11060,14 @@ $(document).ready(function ($) {
   });
   $('.birth-date').each(function (i, o) {
     $(o).blur();
+  });
+  $(document).on('click', '.financier', function (e) {
+    var idade = $(e.target).parents('.form-row:first').find('.idade:first').val();
+
+    if (idade < 21) {
+      alert('Este Beneficiário não pode ser o responsável financeiro, pois é menor de 21!');
+      $(e.target).prop('checked', false);
+    }
   });
 });
 
