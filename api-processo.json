@@ -8,57 +8,124 @@
     "proposta_vigencia": "2020-07-01",
     "proposta_entidade": "CREMERJ",
     "proposta_consultor": "CARLA CRISTINA DE SOUZA",
-    "proposta_corretora": "SOOMAR",    
+    "proposta_corretora": "SOOMAR",
+    "perguntas_dps": [
+        "Doenças do aparelho cardiocirculatório?",
+        "Doenças endócrinas e metabólicas?",
+        "Doenças do sangue, imunológicas e do colágeno ou autoimunes?",
+        "Doenças ou tumores malignos?"
+    ],    
     "beneficiarios": [
         {
-            "beneficiario_nome": "",
-            "beneficiario_nasto": "",
-            "beneficiario_idade": "",
-            "beneficiario_sexo": "",
-            "beneficiario_cpf": "11111111111",	
-            "beneficiario_tipusu": "",
-            "beneficiario_sequsu": "",
-            "beneficiario_cep": "",	
-            "beneficiario_endereco": "",
-            "beneficiario_complemento": "",
-            "beneficiario_bairro": "",
-            "beneficiario_municipio": "",
-            "beneficiario_uf": "",
-            "beneficiario_numero": "",
-            "beneficiario_email": "",
-            "beneficiario_telcel": "",
-            "beneficiario_telfixo": "",
-            "beneficiario_telcom": "",
-            "beneficiario_valor": "1264,53",
-            "beneficiario_peso": "",
-            "beneficiario_altura": "",
-            "beneficiario_imc": "",
-            "beneficiario_grupocarencia": "REDUZIDA - EXCETO PARTO"
+            "nome": "",
+            "nasto": "",
+            "idade": "",
+            "sexo": "",
+            "cpf": "11111111111",	
+            "tipusu": "",
+            "sequsu": "",
+            "cep": "",	
+            "endereco": "",
+            "complemento": "",
+            "bairro": "",
+            "municipio": "",
+            "uf": "",
+            "numero": "",
+            "email": "",
+            "telcel": "",
+            "telfixo": "",
+            "telcom": "",
+            "valor": "1264,53",
+            "peso": "",
+            "altura": "",
+            "imc": "",
+            "grupocarencia": "REDUZIDA - EXCETO PARTO",
+            "respostas_dps": [
+                {
+                    "resposta": "N",
+                    "obs": "",
+                    "CIDS": ""                
+                },
+                {
+                    "resposta": "N",
+                    "obs": "",
+                    "CIDS": ""
+                },
+                {
+                    "resposta": "N",
+                    "obs": "",
+                    "CIDS": ""               
+                },
+                {
+                    "resposta": "N",
+                    "obs": "",
+                    "CIDS": ""
+                }
+            ]
         },
         {
-            "beneficiario_nome": "",
-            "beneficiario_nasto": "",
-            "beneficiario_idade": "",
-            "beneficiario_sexo": "",
-            "beneficiario_cpf": "11111111111",	
-            "beneficiario_tipusu": "",
-            "beneficiario_sequsu": "",
-            "beneficiario_cep": "",	
-            "beneficiario_endereco": "",
-            "beneficiario_complemento": "",
-            "beneficiario_bairro": "",
-            "beneficiario_municipio": "",
-            "beneficiario_uf": "",
-            "beneficiario_numero": "",
-            "beneficiario_email": "",
-            "beneficiario_telcel": "",
-            "beneficiario_telfixo": "",
-            "beneficiario_telcom": "",
-            "beneficiario_valor": "879,08",
-            "beneficiario_peso": "",
-            "beneficiario_altura": "",
-            "beneficiario_imc": "",
-            "beneficiario_grupocarencia": "REDUZIDA - EXCETO PARTO"
+            "nome": "",
+            "nasto": "",
+            "idade": "",
+            "sexo": "",
+            "cpf": "11111111111",	
+            "tipusu": "",
+            "sequsu": "",
+            "cep": "",	
+            "endereco": "",
+            "complemento": "",
+            "bairro": "",
+            "municipio": "",
+            "uf": "",
+            "numero": "",
+            "email": "",
+            "telcel": "",
+            "telfixo": "",
+            "telcom": "",
+            "valor": "879,08",
+            "peso": "",
+            "altura": "",
+            "imc": "",
+            "grupocarencia": "REDUZIDA - EXCETO PARTO",            
+            "respostas_dps": [
+                {
+                    "resposta": "S",
+                    "obs": "",
+                    "CIDS": [
+                        {
+                            "codigo": "A02",
+                            "especificacao": "É PORTADOR DE ALGUMA DOENÇA OFTALMOLÓGICA",
+                            "data_evento": "2016-02-20"
+                        }
+                    ]                    
+                },
+                {
+                    "resposta": "N",
+                    "obs": "",
+                    "CIDS": ""
+                },
+                {
+                    "resposta": "S",
+                    "obs": "",
+                    "CIDS": [
+                        {
+                            "codigo": "E15",
+                            "especificacao": "É PORTADOR DE ALGUMA DOENÇA OFTALMOLÓGICA",
+                            "data_evento": "2016-02-20"
+                        },
+                        {
+                            "codigo": "E20",
+                            "especificacao": "É PORTADOR DE ALGUMA DOENÇA DO CORAÇÃO",
+                            "data_evento": "2016-02-20"
+                        }
+                    ]  
+                },
+                {
+                    "resposta": "N",
+                    "obs": "",
+                    "CIDS": ""
+                }
+            ]           
         }
     ],
     "proposta_responsavel_financeiro_cpf": "11111111111",
@@ -71,87 +138,5 @@
     "proposta_segmentacao": "AMBULATORIAL + HOSPITALAR COM OBSTETRICIA",
     "proposta_tipocontrato": "COLETIVO POR ADESÃO",
     "proposta_coparticipacao": "NÃO",    
-    "proposta_data_assinatura": "2019-10-01",
-    "declaracao_saude_itens": [
-        {
-            "1": {
-                "pergunta": "Doenças do aparelho cardiocirculatório",
-                "respostas": [
-                    {
-                        "beneficiario_cpf": "11111111111",
-                        "resposta": "N"
-                    },
-                    {
-                        "beneficiario_cpf": "11111111111",
-                        "resposta": "N"
-                    }
-                ]
-            },
-            "2": {
-                "pergunta": "Doenças endócrinas e metabólicas",
-                "respostas": [
-                    {
-                        "beneficiario_cpf": "11111111111",
-                        "resposta": "N"
-                    },
-                    {
-                        "beneficiario_cpf": "11111111111",
-                        "resposta": "N"
-                    }
-                ]
-            },
-            "3": {
-                "pergunta": "Doenças do sangue, imunológicas e do colágeno ou autoimunes",
-                "respostas": [
-                    {
-                        "beneficiario_cpf": "11111111111",
-                        "resposta": "N"
-                    },
-                    {
-                        "beneficiario_cpf": "11111111111",
-                        "resposta": "N"
-                    }
-                ] 
-            },              
-            "3.1": {
-                "pergunta": "Doenças ou tumores malignos",
-                "respostas": [
-                    {
-                        "beneficiario_cpf": "11111111111",
-                        "resposta": "N"
-                    },
-                    {
-                        "beneficiario_cpf": "11111111111",
-                        "resposta": "N"
-                    }
-                ]
-            }
-        }
-    ],
-    "declaracao_saude_cids": [
-        {
-            "cid": {
-                "codigo": "A02",
-                "item": "2",
-                "beneficiario_cpf": "11111111111",
-                "especificacao": "É PORTADOR DE ALGUMA DOENÇA OFTALMOLÓGICA",
-                "data_evento": "2016-02-20"
-            }
-        },
-        {
-            "cid": {
-                "codigo": "E01",
-                "item": "3.1",
-                "beneficiario_cpf": "11111111111",
-                "especificacao": "É PORTADOR DE ALGUMA DOENÇA OFTALMOLÓGICA, TAIS COMO CATARATA, MIOPIA, GLAUCOMA, ESTRABISMO, ASTIGMATISMO, HIPERMETROPIA E OUTRAS?",
-                "data_evento": "2018-03-01"
-            }
-        }
-    ],
-    "declaracao_saude_obs": [
-        {
-            "beneficiario_cpf": "11111111111",
-            "obs": "HIPOTIREOIDISMO"
-        }
-    ]    
+    "proposta_data_assinatura": "2019-10-01"    
 }
