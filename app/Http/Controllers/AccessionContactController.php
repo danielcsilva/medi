@@ -122,7 +122,7 @@ class AccessionContactController extends Controller
         $msg = "";
 
         $oldContacts = AccessionContact::where('accession_id', $accession_id);
-
+        
         if (!$oldContacts) {
                         
             Validator::make($request->all(), 
@@ -157,7 +157,12 @@ class AccessionContactController extends Controller
 
         if ($request->get('to_interview') !== null) {
             $accession->to_interview = $request->get('to_interview');
-            $msg .= "Processo com o Nº de proposta ". $accession->proposal_number ." liberado para Entrevista";
+
+            if ($request->get('to_interview') == "1") {
+                $msg .= "Processo com o Nº de proposta ". $accession->proposal_number ." Liberado para Entrevista";
+            } else {
+                $msg .= "Processo com o Nº de proposta ". $accession->proposal_number ." Bloqueado para Entrevista";
+            }
         }
 
         $accession->save();

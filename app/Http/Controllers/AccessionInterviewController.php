@@ -168,9 +168,15 @@ class AccessionInterviewController extends Controller
             $interview->inconsistencies()->sync($request->get('inconsistencies'));
         }        
 
-        if ($request->get('to_medic_analysis') !== null && $request->get('to_medic_analysis') == "1") {
+        if ($request->get('to_medic_analysis') !== null) {
             $accession->to_medic_analysis = $request->get('to_medic_analysis');
-            $msg .= "Processo com o Nº de proposta ". $accession->proposal_number ." liberado para Análise Médica";
+
+            if ($request->get('to_medic_analysis') == "1") {
+                $msg .= "Processo com o Nº de proposta ". $accession->proposal_number ." Liberado para Análise Médica";
+            } else {
+                $msg .= "Processo com o Nº de proposta ". $accession->proposal_number ." Bloqueado para Análise Médica";
+            }
+
         }
 
         $accession->save();      

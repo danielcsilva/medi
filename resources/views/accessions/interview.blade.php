@@ -99,7 +99,7 @@
             </div>
             <div class="col">
                 <div class="form-check form-check-inline mt-2">
-                    <input class="form-check-input" type="hidden" id="to-medic-analysis" name="to_medic_analysis" value="">
+                <input class="form-check-input" type="hidden" id="to-medic-analysis" name="to_medic_analysis" value="{{ $accession->to_medic_analysis }}">
                 </div>
             </div>
             @endif
@@ -113,14 +113,18 @@
             document.addEventListener("DOMContentLoaded", function(event) {
                 
                 var $ = window.$;
+
             
                 $('#ok-analysis').click(function(e){
     
                     e.preventDefault()
-    
-                    if(confirm('Deseja realmente liberar o Processo para Análise Médica?')) {
+                    
+                    let to_medic_analysis = $('#to-medic-analysis').val();
+                    let msg_confirm = parseInt(to_medic_analysis) === 0 ? "LIBERAR" : "BLOQUEAR"
+
+                    if(confirm('Deseja realmente '+ msg_confirm +' o Processo para Análise Médica?')) {
                         
-                        let to_medic_analysis = $('#to-medic-analysis').val();
+                        // let to_medic_analysis = $('#to-medic-analysis').val();
                         
                         $('#to-medic-analysis').val(parseInt(to_medic_analysis) === 0 ? 1 : 0);
         

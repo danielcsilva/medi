@@ -88,12 +88,12 @@
                     <button type="submit" class="btn btn-primary">Salvar Novo Contato</button>
                 </div>
                 @if (count($contacts) > 0) 
-                <div class="col-3">
-                    <a class="btn {{ (isset($accession->to_interview) && $accession->to_interview == "1" ? 'btn-outline-secondary disabled' : 'btn-success') }}" id="ok-interview">{{ (isset($accession->to_interview) && $accession->to_interview == "1" ? 'Entrevista já liberada' : 'Liberar para Entrevista') }}</a>
+                <div class="col-3">                    
+                    <a class="btn {{ (isset($accession->to_interview) && $accession->to_interview == "1" ? 'btn-outline-secondary' : 'btn-success') }}" id="ok-interview">{{ (isset($accession->to_interview) && $accession->to_interview == "1" ? 'Bloquear para Entrevista' : 'Liberar para Entrevista') }}</a>
                 </div>
                 <div class="col">
                     <div class="form-check form-check-inline mt-2">
-                        <input class="form-check-input" type="hidden" id="to-interview" name="to_interview" value="">
+                        <input class="form-check-input" type="hidden" id="to-interview" name="to_interview" value="{{ $accession->to_interview }}">
                     </div>
                 </div>
                 @endif
@@ -113,12 +113,12 @@
 
                 e.preventDefault()
 
-                if(confirm('Deseja realmente liberar o Processo para Entrevista?')) {
-                    
-                    let to_interview = $('#to-interview').val();
+                let to_interview = $('#to-interview').val();
+                let msg_confirm = parseInt(to_interview) === 0 ? "LIBERAR" : "BLOQUEAR"
+                
+                if(confirm('Deseja realmente '+ msg_confirm +' o Processo para Entrevista?')) {
                     
                     $('#to-interview').val(parseInt(to_interview) === 0 ? 1 : 0);
-    
                     $('form').submit();
 
                 }
