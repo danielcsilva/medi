@@ -29,6 +29,10 @@ Route::group(['middleware' => ['role:SuperAdmin|Diretoria|Operacional|Médico|Co
     Route::resource('healthplans', 'HealthPlanController');
     Route::resource('inconsistencies', 'InconsistencyController');
     Route::resource('accessions', 'AccessionController');
+
+    Route::get('/medicanalysis/list', 'AccessionController@medicAnalysisList');
+    Route::get('/medicanalysis/{accession_id}', 'AccessionController@preparingMedicalAnalysis');
+
     Route::resource('healthquestions', 'HealthQuestionController');
     Route::resource('suggestions', 'SuggestionController');
     Route::resource('riskgrades', 'RiskGradeController');

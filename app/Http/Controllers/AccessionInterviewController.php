@@ -172,9 +172,9 @@ class AccessionInterviewController extends Controller
             $accession->to_medic_analysis = $request->get('to_medic_analysis');
 
             if ($request->get('to_medic_analysis') == "1") {
-                $msg .= "Processo com o Nº de proposta ". $accession->proposal_number ." Liberado para Análise Médica";
+                $msg .= " Processo com o Nº de proposta ". $accession->proposal_number ." Liberado para Análise Médica";
             } else {
-                $msg .= "Processo com o Nº de proposta ". $accession->proposal_number ." Bloqueado para Análise Médica";
+                $msg .= " Processo com o Nº de proposta ". $accession->proposal_number ." Bloqueado para Análise Médica";
             }
 
         }

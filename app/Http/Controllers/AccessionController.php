@@ -15,9 +15,7 @@ use App\RiskGrade;
 use App\Suggestion;
 use App\Telephone;
 use DateTime;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
@@ -425,5 +423,30 @@ class AccessionController extends Controller
         }
         
         return redirect()->route('accessions.index')->with('success', 'Processo de Adesão deletado com sucesso!'); 
+    }
+
+
+    /**
+     * Nedic Analysis
+     */
+    public function medicAnalysisList()
+    {
+
+        return view('accessions.list', [
+            'model' => Accession::class, 
+            'filter' => ['to_medic_analysis' => true], 
+            'editRoute' => 'accessions',
+            'routeParam' => 'accession',
+            'breadcrumb' => 'Liberados para Análise Médica'
+        ]);
+
+    }
+
+    public function preparingMedicalAnalysis()
+    {
+        return view('accessions.medic_analysis', [
+            'riskgrades' => RiskGrade::all(),
+            'suggestions' => Suggestion::all()
+        ]);
     }
 }

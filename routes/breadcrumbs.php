@@ -111,6 +111,15 @@ Breadcrumbs::for('accessions-interview', function ($trail, $content = null) {
 
 });
 
+Breadcrumbs::for('accessions-medic-analysis', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    $trail->push('Processos para Análise Médica', url('/medicanalysist/list'));
+    $trail->push($content->proposal_number . ' - ' . ($content->company->name ?? ''));
+
+});
+
+
 Breadcrumbs::for('quizzes', function ($trail, $content = null) {
 
     $trail->push('Dashboard', route('home'));
