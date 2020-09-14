@@ -404,17 +404,23 @@ class AccessionController extends Controller
      */
     public function destroy($accession_id)
     {
-        try {
 
+        try {
+            
             // $oldAccession = Accession::find($accession_id);
             // $oldAccession->inconsistencies()->detach();
             
-            HealthDeclarationSpecific::where('accession_id', $accession_id)->delete(); 
-            HealthDeclarationAnswer::where('accession_id', $accession_id)->delete();
-            Address::where('accession_id', $accession_id)->delete();
-            Telephone::where('accession_id', $accession_id)->delete();
-            Beneficiary::where('accession_id', $accession_id)->delete();
-            Accession::where('id', $accession_id)->delete();
+            if (Accession::findOrFail($accession_id)->to_medic_analysis === 1) {
+                return redirect('/medicanalysis/list')->with('error', 'Processo de Adesão não pode ser excluído no estágio de Anaĺise Médica!'); 
+            }
+
+            
+            // HealthDeclarationSpecific::where('accession_id', $accession_id)->delete(); 
+            // HealthDeclarationAnswer::where('accession_id', $accession_id)->delete();
+            // Address::where('accession_id', $accession_id)->delete();
+            // Telephone::where('accession_id', $accession_id)->delete();
+            // Beneficiary::where('accession_id', $accession_id)->delete();
+            // Accession::where('id', $accession_id)->delete();
             
         } catch(Throwable $t) {
 
@@ -435,16 +441,40 @@ class AccessionController extends Controller
         return view('accessions.list', [
             'model' => Accession::class, 
             'filter' => ['to_medic_analysis' => true], 
-            'editRoute' => 'accessions',
+            'editRoute' => 'accessions.medicAnalysis',
             'routeParam' => 'accession',
+            'deleteRoute' => 'accessions',
             'breadcrumb' => 'Liberados para Análise Médica'
         ]);
 
     }
 
-    public function preparingMedicalAnalysis()
+    public function preparingMedicalAnalysis($accession)
     {
+        $customers = Company::all();
+        $healthplans = HealthPlan::all();
+        $quizzes = Quiz::all();
+        $beneficiaries = Beneficiary::where('accession_id', $accession)->get();
+        $telephones = Telephone::where('accession_id', $accession)->get();
+        $addresses = Address::where('accession_id', $accession)->get();
+        $answers = HealthDeclarationAnswer::where('accession_id', $accession)->get();
+        $specifics = HealthDeclarationSpecific::where('accession_id', $accession)->get();
+        
+        $accessionInstace = Accession::findOrFail($accession);
+
+        // $inconsistencies = Inconsistency::all();
+
         return view('accessions.medic_analysis', [
+            'customers' => $customers, 
+            'beneficiaries' => $beneficiaries, 
+            'telephones' => $telephones, 
+            'healthplans' => $healthplans, 
+            'quizzes' => $quizzes, 
+            'accession' => $accessionInstace,
+            'addresses' => $addresses, 
+            'answers' => $answers, 
+            'specifics' => $specifics,
+            // 'inconsistencies' => $inconsistencies, 
             'riskgrades' => RiskGrade::all(),
             'suggestions' => Suggestion::all()
         ]);

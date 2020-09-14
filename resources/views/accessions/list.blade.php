@@ -37,7 +37,8 @@
         'Financiamento', 
         'Cliente'
     ],
-    'filter' => $filter
+    'filter' => $filter,
+    'deleteRoute' => $deleteRoute ?? null
 ])
 
 @endsection

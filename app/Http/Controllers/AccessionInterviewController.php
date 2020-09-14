@@ -194,6 +194,8 @@ class AccessionInterviewController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (Accession::findOrFail($id)->to_interview === 1) {
+            return redirect()->route('interview.index')->with('error', 'Processo de Adesão não pode ser excluído quando liberado para Entrevista!'); 
+        }
     }
 }

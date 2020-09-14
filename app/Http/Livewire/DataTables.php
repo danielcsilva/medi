@@ -16,6 +16,7 @@ class DataTables extends Component
 
     public $editRoute;
     public $routeParam;
+    public $deleteRoute;
     public $model;
     public $columns;
     public $labels;
@@ -27,7 +28,7 @@ class DataTables extends Component
     public $filter;
     
 
-    public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true, $filter = [])
+    public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true, $filter = [], $deleteRoute = null)
     {
         $this->editRoute = $editRoute;
         $this->routeParam = $routeParam;
@@ -38,7 +39,8 @@ class DataTables extends Component
         $this->edit = $edit;
         $this->delete = $delete;
         $this->filter = $filter;
-
+        $this->deleteRoute = $deleteRoute ?? $this->editRoute;
+        // $this->deleteRoute = $this->deleteRoute ?? $this->editRoute;
         $this->emit('rewriteTable', 'rewrite');
     }
 
@@ -51,6 +53,10 @@ class DataTables extends Component
             $rows = $rows->where($this->filter);
         }
 
+        if (strpos($this->editRoute, '.') === false) {
+            $this->editRoute .= '.edit';
+        }
+        
         return view('livewire.data-tables', [
             'rows' => $rows->paginate($this->perPage),
             'labels' => $this->labels,

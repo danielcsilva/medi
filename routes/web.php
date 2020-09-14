@@ -31,7 +31,7 @@ Route::group(['middleware' => ['role:SuperAdmin|Diretoria|Operacional|Médico|Co
     Route::resource('accessions', 'AccessionController');
 
     Route::get('/medicanalysis/list', 'AccessionController@medicAnalysisList');
-    Route::get('/medicanalysis/{accession_id}', 'AccessionController@preparingMedicalAnalysis');
+    Route::get('/medicanalysis/{accession}', 'AccessionController@preparingMedicalAnalysis')->name('accessions.medicAnalysis');
 
     Route::resource('healthquestions', 'HealthQuestionController');
     Route::resource('suggestions', 'SuggestionController');
