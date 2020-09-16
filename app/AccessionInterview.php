@@ -32,5 +32,9 @@ class AccessionInterview extends Model
         return $this->morphToMany('App\Inconsistency', 'inconsistent');
     }
 
+    public function cids()
+    {
+        return $this->belongsToMany('App\Cid');
+    }
 }
 
