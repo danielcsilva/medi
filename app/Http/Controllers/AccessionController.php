@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Accession;
+use App\AccessionInterview;
 use App\Address;
 use App\Beneficiary;
 use App\Company;
@@ -462,7 +463,7 @@ class AccessionController extends Controller
         
         $accessionInstace = Accession::findOrFail($accession);
 
-        // $inconsistencies = Inconsistency::all();
+        $interviews = AccessionInterview::with('inconsistencies')->where('accession_id', $accession)->get();
 
         return view('accessions.medic_analysis', [
             'customers' => $customers, 
@@ -474,9 +475,10 @@ class AccessionController extends Controller
             'addresses' => $addresses, 
             'answers' => $answers, 
             'specifics' => $specifics,
-            // 'inconsistencies' => $inconsistencies, 
+            'interviews' => $interviews,
             'riskgrades' => RiskGrade::all(),
-            'suggestions' => Suggestion::all()
+            'suggestions' => Suggestion::all(),
+            'inconsistencies' => Inconsistency::all()
         ]);
     }
 }

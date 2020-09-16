@@ -21,7 +21,7 @@
                 <label for="">Nome do Entrevistado</label>
                 <input type="text" disabled class="form-control" name="interviewed_name" value="{{ $interview->interviewed_name ?? null }}">
                 <label for="" class="mt-2">Data da Entrevista</label>
-                <input type="text" disabled class="form-control date-br" name="interview_date" value="{{ $interview->interview_date }}">
+                <input type="text" disabled class="form-control date-br" name="interview_date" value="{{ $interview->interview_date ?? null }}">
                 <label for="" class="mt-2">Entrevistado por</label>
                 <input type="text" disabled class="form-control" name="interviewed_by" value="{{ $interview->interviewed_by ?? null }}">
             </div>
