@@ -1,4 +1,9 @@
 <div>
+    <div class="row">
+        <div class="col">
+            <button>Adicionar CID</button>            
+        </div>
+    </div>
     @foreach($cids as $cid)
         <div class="row">
             <div class="col">

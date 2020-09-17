@@ -383,20 +383,6 @@ class AccessionController extends Controller
         });
     }
 
-    public function setMedicAnalysis($request, $accession)
-    {
-        //Medic analysis
-        if ($request->get('risk_grade_id')) {
-            $accession->risk_grade_id = $request->get('risk_grade_id');
-        }
-
-        if ($request->get('suggestion_id')) {
-            $accession->suggestion_id = $request->get('suggestion_id');
-        }
-
-        $accession->save();
-    }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -461,7 +447,7 @@ class AccessionController extends Controller
         $answers = HealthDeclarationAnswer::where('accession_id', $accession)->get();
         $specifics = HealthDeclarationSpecific::where('accession_id', $accession)->get();
         
-        $accessionInstace = Accession::findOrFail($accession);
+        $accessionInstace = Accession::with(['suggestion', 'riskGRade'])->findOrFail($accession);
 
         $interviews = AccessionInterview::with('inconsistencies')->where('accession_id', $accession)->get();
 
@@ -480,5 +466,29 @@ class AccessionController extends Controller
             'suggestions' => Suggestion::all(),
             'inconsistencies' => Inconsistency::all()
         ]);
+    }
+
+    /**
+     * Set Medical Analysis
+     */
+    public function setAnalysis($accession)
+    {
+        $request = request();
+
+        $accession = Accession::findOrFail($accession);
+
+        //Medic analysis
+        if ($request->get('risk_grade_id')) {
+            $accession->risk_grade_id = $request->get('risk_grade_id');
+        }
+
+        if ($request->get('suggestion_id')) {
+            $accession->suggestion_id = $request->get('suggestion_id');
+        }
+
+        $accession->save();
+
+        return redirect('/medicanalysis/list')->with('success', 'Análise Médica gravada com sucesso!'); 
+
     }
 }
