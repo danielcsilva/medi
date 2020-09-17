@@ -89,7 +89,9 @@
             </div>
         </div> --}}
 
-        <div class="row mb-4 mt-4">
+        @livewire('cids')
+
+        <div class="row mb-4" style="margin-top: 40px;">
             <div class="col-3">
                 <button type="submit" class="btn btn-primary">Salvar Nova Entrevista</button>
             </div>
