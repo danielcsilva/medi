@@ -34,7 +34,7 @@ class AccessionInterview extends Model
 
     public function cids()
     {
-        return $this->belongsToMany('App\Cid');
+        return $this->belongsToMany('App\Cid', 'cids_interviews', 'interview_id', 'cid_id');
     }
 }
 

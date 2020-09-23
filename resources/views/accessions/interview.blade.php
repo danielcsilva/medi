@@ -89,7 +89,7 @@
             </div>
         </div> --}}
 
-        @livewire('cids')
+        @livewire('cids', ['interviewId' => $interview->id ?? null])
 
         <div class="row mb-4" style="margin-top: 40px;">
             <div class="col-3">

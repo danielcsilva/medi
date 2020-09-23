@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
 use App\Accession;
+use App\Cid;
 use Illuminate\Http\Request;
 
 class AccessionInterviewController extends Controller
@@ -177,6 +178,18 @@ class AccessionInterviewController extends Controller
                 $msg .= " Processo com o Nº de proposta ". $accession->proposal_number ." Bloqueado para Análise Médica";
             }
 
+        }
+
+        $cids = [];
+        if ($request->get('cids')) {
+            foreach($request->get('cids') as $cid) {
+                $cid = Cid::where('cid', substr($cid, 0, strpos($cid, "-") - 1))->first();
+                if ($cid) {
+                   $cids[] = $cid->id; 
+                }
+            }
+            
+            $interview->cids()->sync($cids);
         }
 
         $accession->save();      
