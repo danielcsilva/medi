@@ -1,0 +1,73 @@
+{
+    "variables": [],
+    "info": {
+        "name": "Medi API",
+        "_postman_id": "ca06021d-41d0-45e0-afa2-b1696f1f08d0",
+        "description": "",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Processos",
+            "description": "\nAPI para gerenciamento de processos",
+            "item": [
+                {
+                    "name": "API online",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "localhost",
+                            "path": "api\/v1\/ping",
+                            "query": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Verifica se a API est\u00e1 online (healthcheck)",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Novo Processo",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "localhost",
+                            "path": "api\/v1\/novoprocesso",
+                            "query": []
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"users\": [\n        {\n            \"first_name\": \"John\"\n        }\n    ],\n    \"yet_another_param\": {}\n}"
+                        },
+                        "description": "Cria um novo processo no sistema da Medi",
+                        "response": []
+                    }
+                }
+            ]
+        }
+    ]
+}

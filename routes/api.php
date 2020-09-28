@@ -17,8 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/quizzes/{quiz_id?}', 'QuizApiController@getQuizzes');
+Route::get('/quizzes/{quiz_id?}', 'QuizApiController@getQuizzes')->name('api.quiz');
 
-Route::prefix('v1')->group(function () {
-    Route::middleware('auth:api')->get('/newprocess', 'Api\AccessionApiController@newProcess');
+Route::middleware('auth:api')->prefix('v1')->group(function () {
+    
+    Route::get('/ping', 'Api\AccessionApiController@ping');
+    Route::post('/novoprocesso', 'Api\AccessionApiController@novoProcesso');
+
 });
