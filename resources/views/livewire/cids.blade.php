@@ -39,7 +39,7 @@
         </div>
     @endforeach
     
-    <a class="btn btn-secondary" wire:click.prevent="saveCids">Salvar apenas CIDs relatados</a>  
+    <a class="btn btn-secondary mt-4" wire:click.prevent="saveCids">Salvar apenas CIDs relatados</a>  
 
 </div>
 

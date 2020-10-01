@@ -22,6 +22,7 @@ Route::get('/quizzes/{quiz_id?}', 'QuizApiController@getQuizzes')->name('api.qui
 Route::middleware('auth:api')->prefix('v1')->group(function () {
     
     Route::get('/ping', 'Api\AccessionApiController@ping');
-    Route::post('/novoprocesso', 'Api\AccessionApiController@novoProcesso');
+    Route::get('/meuperfil/{client_id}', 'Api\AccessionApiController@myProfile');
+    Route::post('/novoprocesso', 'Api\AccessionApiController@newAccession');
 
 });

@@ -33,7 +33,7 @@ class AccessionApiController extends Controller
      * 
      * @urlParam clientId int ID do Cliente que consulta a API. Exemplo: 9;
      */
-    public function meuPerfil($id)
+    public function myProfile($id)
     {
         return ['message' => 'not implemented yet!'];
     }
@@ -47,7 +47,7 @@ class AccessionApiController extends Controller
      * @bodyParam  yet_another_param object required Some object params.
      * 
      */
-    public function novoProcesso()
+    public function newAccession()
     {
         return ['message' => 'not implemented yet!'];
     }
