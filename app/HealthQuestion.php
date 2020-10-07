@@ -9,6 +9,8 @@ class HealthQuestion extends Model
 
     protected $fillable = ['question', 'description', 'required'];
 
+    protected $hidden = ['pivot'];
+
     public function quizzes() 
     {
         return $this->belongsToMany('App\Quiz');
