@@ -394,20 +394,16 @@ class AccessionController extends Controller
 
         try {
             
-            // $oldAccession = Accession::find($accession_id);
-            // $oldAccession->inconsistencies()->detach();
-            
             if (Accession::findOrFail($accession_id)->to_medic_analysis === 1) {
                 return redirect('/medicanalysis/list')->with('error', 'Processo de Adesão não pode ser excluído no estágio de Anaĺise Médica!'); 
             }
-
             
-            // HealthDeclarationSpecific::where('accession_id', $accession_id)->delete(); 
-            // HealthDeclarationAnswer::where('accession_id', $accession_id)->delete();
-            // Address::where('accession_id', $accession_id)->delete();
-            // Telephone::where('accession_id', $accession_id)->delete();
-            // Beneficiary::where('accession_id', $accession_id)->delete();
-            // Accession::where('id', $accession_id)->delete();
+            HealthDeclarationSpecific::where('accession_id', $accession_id)->delete(); 
+            HealthDeclarationAnswer::where('accession_id', $accession_id)->delete();
+            Address::where('accession_id', $accession_id)->delete();
+            Telephone::where('accession_id', $accession_id)->delete();
+            Beneficiary::where('accession_id', $accession_id)->delete();
+            Accession::where('id', $accession_id)->delete();
             
         } catch(Throwable $t) {
 

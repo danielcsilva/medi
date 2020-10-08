@@ -25,5 +25,6 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::get('/meuperfil/{client_id}', 'Api\AccessionApiController@myProfile');
     Route::post('/novoprocesso', 'Api\AccessionApiController@newAccession');
     Route::get('/declaracoesdesaude', 'Api\AccessionApiController@healthDeclarations');
+    Route::get('/tiposmovimentacao', 'Api\AccessionApiController@processTypes');
 
 });

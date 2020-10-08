@@ -53,7 +53,10 @@ class Accession extends Model
     
     public function setReceivedAtAttribute($value)
     {
-        $this->attributes['received_at'] = DateTime::createFromFormat('d.m.Y', $value)->format('Y-m-d');
+        $this->attributes['received_at'] = $value;
+        if (strpos($value, '.') !== false) {
+            $this->attributes['received_at'] = DateTime::createFromFormat('d.m.Y', $value)->format('Y-m-d');
+        } 
     }
 
     public function getInitialValidityAttribute($value)
@@ -66,7 +69,10 @@ class Accession extends Model
 
     public function setInitialValidityAttribute($value)
     {
-        $this->attributes['initial_validity'] = DateTime::createFromFormat('d.m.Y', $value)->format('Y-m-d');
+        $this->attributes['initial_validity'] = $value;
+        if (strpos($value, '.') !== false) {
+            $this->attributes['initial_validity'] = DateTime::createFromFormat('d.m.Y', $value)->format('Y-m-d');
+        }
     }
     
 }

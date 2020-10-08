@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Accession;
+use App\Address;
+use App\Beneficiary;
 use App\Company;
+use App\HealthDeclarationAnswer;
+use App\HealthDeclarationSpecific;
+use App\HealthPlan;
 use App\HealthQuestion;
 use App\Http\Controllers\Controller;
+use App\ProcessType;
 use App\Quiz;
+use App\Telephone;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -87,16 +95,50 @@ class AccessionApiController extends Controller
         // "proposta_consultor": "CARLA CRISTINA DE SOUZA",
         // "proposta_corretora": "SOOMAR",
 
-          
-        // HealthDeclarationSpecific::where('accession_id', $accession_id)->delete(); 
-        // HealthDeclarationAnswer::where('accession_id', $accession_id)->delete();
-        // Address::where('accession_id', $accession_id)->delete();
-        // Beneficiary::where('accession_id', $accession_id)->delete();
-        // Telephone::where('accession_id', $accession_id)->delete();
- 
         $validator = Validator::make(request()->json()->all(), [
-            "medi_cliente" => "required|String",
-            "perguntas_dps" => "required"
+            "medi_cliente" => [
+                "required",
+                "String",
+                function ($attribute, $value, $fail) {
+                    
+                    $exists = Company::where('name', '=', trim($value))->first();
+
+                    if (!$exists) {
+                        $fail($attribute.' não existe na Base de Dados da Medi Consultoria.');
+                    }
+                }
+            ],
+            "proposta_operadora" => [
+                "required",
+                function ($attribute, $value, $fail) {
+                    
+                    $exists = HealthPlan::where('name', '=', trim($value))->first();
+
+                    if (!$exists) {
+                        $fail($attribute.' não existe Esta Operadora de Saúde na Base de Dados da Medi Consultoria.');
+                    }
+                }
+            ],
+            "proposta_tipomov" => [
+                "required",
+                function ($attribute, $value, $fail) {
+                    
+                    $exists = ProcessType::where('type_of_process', '=', trim($value))->first();
+
+                    if (!$exists) {
+                        $fail($attribute.' tipo de Movimentação não existe na Base de Dados da Medi Consultoria.');
+                    }
+                }
+            ],
+            "perguntas_dps" => "required",
+            "proposta_operadora" => "required",
+            "beneficiarios.*.telcel" => "required",
+            "beneficiarios.*.email" => 'required|email',
+            "beneficiarios.*.cpf" => 'required|cpf',
+            "beneficiarios.*.sexo" => 'required|in:M,F,m,f',
+            "beneficiarios.*.cep" => 'required|numeric',
+            "proposta_vigencia" => "required|date_format:Y-m-d",
+            "proposta_vigencia" => "required|date_format:Y-m-d"
         ]);
 
         if ($validator->fails()) {
@@ -107,9 +149,30 @@ class AccessionApiController extends Controller
         }
 
         $jsonData = request()->json()->all();
+
+        // Helath Plan
+        $healthPlan = HealthPlan::where('name', '=', trim($jsonData['proposta_operadora']))->first();
+        if (!$healthPlan) {
+            $healthPlan = HealthPlan::create([
+                'name' => trim($jsonData['proposta_operadora'])
+            ]);
+        }    
         
-        $company = Company::where('name', 'like', '%' . $jsonData['medi_cliente'] . '%')->first();
-        
+        // Client
+        $company = Company::where('name', '=', $jsonData['medi_cliente'])->first();
+
+        $accession = Accession::create([
+            'proposal_number' => $jsonData['proposta_numero'],
+            'admin_partner' => $jsonData['medi_parceiro'],
+            'health_plan_id' => $healthPlan->id,
+            'company_id' => $company->id,
+            'entity' => $jsonData['proposta_entidade'],
+            'consult_partner' => $jsonData['proposta_consultor'],
+            'received_at' => $jsonData['medi_data_envio'],
+            'initial_validity' => $jsonData['proposta_vigencia'],
+            'broker_partner' => $jsonData['proposta_corretora']
+        ]);
+
         // 1. Quiz verifica se já existe Quiz com as perguntas iguais (é preciso verificar as perguntas), se houver , usar o ID do Quiz, ou 
         // inlcuir novo Quiz
         
@@ -121,7 +184,8 @@ class AccessionApiController extends Controller
         foreach($quizzes as $quiz) {
             // questions already exists
             if ($questions === $quiz->questions->pluck('question')->toArray()) {
-                $requestedQuiz = $quiz->id;
+                $requestedQuiz = $quiz;
+                break;
             }            
         }
 
@@ -141,18 +205,89 @@ class AccessionApiController extends Controller
             }
         }
 
-        //dd($requestedQuiz);
-
+        $accession->quiz_id = $requestedQuiz->id;
+        $accession->save();
 
         // 2. Incluir Beneficiário
-        // 2.1 Cadastrar telefones
-        // 2.2 Cadastrar endereço
+        $beneficiaries = $jsonData['beneficiarios'];
 
-        // 3. Incluir respotas dadas no Quiz HealDeclarationAnswer
-        // 3.1 incluir CIDs relatados na DS HealthDeclarationSpecific
+        foreach($beneficiaries as $kBeneficiary => $beneficiary) {
+            
+            $newBeneficiary = Beneficiary::create([
+                'name' => $beneficiary['nome'], 
+                'email' => $beneficiary['email'], 
+                'cpf' => $beneficiary['cpf'], 
+                'birth_date' => $beneficiary['dt_nasc'], 
+                'height' => $beneficiary['altura'], 
+                'weight' => $beneficiary['peso'], 
+                'imc' => $beneficiary['imc'], 
+                'gender' => strtoupper($beneficiary['sexo']), 
+                'accession_id' => $accession->id, 
+                'age' => $beneficiary['idade']
+            ]);
+            
+            // 2.1 Cadastrar telefones
+            $telephones = [$beneficiary['telcel'], $beneficiary['telfixo'] ?? '', $beneficiary['telcom'] ?? ''];
+            foreach($telephones as $telephone) {
+                if ($telephone != '') {
+                    Telephone::create([
+                        'telephone' => $telephone,
+                        'accession_id' => $accession->id
+                    ]);
+                }
+            }
+
+            // 2.2 Cadastrar endereço
+            $address = new Address();
+            $address->address = $beneficiary['endereco'];
+            $address->number = $beneficiary['numero'];
+            $address->complement = $beneficiary['complemento'];
+            $address->city = strtoupper($beneficiary['municipio']);
+            $address->state = strtoupper($beneficiary['uf']);
+            $address->cep = $beneficiary['cep'];
+            $address->accession_id = $accession->id;
+            $address->save();
+
+             // 3. Incluir respotas dadas no Quiz HealthDeclarationAnswer
+            foreach($requestedQuiz->questions as $k => $question) {
+                HealthDeclarationAnswer::create([
+                    'question' => $k + 1,
+                    'answer' => $beneficiary['respostas_dps'][$k]['resposta'],
+                    'beneficiary_id' => $newBeneficiary->id,
+                    'accession_id' => $accession->id,
+                    'quiz_id' => $requestedQuiz->id,
+                    'question_id' => $question->id
+                ]);   
+                
+                // 3.1 incluir CIDs relatados na DS HealthDeclarationSpecific
+                if (isset($beneficiary['respostas_dps'][$k]['CIDS']) && count($beneficiary['respostas_dps'][$k]['CIDS']) > 0) {
+                    foreach($beneficiary['respostas_dps'][$k]['CIDS'] as $kCid => $cid) {
+                        
+                        HealthDeclarationSpecific::create([
+                            'comment_number' => $k,
+                            'comment_item' => $beneficiary['respostas_dps'][$k]['CIDS'][$kCid]['codigo'] . ' ' . $beneficiary['respostas_dps'][$k]['CIDS'][$kCid]['especificacao'],
+                            'period_item' => $beneficiary['respostas_dps'][$k]['CIDS'][$kCid]['data_evento'],
+                            'accession_id' => $accession->id,
+                            'question_id' => $question->id,
+                            'quiz_id' => $requestedQuiz->id,
+                            'beneficiary_index' => $kBeneficiary + 1
+                        ]);
+
+                    }
+                }
+            }
+            
+            // Holder (Titular)
+            if ($beneficiary['cpf'] == $jsonData['proposta_titular_cpf']) {
+                $accession->holder_id = $newBeneficiary->id;
+                $accession->save();
+            }
+
+        }
 
 
-        return ['message' => 'not implemented yet!'];
+
+        return ['message' => 'success', 'process_number' => $accession->id];
     }
 
     /**
@@ -169,4 +304,14 @@ class AccessionApiController extends Controller
         return $healthDeclarations;
     }
 
+
+    /**
+     * Retorna os Tipos de Movimentação (tipos de processo)
+     * 
+     * Return type of Process Types
+     */
+    public function processTypes()
+    {
+        return ProcessType::select('type_of_process')->get();
+    }
 }
