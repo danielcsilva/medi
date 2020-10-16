@@ -264,13 +264,13 @@ class AccessionApiController extends Controller
                     foreach($beneficiary['respostas_dps'][$k]['CIDS'] as $kCid => $cid) {
                         
                         HealthDeclarationSpecific::create([
-                            'comment_number' => $k,
+                            'comment_number' => $k + 1,
                             'comment_item' => $beneficiary['respostas_dps'][$k]['CIDS'][$kCid]['codigo'] . ' ' . $beneficiary['respostas_dps'][$k]['CIDS'][$kCid]['especificacao'],
                             'period_item' => $beneficiary['respostas_dps'][$k]['CIDS'][$kCid]['data_evento'],
                             'accession_id' => $accession->id,
                             'question_id' => $question->id,
                             'quiz_id' => $requestedQuiz->id,
-                            'beneficiary_index' => $kBeneficiary + 1
+                            'beneficiary_index' => $kBeneficiary
                         ]);
 
                     }
