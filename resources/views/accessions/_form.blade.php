@@ -124,6 +124,8 @@
         </div>
     </div>
 
+    
+
     <div class="form-row mb-4 mt-4 address">
         <div class="col-2">
             <input type="text" name="address_cep[]" value="{{ old('address_cep.0', $addresses[0]->cep ?? null) }}" id="address-cep" class="form-control cep" placeholder="CEP">
@@ -165,6 +167,8 @@
             @endif
         </div>
     </div>
+
+  
 
     <div class="form-row mb-4 mt-4">
         <div class="col-2">
@@ -297,6 +301,8 @@
                     </div>
                 </div>
 
+                
+
                 <div class="form-row mb-4 mt-4 address">
                     <div class="col-2">
             
@@ -341,6 +347,7 @@
                         @endif
                     </div>
                 </div>
+
 
                 <div class="form-row mb-4 mt-4">
                     <div class="col-2">

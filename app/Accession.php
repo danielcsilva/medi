@@ -21,6 +21,11 @@ class Accession extends Model
         return $this->hasOne('App\Beneficiary', 'accession_id');
     }
 
+    public function beneficiaries() 
+    {
+        return $this->hasMany('App\Beneficiary');
+    }
+
     public function company()
     {
         return $this->belongsTo('App\Company', 'company_id');

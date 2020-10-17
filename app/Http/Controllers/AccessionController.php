@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Accession;
 use App\AccessionInterview;
+use App\AccessionMedicalAnalysis;
 use App\Address;
 use App\Beneficiary;
 use App\Company;
@@ -447,9 +448,12 @@ class AccessionController extends Controller
 
         $interviews = AccessionInterview::with('inconsistencies')->where('accession_id', $accession)->get();
 
+        $analysis = AccessionMedicalAnalysis::where('accession_id', $accession)->get();
+
         return view('accessions.medic_analysis', [
             'customers' => $customers, 
-            'beneficiaries' => $beneficiaries, 
+            'beneficiaries' => $beneficiaries,
+            'analysis' => $analysis, 
             'telephones' => $telephones, 
             'healthplans' => $healthplans, 
             'quizzes' => $quizzes, 
@@ -470,19 +474,28 @@ class AccessionController extends Controller
     public function setAnalysis($accession_id)
     {
         $request = request();
+        $analysis = $request->get('analysis_beneficiary_id');
 
-        $accession = Accession::findOrFail($accession_id);
+        foreach($analysis as $k => $v) {
 
-        //Medic analysis
-        if ($request->get('risk_grade_id')) {
-            $accession->risk_grade_id = $request->get('risk_grade_id');
+            if ($request->get('justification')) {
+
+                AccessionMedicalAnalysis::updateOrCreate(
+                [
+                    'accession_id' => $accession_id,
+                    'beneficiary_id' => $request->get('analysis_beneficiary_id')[$k]
+                ],
+                [
+                    'accession_id' => $accession_id,
+                    'beneficiary_id' => $request->get('analysis_beneficiary_id')[$k],
+                    'risk_grade_id' => $request->get('analysis_risk_grade_id')[$k],
+                    'suggestion_id' => $request->get('suggestion_id')[$k],
+                    'justification' => $request->get('justification')[$k]
+                ]);
+
+            }
+
         }
-
-        if ($request->get('suggestion_id')) {
-            $accession->suggestion_id = $request->get('suggestion_id');
-        }
-
-        $accession->save();
 
         return redirect('/medicanalysis/list')->with('success', 'Análise Médica gravada com sucesso!'); 
 
