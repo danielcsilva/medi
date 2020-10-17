@@ -467,11 +467,11 @@ class AccessionController extends Controller
     /**
      * Set Medical Analysis
      */
-    public function setAnalysis($accession)
+    public function setAnalysis($accession_id)
     {
         $request = request();
 
-        $accession = Accession::findOrFail($accession);
+        $accession = Accession::findOrFail($accession_id);
 
         //Medic analysis
         if ($request->get('risk_grade_id')) {
