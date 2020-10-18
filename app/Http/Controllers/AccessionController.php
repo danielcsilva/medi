@@ -7,6 +7,7 @@ use App\AccessionInterview;
 use App\AccessionMedicalAnalysis;
 use App\Address;
 use App\Beneficiary;
+use App\Cid;
 use App\Company;
 use App\HealthDeclarationAnswer;
 use App\HealthDeclarationSpecific;
@@ -480,7 +481,7 @@ class AccessionController extends Controller
 
             if ($request->get('justification')) {
 
-                AccessionMedicalAnalysis::updateOrCreate(
+                $medicalAnalysis = AccessionMedicalAnalysis::updateOrCreate(
                 [
                     'accession_id' => $accession_id,
                     'beneficiary_id' => $request->get('analysis_beneficiary_id')[$k]
@@ -493,8 +494,20 @@ class AccessionController extends Controller
                     'justification' => $request->get('justification')[$k]
                 ]);
 
+                // CIDs by beneficiary
+                if ($request->get('cids_' . $request->get('analysis_beneficiary_id')[$k])) {
+                    $cids = $request->get('cids_' . $request->get('analysis_beneficiary_id')[$k]);
+                    $toSaveCids = [];
+                    foreach($cids as $cid) {
+                        $cid = Cid::where('cid', substr($cid, 0, strpos($cid, "-") - 1))->first();
+                        if ($cid) {
+                           $toSaveCids[] = $cid->id; 
+                        }
+                    }
 
-                
+                    $medicalAnalysis->cids()->sync($toSaveCids);
+                }
+
 
             }
 

@@ -30,7 +30,7 @@
         <div class="form-row">
             <div class="col-7">
                 <div class="input-group mb-2">
-                    <input type="text" class="form-control" id="inlineFormInputGroup" name="cids[]" value="{{ $selectedCid }}" wire:key="{{ $loop->index }}">
+                    <input type="text" class="form-control" name="cids_{{ $beneficiary_id }}[]" value="{{ $selectedCid }}" wire:key="{{ $loop->index }}">
                     <div class="input-group-apend">
                         <a class="btn btn-warning" wire:click.prevent="removeCid({{ $loop->index }})">X</a>
                     </div>

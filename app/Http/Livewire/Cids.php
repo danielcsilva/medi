@@ -13,6 +13,7 @@ class Cids extends Component
     public $cidSelected;
     public $allCids;
     public $message;
+    public $beneficiary;
 
     public function addCid()
     {
@@ -49,7 +50,7 @@ class Cids extends Component
         }
     }
 
-    public function mount($medicalAnalysisId = null)
+    public function mount($medicalAnalysisId = null, $beneficiary)
     {
         if ($medicalAnalysisId !== null) {
             $medicalAnalysisCids = AccessionMedicalAnalysis::findOrFail($medicalAnalysisId);
@@ -61,6 +62,7 @@ class Cids extends Component
         }
 
         $this->medicalAnalysisId = $medicalAnalysisId;
+        $this->beneficiary = $beneficiary;
         $this->initCids();
     }
 
@@ -94,7 +96,8 @@ class Cids extends Component
             'cids' => $this->cids,
             'cidSelected' => $this->cidSelected,
             'allCids' => $this->allCids,
-            'message' => $this->message
+            'message' => $this->message,
+            'beneficiary_id' => $this->beneficiary->id 
         ]);
     }
 }

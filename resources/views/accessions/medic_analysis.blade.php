@@ -61,9 +61,8 @@
             @csrf
             @method('PUT')
 
-            <div class="row mb-4 mt-4">
-
-                @foreach($beneficiaries as $k => $beneficiary)
+            @foreach($beneficiaries as $k => $beneficiary)
+                <div class="row mb-4 mt-4">
 
                     <div class="col-3">
                         <label for="">Beneficiário</label>
@@ -93,19 +92,21 @@
 
                 
                     <div class="col">
-                        @livewire('cids', ['medicalAnalysisId' => $analysis[$k]->id ?? null])
+                        @livewire('cids', ['medicalAnalysisId' => $analysis[$k]->id ?? null, 'beneficiary' => $beneficiary])
                     </div>
 
-                @endforeach
+                    
+                    <div class="col">
+                        <label for="">Justificativa</label>
+                        <textarea name="justification[]" id="" cols="30" rows="10" class="form-control" required>{{ old('justification.' . $k, $analysis[$k]->justification ?? null) }}</textarea>
+                    </div>
+                    
 
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    <label for="">Justificativa</label>
-                    <textarea name="justification[]" id="" cols="30" rows="10" class="form-control" required>{{ old('justification.' . $k, $analysis[$k]->justification ?? null) }}</textarea>
                 </div>
-            </div>
+            @endforeach
+
+
+           
 
 
             <div class="d-flex flex-row mt-4">
