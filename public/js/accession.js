@@ -11031,11 +11031,12 @@ $(document).ready(function ($) {
     $('fieldset:eq(' + toRemove + ')').remove();
     recountDependents(); // changeHealthDeclaration();
   });
-  $(document).on('keyup', '.cep:first', function (e) {
+  $(document).on('keyup', '.cep', function (e) {
     var objInput = $(e.target);
     var cep = $(e.target).val();
 
     if (cep.length == 9) {
+      console.log(cep);
       $.ajax({
         url: 'https://viacep.com.br/ws/' + cep.replace('-', '') + '/json/',
         success: function success(result) {

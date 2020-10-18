@@ -76,10 +76,11 @@ $(document).ready(function($){
         // changeHealthDeclaration();
     });
 
-    $(document).on('keyup', '.cep:first', function(e){
+    $(document).on('keyup', '.cep', function(e){
         var objInput = $(e.target);
         const cep = $(e.target).val();
         if (cep.length == 9) {
+            console.log(cep)
             $.ajax({
                 url: 'https://viacep.com.br/ws/' + cep.replace('-', '') + '/json/',
                 success: function(result) {
