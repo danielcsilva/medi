@@ -1,6 +1,6 @@
 <div>
 
-    <h4>CIDs</h4>
+    <h5>CIDs</h5>
 
     <div class="row">
         <div class="col-6">
@@ -39,7 +39,7 @@
         </div>
     @endforeach
     
-    <a class="btn btn-secondary mt-4" wire:click.prevent="saveCids">Salvar apenas CIDs relatados</a>  
+    {{-- <a class="btn btn-secondary mt-4" wire:click.prevent="saveCids">Salvar CIDs relatados para o Beneficiário</a>   --}}
 
 </div>
 

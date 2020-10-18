@@ -10,8 +10,8 @@ class Cid extends Model
     
     protected $fillable = ['cid', 'description'];
 
-    public function interviews()
+    public function analysis()
     {
-        return $this->belongsToMany('App\Cid', 'cids_interviews', 'cid_id', 'interview_id');
+        return $this->belongsToMany('App\Cid', 'cids_medical_analysis', 'cid_id', 'medical_analysis_id');
     }
 }

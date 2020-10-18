@@ -493,6 +493,9 @@ class AccessionController extends Controller
                     'justification' => $request->get('justification')[$k]
                 ]);
 
+
+                
+
             }
 
         }

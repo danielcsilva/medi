@@ -25,5 +25,10 @@ class AccessionMedicalAnalysis extends Model
     {
         return $this->belongsTo('App\Accession', 'accession_id');
     }
+
+    public function cids()
+    {
+        return $this->belongsToMany('App\Cid', 'cids_medical_analysis', 'medical_analysis_id', 'cid_id');
+    }
     
 }

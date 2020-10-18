@@ -83,26 +83,29 @@
                         </select>
                     </div>
 
-                    <div class="col-3">
-                        {{-- @livewire('cids', ['interviewId' => $interview->id ?? null]) --}}
-                    </div>
-
+                
                     <div class="col">
-                        <label for="">Justificativa</label>
-                        <textarea name="justification[]" id="" cols="30" rows="10" class="form-control" required>{{ old('justification.' . $k, $analysis[$k]->justification ?? null) }}</textarea>
+                        @livewire('cids', ['medicalAnalysisId' => $analysis[$k]->id ?? null])
                     </div>
 
                 @endforeach
 
             </div>
 
-            <div class="row mb-4 mt-4">
-                <div class="col-3">
-                    <a class="btn btn-primary" id="save-medic-analysis">Salvar Avaliação Médica</a>
-                    <p><small>Salvando a Avaliação Médica o Processo fica bloqueado para alteração.</small></p>
-                </div>  
+            <div class="row">
+                <div class="col">
+                    <label for="">Justificativa</label>
+                    <textarea name="justification[]" id="" cols="30" rows="10" class="form-control" required>{{ old('justification.' . $k, $analysis[$k]->justification ?? null) }}</textarea>
+                </div>
             </div>
 
+
+            <div class="d-flex flex-row mt-4">
+                <div class="p-2"><a class="btn btn-primary" id="save-medic-analysis">Salvar Avaliação Médica</a></div>
+                <div class="p-2"><a class="btn btn-danger" id="finish-process">Finalizar Processo</a></div>
+            </div>
+
+            <input type="hidden" name="finish_process" id="finish-now" value="0">
         </form>
 
         <script defer>
@@ -122,6 +125,17 @@
     
                     }
     
+                }) 
+
+                $('#finish-process').click(function(e){
+                    
+                    e.preventDefault()
+
+                    if(confirm('Deseja realmente finalizar o Processo? \r\n ATENÇÃO: O PROCESSO NÃO PODERÁ SER MODIFICADO APÓS ESTA AÇÃO!')) {
+                        $('#finish-now').val(1);
+                        $('form').submit();
+                    }
+
                 }) 
     
             })

@@ -2,14 +2,14 @@
 
 namespace App\Http\Livewire;
 
-use App\AccessionInterview;
+use App\AccessionMedicalAnalysis;
 use App\Cid;
 use Livewire\Component;
 
 class Cids extends Component
 {
     public $cids = [];
-    public $interviewId;
+    public $medicalAnalysisId;
     public $cidSelected;
     public $allCids;
     public $message;
@@ -49,24 +49,24 @@ class Cids extends Component
         }
     }
 
-    public function mount($interviewId = null)
+    public function mount($medicalAnalysisId = null)
     {
-        if ($interviewId !== null) {
-            $accessionInterview = AccessionInterview::findOrFail($interviewId);
-            if(isset($accessionInterview->cids) && count($accessionInterview->cids) > 0) {
-                foreach($accessionInterview->cids as $cid) {
+        if ($medicalAnalysisId !== null) {
+            $medicalAnalysisCids = AccessionMedicalAnalysis::findOrFail($medicalAnalysisId);
+            if(isset($medicalAnalysisCids->cids) && count($medicalAnalysisCids->cids) > 0) {
+                foreach($medicalAnalysisCids->cids as $cid) {
                     $this->cids[] = $cid->cid . ' - ' . $cid->description;
                 }
             }
         }
 
-        $this->interviewId = $interviewId;
+        $this->medicalAnalysisId = $medicalAnalysisId;
         $this->initCids();
     }
 
     public function saveCids()
     {
-        $accessionInterview = AccessionInterview::findOrFail($this->interviewId);
+        $medicalAnalysisCids = AccessionMedicalAnalysis::findOrFail($this->medicalAnalysisId);
         
         foreach($this->cids as $cid) {
             $cid = Cid::where('cid', substr($cid, 0, strpos($cid, "-") - 1))->first();
@@ -75,7 +75,7 @@ class Cids extends Component
             }
         }
         
-        $accessionInterview->cids()->sync($cids);
+        $medicalAnalysisCids->cids()->sync($cids);
 
         $this->message = 'CIDs salvos com sucesso!';
 
