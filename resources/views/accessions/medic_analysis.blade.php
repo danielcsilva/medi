@@ -35,6 +35,14 @@
                 <label for="">Comentários da Entrevista</label>
                 <textarea disabled name="interview_comments" class="form-control" id="" cols="30" rows="8">{{ $interview->interview_comments ?? null }}</textarea>
             </div>
+            <div class="col">
+                <label for="">Altura</label>
+                <input type="number" name="height" class="form-control height" step=".01" value="{{ $interview->height ?? null }}">
+                <label for="">Peso</label>
+                <input type="number" name="weight" class="form-control weight" step=".01" value="{{ $interview->weight ?? null }}">
+                <label for="">IMC</label>
+                <input type="text" class="form-control imc-calc" readonly name="" id="">
+            </div>
         </div>
 
         {{-- <div class="row mb-4 mt-4">
@@ -137,11 +145,33 @@
                     }
 
                 }) 
+
+                    
+                $(document).find('input.weight').each(function(i,o) {
+                    resolveImc(o)
+                })
+
+                $(document).on('change', '.weight', function(e) {
+                    resolveImc(e.target)
+                })
+
+                $(document).on('change', '.height', function(e) {
+                    $(e.target).nextAll('input', '.weight').trigger('change')
+                })
     
             })
-    
-        </script>
 
+
+            function resolveImc(objectWeight)
+            {
+                let weight = $(objectWeight).val()
+                let height = $(objectWeight).prevAll('input', '.weight').val()
+            
+                if (weight > 0 && height > 0) {
+                    $(objectWeight).nextAll('input.imc-calc:first').val(imcCalc(weight, height).toFixed(2))
+                }
+            }
+        </script>
 
     @endcan
 
