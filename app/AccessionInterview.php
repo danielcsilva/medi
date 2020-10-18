@@ -14,7 +14,10 @@ class AccessionInterview extends Model
             'interview_comments', 
             'interview_validated', 
             'user_id', 
-            'accession_id'
+            'accession_id',
+            'beneficiary_id',
+            'height',
+            'weight'
     ];
 
     public function user()
@@ -35,6 +38,21 @@ class AccessionInterview extends Model
     public function cids()
     {
         return $this->belongsToMany('App\Cid', 'cids_interviews', 'interview_id', 'cid_id');
+    }
+
+    public function beneficiary()
+    {
+        return $this->belongsTo('App\Beneficiary');
+    }
+
+    public function setHeightAttribute($value)
+    {           
+        $this->attributes['height'] = str_replace(',', '.', $value);
+    }
+
+    public function setWeightAttribute($value)
+    {   
+        $this->attributes['weight'] = str_replace(',', '.', $value);
     }
 }
 

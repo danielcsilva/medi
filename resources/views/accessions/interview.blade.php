@@ -19,7 +19,14 @@
         <div class="row mb-4 mt-4">
             <div class="col-3">
                 <label for="">Nome do Entrevistado</label>
-                <input type="text" disabled class="form-control" name="interviewed_name" value="{{ $interview->interviewed_name ?? null }}">
+                <select class="form-control" name="beneficiary_id">
+                    @if ($beneficiaries)
+                        @foreach($beneficiaries as $beneficiary)
+                            <option value="{{ $beneficiary->id }}" {{ $interview->beneficiary->id == $beneficiary->id ? 'selected' : '' }}>{{ $beneficiary->name }}</option>
+                        @endforeach
+                    @endif
+                </select>
+                {{-- <input type="text" disabled class="form-control" name="interviewed_name" value="{{ $interview->interviewed_name ?? null }}"> --}}
                 <label for="" class="mt-2">Data da Entrevista</label>
                 <input type="text" disabled class="form-control date-br" name="interview_date" value="{{ $interview->interview_date ?? null }}">
                 <label for="" class="mt-2">Entrevistado por</label>
@@ -35,9 +42,17 @@
                     @endif
                 </select>
             </div>
-            <div class="col">
+            <div class="col-4">
                 <label for="">Comentários da Entrevista</label>
                 <textarea disabled name="interview_comments" class="form-control" id="" cols="30" rows="8">{{ $interview->interview_comments ?? null }}</textarea>
+            </div>
+            <div class="col">
+                <label for="">Altura</label>
+                <input type="number" name="height" class="form-control height" step=".01" value="{{ $interview->height ?? null }}">
+                <label for="">Peso</label>
+                <input type="number" name="weight" class="form-control weight" step=".01" value="{{ $interview->weight ?? null }}">
+                <label for="">IMC</label>
+                <input type="text" class="form-control imc-calc" readonly name="" id="">
             </div>
         </div>
 
@@ -60,7 +75,14 @@
         <div class="row mb-4 mt-4">
             <div class="col-3">
                 <label for="">Nome do Entrevistado</label>
-                <input type="text" class="form-control" name="interviewed_name" value="{{ old('interviewed_name') }}" required>
+                <select class="form-control" name="beneficiary_id">
+                    @if ($beneficiaries)
+                        @foreach($beneficiaries as $beneficiary)
+                            <option value="{{ $beneficiary->id }}">{{ $beneficiary->name }}</option>
+                        @endforeach
+                    @endif
+                </select>
+                {{-- <input type="text" class="form-control" name="interviewed_name" value="{{ old('interviewed_name') }}" required> --}}
                 <label for="" class="mt-2">Data da Entrevista</label>
                 <input type="text" class="form-control date-br" name="interview_date" value="{{ old('interview_date', date('d.m.Y')) }}" required>
                 <label for="" class="mt-2">Entrevistado por</label>
@@ -76,9 +98,17 @@
                     @endif
                 </select>
             </div>
-            <div class="col">
+            <div class="col-4">
                 <label for="">Comentários da Entrevista</label>
                 <textarea name="interview_comments" class="form-control" id="" cols="30" rows="8" required>{{ old('interview_comments') }}</textarea>
+            </div>
+            <div class="col">
+                <label for="">Altura</label>
+                <input type="number" name="height" class="form-control height" step=".01" value="">
+                <label for="">Peso</label>
+                <input type="number" name="weight" class="form-control weight" step=".01" value="">
+                <label for="">IMC</label>
+                <input type="text" class="form-control imc-calc" readonly name="" id="">
             </div>
         </div>
 
@@ -88,8 +118,6 @@
                 <input type="checkbox" name="interview_validated" class="" {{ old('interview_validated', $interview->interview_validated ?? 0) !== 0 ? 'checked' : ''}} value="1">
             </div>
         </div> --}}
-
-        @livewire('cids', ['interviewId' => $interview->id ?? null])
 
         <div class="row mb-4" style="margin-top: 40px;">
             <div class="col-3">
@@ -135,8 +163,30 @@
                     }
     
                 }) 
-    
+
+                $(document).find('input.weight').each(function(i,o) {
+                   resolveImc(o)
+                })
+
+                $(document).on('change', '.weight', function(e) {
+                   resolveImc(e.target)
+                })
+
+                $(document).on('change', '.height', function(e) {
+                   $(e.target).nextAll('input', '.weight').trigger('change')
+                })
+                
             })
+
+            function resolveImc(objectWeight)
+            {
+                let weight = $(objectWeight).val()
+                let height = $(objectWeight).prevAll('input', '.weight').val()
+
+                if (weight > 0 && height > 0) {
+                    $(objectWeight).nextAll('input.imc-calc:first').val(imcCalc(weight, height).toFixed(2))
+                }
+            }
     
         </script>
 

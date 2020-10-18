@@ -57,9 +57,9 @@
 
                 @foreach($beneficiaries as $k => $beneficiary)
 
-                    <div class="col-4">
+                    <div class="col-3">
                         <label for="">Beneficiário</label>
-                        <input type="text" class="form-control" name="analysis_beneficiary_name[]" value="{{ old('analysis_beneficiary_name.' . $k, $beneficiary->name ?? null) }}" />
+                        <input type="text" class="form-control" readonly name="analysis_beneficiary_name[]" value="{{ old('analysis_beneficiary_name.' . $k, $beneficiary->name ?? null) }}" />
                         <input type="hidden" name="analysis_beneficiary_id[]" value="{{ old('analysis_beneficiary_id.' . $k, $beneficiary->id ?? null) }}" />
                         
                         <label for="" class="mt-4">Grau de Risco</label>
@@ -81,6 +81,10 @@
                                 @endforeach
                             @endif
                         </select>
+                    </div>
+
+                    <div class="col-3">
+                        {{-- @livewire('cids', ['interviewId' => $interview->id ?? null]) --}}
                     </div>
 
                     <div class="col">

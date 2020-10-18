@@ -149,16 +149,19 @@ class AccessionInterviewController extends Controller
 
         }
 
-        if ($request->get('interviewed_name') !== null && $request->get('interview_comments') !== null) {
+        if ($request->get('beneficiary_id') !== null && $request->get('interview_comments') !== null) {
             
             $interview = AccessionInterview::create([
-                'interviewed_name' => $request->get('interviewed_name'), 
+                'interviewed_name' => $request->get('beneficiary_id'), 
                 'interview_date' => $request->get('interview_date'), 
                 'interviewed_by' => Auth::user()->name, 
                 'interview_comments' => $request->get('interview_comments'), 
                 'interview_validated' => false, 
                 'user_id' => Auth::user()->id, 
-                'accession_id' => $accession_id
+                'accession_id' => $accession_id,
+                'beneficiary_id' => $request->get('beneficiary_id'),
+                'height' => $request->get('height') ?? null,
+                'weight' => $request->get('weight') ?? null
             ]);
             
             $msg = 'Entrevista do Processo de Adesão criada com sucesso!';
@@ -180,17 +183,17 @@ class AccessionInterviewController extends Controller
 
         }
 
-        $cids = [];
-        if ($request->get('cids')) {
-            foreach($request->get('cids') as $cid) {
-                $cid = Cid::where('cid', substr($cid, 0, strpos($cid, "-") - 1))->first();
-                if ($cid) {
-                   $cids[] = $cid->id; 
-                }
-            }
+        // $cids = [];
+        // if ($request->get('cids')) {
+        //     foreach($request->get('cids') as $cid) {
+        //         $cid = Cid::where('cid', substr($cid, 0, strpos($cid, "-") - 1))->first();
+        //         if ($cid) {
+        //            $cids[] = $cid->id; 
+        //         }
+        //     }
             
-            $interview->cids()->sync($cids);
-        }
+        //     $interview->cids()->sync($cids);
+        // }
 
         $accession->save();      
         
