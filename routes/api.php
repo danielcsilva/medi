@@ -26,5 +26,6 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::post('/novoprocesso', 'Api\AccessionApiController@newAccession');
     Route::get('/declaracoesdesaude', 'Api\AccessionApiController@healthDeclarations');
     Route::get('/tiposmovimentacao', 'Api\AccessionApiController@processTypes');
+    Route::get('/processos', 'Api\AccessionApiController@getProcess');
 
 });

@@ -314,4 +314,16 @@ class AccessionApiController extends Controller
     {
         return ProcessType::select('type_of_process')->get();
     }
+
+    /**
+     * 
+     * Find a Process in Database
+     * 
+     */
+    public function getProcess()
+    {
+        $results = Company::with('accessions')->where('name', request()->get('medi_cliente'))->paginate(20);
+        
+        return $results;
+    }
 }
