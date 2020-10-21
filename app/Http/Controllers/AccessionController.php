@@ -38,10 +38,15 @@ class AccessionController extends Controller
      */
     public function index()
     {
+        $finished = false;
+        if (request()->get('finished') && request()->get('finished') == '1') {
+            $finished = true;
+        }
+
 
         return view('accessions.list', [
             'model' => Accession::class, 
-            'filter' => [], 
+            'filter' => ['analysis_status' => $finished], 
             'editRoute' => 'accessions',
             'routeParam' => 'accession'
         ]);
@@ -425,7 +430,10 @@ class AccessionController extends Controller
 
         return view('accessions.list', [
             'model' => Accession::class, 
-            'filter' => ['to_medic_analysis' => true], 
+            'filter' => [
+                'to_medic_analysis' => true,
+                'analysis_status' => false
+            ], 
             'editRoute' => 'accessions.medicAnalysis',
             'routeParam' => 'accession',
             'deleteRoute' => 'accessions',
@@ -511,6 +519,12 @@ class AccessionController extends Controller
 
             }
 
+        }
+
+        if ($request->get('finish_process')) {
+            $accession = Accession::findOrFail($accession_id);
+            $accession->analysis_status = true;
+            $accession->save();
         }
 
         return redirect('/medicanalysis/list')->with('success', 'Análise Médica gravada com sucesso!'); 

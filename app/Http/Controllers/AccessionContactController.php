@@ -30,7 +30,8 @@ class AccessionContactController extends Controller
         return view('accessions.list', [
             'model' => Accession::class, 
             'filter' => [
-                'to_contact' => true
+                'to_contact' => true,
+                'analysis_status' => false
             ],
             'editRoute' => 'tocontact',
             'routeParam' => 'tocontact',

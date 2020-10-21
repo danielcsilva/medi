@@ -34,7 +34,8 @@ class AccessionInterviewController extends Controller
         return view('accessions.list', [
             'model' => Accession::class, 
             'filter' => [
-                'to_interview' => true
+                'to_interview' => true,
+                'analysis_status' => false
             ],
             'editRoute' => 'interview',
             'routeParam' => 'interview',

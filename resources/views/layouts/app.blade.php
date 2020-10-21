@@ -74,9 +74,9 @@
                                         <a class="dropdown-item" href="{{ url('/medicanalysis/list') }}">Avaliar Grau de Risco</a>
                                     @endcan
                                     
-                                    {{-- @can('Visualizar Processos')
-                                    <a class="dropdown-item" href="{{ route('accessions.index') }}">Finalizados</a>
-                                    @endcan --}}
+                                    @can('Editar Processos')
+                                    <a class="dropdown-item" href="{{ route('accessions.index', ['finished' => 1]) }}">Finalizados</a>
+                                    @endcan
                                 </div>
                             </li>    
                             
