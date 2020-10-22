@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Accession;
+use App\AccessionMedicalAnalysis;
 use App\Address;
 use App\Beneficiary;
 use App\Company;
@@ -45,31 +46,16 @@ class AccessionApiController extends Controller
      * 
      * @urlParam clientId int ID do Cliente que consulta a API. Exemplo: 9;
      */
-    public function myProfile($client_id)
+    public function myProfile()
     {   
     
-        // $validator = Validator::make(request()->all(), [
-        //     "client_id" => "required|Integer"
-        // ]);
+        $user = request()->user();
 
-        if (!is_numeric($client_id)) {
-            return response()->json(['message' => 'client_id precisa ser um número!'], 400);
-        }
-    
-        // if ($validator->fails()) {
-        //     return response(
-        //         $validator->errors(),
-        //         400
-        //     );
-        // }
-
-        $client = Company::findOrFail($client_id);
-
-        if ($client) {
-            return $client;
-        } 
+        return [
+            'msg' => 'success',
+            'empresa_id' => $user->company_id
+        ];
         
-        return response()->json(['message' => 'Client not found!'], 404);
     }
 
     /**
@@ -322,8 +308,68 @@ class AccessionApiController extends Controller
      */
     public function getProcess()
     {
-        $results = Company::with('accessions')->where('name', request()->get('medi_cliente'))->paginate(20);
         
-        return $results;
+        $validator = Validator::make(request()->all(), [          
+            "propostas" => "required",
+            "empresa_id" => "required"
+        ]);
+
+        if ($validator->fails()) {
+            return response(
+                $validator->errors(),
+                400
+            );
+        }
+      
+        $results = Accession::with(['beneficiaries', 'company'])
+                            ->whereIn('proposal_number', explode(",", request()->get('propostas')))
+                            ->where('company_id', request()->get('empresa_id'))
+                            ->get();
+        $answer = [];
+        if ($results) {
+
+            $answer['message'] = 'success';
+            $answer['data'] = [];
+            $answer['total'] = count($results);
+            
+            foreach($results as $index => $result) {
+
+                $answer['data'][$index]['proposta_numero'] = $result->proposal_number;
+                $answer['data'][$index]['medi_cliente'] = $result->company->name;
+                
+                foreach($result->beneficiaries as $beneficiary) {
+                    
+                    $medicalAnalysis = AccessionMedicalAnalysis::with(['suggestion', 'riskGrade', 'cids'])
+                                        ->where('accession_id', $result->id)
+                                        ->where('beneficiary_id', $beneficiary->id)
+                                        ->get();
+                    
+                    $medicalAnalysisResume = [];
+                                        
+                    foreach($medicalAnalysis as $medical) {
+                        
+                        $cids = [];
+                        foreach($medical->cids as $cid) {
+                            $cids[] = ['cid' => $cid->cid, 'descricao' => $cid->description];
+                        }
+
+                        $medicalAnalysisResume['risco'] = $medical->riskGrade->risk;
+                        $medicalAnalysisResume['justificativa'] = $medical->justification;
+                        $medicalAnalysisResume['sugestao'] = $medical->suggestion->suggestion;
+                        $medicalAnalysisResume['cids'] = $cids;
+                    }
+                    
+                    $answer['data'][$index]['beneficiarios'][] = [
+                        'nome' => $beneficiary->name,
+                        'cpf' => $beneficiary->cpf,
+                        'analise_medica' => $medicalAnalysisResume
+                    ];
+
+                }
+            }
+
+        }
+
+        return $answer;
     }
 }

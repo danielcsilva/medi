@@ -26,6 +26,16 @@ class AccessionMedicalAnalysis extends Model
         return $this->belongsTo('App\Accession', 'accession_id');
     }
 
+    public function suggestion()
+    {
+        return $this->belongsTo('App\Suggestion');
+    }
+
+    public function riskGrade()
+    {
+        return $this->belongsTo('App\RiskGrade');
+    }
+
     public function cids()
     {
         return $this->belongsToMany('App\Cid', 'cids_medical_analysis', 'medical_analysis_id', 'cid_id');
