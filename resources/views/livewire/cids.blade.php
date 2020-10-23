@@ -26,13 +26,13 @@
         </div>
     @endif
 
-    @foreach($cids as $selectedCid)
+    @foreach($cids as $kSelected => $selectedCid)
         <div class="form-row">
             <div class="col-7">
                 <div class="input-group mb-2">
-                    <input type="text" class="form-control" name="cids_{{ $beneficiary_id }}[]" value="{{ $selectedCid }}" wire:key="{{ $loop->index }}">
+                    <input type="text" class="form-control" name="cids_{{ $beneficiary_id }}[]" value="{{ $selectedCid }}" wire:key="{{ $kSelected }}">
                     <div class="input-group-apend">
-                        <a class="btn btn-warning" wire:click.prevent="removeCid({{ $loop->index }})">X</a>
+                        <a class="btn btn-warning" wire:click.prevent="removeCid({{ $kSelected }})">X</a>
                     </div>
                 </div>
             </div>

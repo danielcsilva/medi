@@ -34,11 +34,7 @@ class Cids extends Component
 
     public function removeCid($key)
     {
-        if ($key === 0) {
-            $this->cids = [];
-        } else {
-            unset($this->cids[$key]);
-        }
+        unset($this->cids[$key]);
     }
 
     public function searchCid($part) 
