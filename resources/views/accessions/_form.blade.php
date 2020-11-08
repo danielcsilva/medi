@@ -232,8 +232,8 @@
 
 
 <div class="form-row mb-4 mt-4">
-    <div class="col">
-        <a href="#" id="addColaborator">Adicionar Dependente</a>
+    <div class="col-2">
+        <button id="addColaborator" type="button" class="form-control btn btn-primary">Adicionar Dependente</button>
     </div>
 </div>
 

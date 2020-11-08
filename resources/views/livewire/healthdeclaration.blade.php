@@ -17,15 +17,15 @@
 
     <div class="row mb-4 mt-4">
         <div class="col">
-            <table class="table table-striped">
+            <table class="table table-striped" style="width:0;">
                 <thead>
                     <tr>
-                        <th>#</th><th>Pergunta</th>
+                        <th width="30">#</th><th width="500">Pergunta</th>
                         @for($i = 0; $i < $numberOfDependents; $i++)
                             @if ($i == 0)
-                                <th>Titular</th>
+                                <th width="120">Titular</th>
                             @else
-                                <th>Dependente {{ $i }}</th>
+                                <th width="120">Dependente {{ $i }}</th>
                             @endif
 
                         @endfor
@@ -36,7 +36,7 @@
                         {{-- {{ dd($answersQuiz) }} --}}
                         @foreach ($quiz_questions->questions as $k => $question)
                             <tr>
-                            <td>{{ $k + 1 }}</td><td>{{ $question->question }}</td>                            
+                                <td>{{ $k + 1 }}</td><td>{{ $question->question }}</td>                            
                                 @for($i = 0; $i < $numberOfDependents; $i++)
                                 <td>                                    
                                     @if (isset($answersQuiz[$question->id]['beneficiary_' . $i]['short']) && $answersQuiz[$question->id]['beneficiary_' . $i]['short'] == 'S' )

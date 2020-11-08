@@ -197,20 +197,32 @@ class AccessionApiController extends Controller
         // 2. Incluir Beneficiário
         $beneficiaries = $jsonData['beneficiarios'];
 
-        foreach($beneficiaries as $kBeneficiary => $beneficiary) {
+        foreach($beneficiaries as $kBeneficiary => $beneficiary) {        
+
+            // create beneficiaries and dependents
+            if ($beneficiary['tipo'] == "titular") {
+                $newBeneficiary = $this->createBeneficiary($beneficiary, $accession->id);
+                $accession->holder_id = $newBeneficiary->id;
+
+                // 2.2 Cadastrar endereço
+                $this->createAddress($beneficiary, $accession->id);
+
+                // Health Declaration
+                $this->createHealthDeclaration($requestedQuiz, $beneficiary, 0, $accession, $newBeneficiary);
+
+            } else if (isset($beneficiary['dependentes']) && count($beneficiary['dependentes']) > 0) {
+
+                foreach($beneficiary['dependentes'] as $kDependent => $dependent) {
+                    $newBeneficiary = $this->createBeneficiary($dependent, $accession->id);
+
+                    // 2.2 Cadastrar endereço
+                    $this->createAddress($beneficiary, $accession->id);
+
+                    // Health Declaration
+                    $this->createHealthDeclaration($requestedQuiz, $beneficiary, $kDependent + 1, $accession, $newBeneficiary);
+                }
+            }
             
-            $newBeneficiary = Beneficiary::create([
-                'name' => $beneficiary['nome'], 
-                'email' => $beneficiary['email'], 
-                'cpf' => $beneficiary['cpf'], 
-                'birth_date' => $beneficiary['dt_nasc'], 
-                'height' => $beneficiary['altura'], 
-                'weight' => $beneficiary['peso'], 
-                'imc' => $beneficiary['imc'], 
-                'gender' => strtoupper($beneficiary['sexo']), 
-                'accession_id' => $accession->id, 
-                'age' => $beneficiary['idade']
-            ]);
             
             // 2.1 Cadastrar telefones
             $telephones = [$beneficiary['telcel'], $beneficiary['telfixo'] ?? '', $beneficiary['telcom'] ?? ''];
@@ -221,56 +233,17 @@ class AccessionApiController extends Controller
                         'accession_id' => $accession->id
                     ]);
                 }
-            }
-
-            // 2.2 Cadastrar endereço
-            $address = new Address();
-            $address->address = $beneficiary['endereco'];
-            $address->number = $beneficiary['numero'];
-            $address->complement = $beneficiary['complemento'];
-            $address->city = strtoupper($beneficiary['municipio']);
-            $address->state = strtoupper($beneficiary['uf']);
-            $address->cep = $beneficiary['cep'];
-            $address->accession_id = $accession->id;
-            $address->save();
-
-             // 3. Incluir respotas dadas no Quiz HealthDeclarationAnswer
-            foreach($requestedQuiz->questions as $k => $question) {
-                HealthDeclarationAnswer::create([
-                    'question' => $k + 1,
-                    'answer' => $beneficiary['respostas_dps'][$k]['resposta'],
-                    'beneficiary_id' => $newBeneficiary->id,
-                    'accession_id' => $accession->id,
-                    'quiz_id' => $requestedQuiz->id,
-                    'question_id' => $question->id
-                ]);   
-                
-                // 3.1 incluir CIDs relatados na DS HealthDeclarationSpecific
-                if (isset($beneficiary['respostas_dps'][$k]['CIDS']) && count($beneficiary['respostas_dps'][$k]['CIDS']) > 0) {
-                    foreach($beneficiary['respostas_dps'][$k]['CIDS'] as $kCid => $cid) {
-                        
-                        HealthDeclarationSpecific::create([
-                            'comment_number' => $k + 1,
-                            'comment_item' => $beneficiary['respostas_dps'][$k]['CIDS'][$kCid]['codigo'] . ' ' . $beneficiary['respostas_dps'][$k]['CIDS'][$kCid]['especificacao'],
-                            'period_item' => $beneficiary['respostas_dps'][$k]['CIDS'][$kCid]['data_evento'],
-                            'accession_id' => $accession->id,
-                            'question_id' => $question->id,
-                            'quiz_id' => $requestedQuiz->id,
-                            'beneficiary_index' => $kBeneficiary
-                        ]);
-
-                    }
-                }
-            }
+            }                    
             
             // Holder (Titular)
-            if ($beneficiary['cpf'] == $jsonData['proposta_titular_cpf']) {
-                $accession->holder_id = $newBeneficiary->id;
-                $accession->save();
-            }
+            // if ($beneficiary['cpf'] == $jsonData['proposta_titular_cpf']) {
+            //     $accession->holder_id = $newBeneficiary->id;
+            //     $accession->save();
+            // }
+
+            $accession->save();
 
         }
-
 
 
         return ['message' => 'success', 'process_number' => $accession->id];
@@ -372,4 +345,71 @@ class AccessionApiController extends Controller
 
         return $answer;
     }
+
+    public function createBeneficiary($beneficiary, $accession_id) 
+    {
+
+        $newBeneficiary = Beneficiary::create([
+            'name' => $beneficiary['nome'], 
+            'email' => $beneficiary['email'], 
+            'cpf' => $beneficiary['cpf'], 
+            'birth_date' => $beneficiary['dt_nasc'], 
+            'height' => $beneficiary['altura'], 
+            'weight' => $beneficiary['peso'], 
+            'imc' => $beneficiary['imc'], 
+            'gender' => strtoupper($beneficiary['sexo']), 
+            'accession_id' => $accession_id, 
+            'age' => $beneficiary['idade']
+        ]);
+        
+
+        return $newBeneficiary;
+    }
+
+    public function createAddress($beneficiary, $accession_id) 
+    {
+        $address = new Address();
+        $address->address = $beneficiary['endereco'];
+        $address->number = $beneficiary['numero'];
+        $address->complement = $beneficiary['complemento'];
+        $address->city = strtoupper($beneficiary['municipio']);
+        $address->state = strtoupper($beneficiary['uf']);
+        $address->cep = $beneficiary['cep'];
+        $address->accession_id = $accession_id;
+        $address->save();
+    }
+
+    public function createHealthDeclaration($requestedQuiz, $beneficiary, $kBeneficiary, $accession, $newBeneficiary)
+    {
+        // 3. Incluir respotas dadas no Quiz HealthDeclarationAnswer
+        foreach($requestedQuiz->questions as $k => $question) {
+            HealthDeclarationAnswer::create([
+                'question' => $k + 1,
+                'answer' => $beneficiary['respostas_dps'][$k]['resposta'],
+                'beneficiary_id' => $newBeneficiary->id,
+                'accession_id' => $accession->id,
+                'quiz_id' => $requestedQuiz->id,
+                'question_id' => $question->id
+            ]);   
+            
+            // 3.1 incluir CIDs relatados na DS HealthDeclarationSpecific
+            if (isset($beneficiary['respostas_dps'][$k]['CIDS']) && count($beneficiary['respostas_dps'][$k]['CIDS']) > 0) {
+                foreach($beneficiary['respostas_dps'][$k]['CIDS'] as $kCid => $cid) {
+                    
+                    HealthDeclarationSpecific::create([
+                        'comment_number' => $k + 1,
+                        'comment_item' => $beneficiary['respostas_dps'][$k]['CIDS'][$kCid]['codigo'] . ' ' . $beneficiary['respostas_dps'][$k]['CIDS'][$kCid]['especificacao'],
+                        'period_item' => $beneficiary['respostas_dps'][$k]['CIDS'][$kCid]['data_evento'],
+                        'accession_id' => $accession->id,
+                        'question_id' => $question->id,
+                        'quiz_id' => $requestedQuiz->id,
+                        'beneficiary_index' => $kBeneficiary
+                    ]);
+
+                }
+            }
+        }
+    }
+
+    
 }
