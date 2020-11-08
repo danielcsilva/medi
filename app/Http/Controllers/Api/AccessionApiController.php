@@ -198,7 +198,7 @@ class AccessionApiController extends Controller
         $beneficiaries = $jsonData['beneficiarios'];
 
         foreach($beneficiaries as $kBeneficiary => $beneficiary) {        
-
+            
             // create beneficiaries and dependents
             if ($beneficiary['tipo'] == "titular") {
                 $newBeneficiary = $this->createBeneficiary($beneficiary, $accession->id);
@@ -208,21 +208,21 @@ class AccessionApiController extends Controller
                 $this->createAddress($beneficiary, $accession->id);
 
                 // Health Declaration
-                $this->createHealthDeclaration($requestedQuiz, $beneficiary, 0, $accession, $newBeneficiary);
-
-            } else if (isset($beneficiary['dependentes']) && count($beneficiary['dependentes']) > 0) {
-
+                $this->createHealthDeclaration($requestedQuiz, $beneficiary, 0, $accession, $newBeneficiary);            
+            }
+            
+            if (isset($beneficiary['dependentes']) && count($beneficiary['dependentes']) > 0) {
+                    
                 foreach($beneficiary['dependentes'] as $kDependent => $dependent) {
                     $newBeneficiary = $this->createBeneficiary($dependent, $accession->id);
 
                     // 2.2 Cadastrar endereço
-                    $this->createAddress($beneficiary, $accession->id);
+                        $this->createAddress($beneficiary, $accession->id);
 
                     // Health Declaration
                     $this->createHealthDeclaration($requestedQuiz, $beneficiary, $kDependent + 1, $accession, $newBeneficiary);
                 }
             }
-            
             
             // 2.1 Cadastrar telefones
             $telephones = [$beneficiary['telcel'], $beneficiary['telfixo'] ?? '', $beneficiary['telcom'] ?? ''];
