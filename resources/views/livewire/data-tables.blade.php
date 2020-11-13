@@ -1,7 +1,7 @@
 <div>
 
     <input type="text" wire:model="search" placeholder="pesquisar" class="form-control mb-2 mt-2">
-
+    <div style="float: right;">Total de processos: {{ $process_count }}</div>
     <table class="table table-striped">
         <thead>
           <tr>

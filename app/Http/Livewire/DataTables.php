@@ -21,6 +21,7 @@ class DataTables extends Component
     public $columns;
     public $labels;
     public $booleans;
+    public $process_count;
 
     public $edit = true;
     public $delete = true;
@@ -56,6 +57,8 @@ class DataTables extends Component
         if (strpos($this->editRoute, '.') === false) {
             $this->editRoute .= '.edit';
         }
+
+        $this->process_count = $rows->count();
         
         return view('livewire.data-tables', [
             'rows' => $rows->paginate($this->perPage),

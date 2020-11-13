@@ -353,22 +353,22 @@
                     <div class="col-2">
                         <label for="">Altura</label>
                         <input type="text" name="beneficiary_height[]" value="{{ old('beneficiary_height.' . $k, $beneficiaries[$k]->height ?? null) }}" class="form-control" placeholder="Altura" required>
-                        @if($errors->has('beneficiary_height.0'))
+                        @if($errors->has('beneficiary_height.' . $k))
                             <div class="alert alert-danger small">{{ $errors->first('beneficiary_height.' . $k) }}</div>
                         @endif
                     </div>
                     <div class="col-2">
                         <label for="">Peso</label>
                         <input type="text" name="beneficiary_weight[]" value="{{ old('beneficiary_weight.' . $k, $beneficiaries[$k]->weight ?? null) }}" class="form-control" placeholder="Peso" required>
-                        @if($errors->has('beneficiary_weight.0'))
+                        @if($errors->has('beneficiary_weight.' . $k))
                             <div class="alert alert-danger small">{{ $errors->first('beneficiary_weight.' . $k) }}</div>
                         @endif
                     </div>
                     <div class="col-2">
                         <label for="">IMC</label>
                         <input type="text" readonly name="beneficiary_imc[]" value="{{ old('beneficiary_imc.' . $k, $beneficiaries[$k]->imc ?? null) }}" class="form-control imc-calc">
-                        @if($errors->has('beneficiary_imc.0'))
-                            <div class="alert alert-danger small">{{ $errors->first('beneficiary_imc.0') }}</div>
+                        @if($errors->has('beneficiary_imc.' . $k))
+                            <div class="alert alert-danger small">{{ $errors->first('beneficiary_imc.' . $k) }}</div>
                         @endif
                     </div>
                 </div>
