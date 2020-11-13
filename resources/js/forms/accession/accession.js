@@ -99,8 +99,8 @@ $(document).ready(function($){
 
     $(document).on('change', 'input.weight', function(e){
         
-        let weight = $(e.target).val();
-        let height = $(e.target).parents('div.form-row').find('.height:first').val();
+        let weight = parseFloat($(e.target).val().replace(",", "."));
+        let height = parseFloat($(e.target).parents('div.form-row').find('.height:first').val().replace(",", "."));
         
         $(e.target).parents('div.form-row').find('.imc-calc:first').val( imcCalc(weight, height).toFixed(2) );
     })

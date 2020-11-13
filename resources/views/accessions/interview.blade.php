@@ -48,9 +48,9 @@
             </div>
             <div class="col">
                 <label for="">Altura</label>
-                <input type="number" name="height" class="form-control height" step=".01" value="{{ $interview->height ?? null }}">
+                <input type="text" name="height" class="form-control height" value="{{ $interview->height ?? null }}">
                 <label for="">Peso</label>
-                <input type="number" name="weight" class="form-control weight" step=".01" value="{{ $interview->weight ?? null }}">
+                <input type="text" name="weight" class="form-control weight" value="{{ $interview->weight ?? null }}">
                 <label for="">IMC</label>
                 <input type="text" class="form-control imc-calc" readonly name="" id="">
             </div>
@@ -104,9 +104,9 @@
             </div>
             <div class="col">
                 <label for="">Altura</label>
-                <input type="number" name="height" class="form-control height" step=".01" value="">
+                <input type="text" name="height" class="form-control height" value="">
                 <label for="">Peso</label>
-                <input type="number" name="weight" class="form-control weight" step=".01" value="">
+                <input type="text" name="weight" class="form-control weight" value="">
                 <label for="">IMC</label>
                 <input type="text" class="form-control imc-calc" readonly name="" id="">
             </div>
@@ -169,6 +169,7 @@
                 })
 
                 $(document).on('change', '.weight', function(e) {
+                    console.log('calcula...')
                    resolveImc(e.target)
                 })
 
@@ -180,11 +181,14 @@
 
             function resolveImc(objectWeight)
             {
-                let weight = $(objectWeight).val()
-                let height = $(objectWeight).prevAll('input', '.weight').val()
+                if ($(objectWeight).val() != '' && $(objectWeight).prevAll('input', '.weight:first').val() != '') {
 
-                if (weight > 0 && height > 0) {
-                    $(objectWeight).nextAll('input.imc-calc:first').val(imcCalc(weight, height).toFixed(2))
+                    let weight = parseFloat($(objectWeight).val().replace(",", "."))
+                    let height = parseFloat($(objectWeight).prevAll('input', '.weight:first').val().replace(",", "."))
+                    
+                    if (weight > 0 && height > 0) {
+                        $(objectWeight).nextAll('input.imc-calc:first').val(imcCalc(weight, height).toFixed(2))
+                    }
                 }
             }
     

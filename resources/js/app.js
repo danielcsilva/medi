@@ -48,6 +48,31 @@ var applyMasks = function() {
             }
         });
     });
+
+    var height = document.getElementsByClassName('height');
+
+    Array.prototype.forEach.call(height, function(element) {
+        var field = new IMask(element, {
+        mask: '0,00',
+        placeholder: {
+                show: 'always'
+            }
+        });
+    });
+
+    var weight = document.getElementsByClassName('weight');
+
+    Array.prototype.forEach.call(weight, function(element) {
+        var field = new IMask(element, {
+        mask: Number,
+        scale: 2,
+        radix: ',',
+        max: 300,
+        placeholder: {
+                show: 'always'
+            }
+        });
+    });
 }
 
 window.applyMasks = applyMasks;
