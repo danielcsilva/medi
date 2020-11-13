@@ -25,7 +25,7 @@
                     @if(strpos($col, '.') !== false)
                         <td class="@if(in_array($col, $booleans)) boolean-value @endif">{{ $row[explode('.', $col)[0]][explode('.', $col)[1]] }}</td>
                     @else 
-                        <td class="@if(in_array($col, $booleans)) boolean-value @endif">{{ $row[$col] }}</td>
+                        <td class="@if(in_array($col, $booleans)) boolean-value @endif">{{ $row[$col] ?? '' }}</td>
                     @endif
                 @endforeach
 
