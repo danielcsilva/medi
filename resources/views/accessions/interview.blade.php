@@ -14,13 +14,13 @@
             <div class="col-6"><h4>Entrevistas Anteriores</h4></div>
         </div>
         @endif
-
+        {{-- {{ dd($beneficiaries) }} --}}
         @foreach($interviews as $interview)
         <div class="row mb-4 mt-4">
             <div class="col-3">
                 <label for="">Nome do Entrevistado</label>
                 <select class="form-control" name="beneficiary_id">
-                    @if ($beneficiaries)
+                    @if ($beneficiaries && $interview->beneficiary)
                         @foreach($beneficiaries as $beneficiary)
                             <option value="{{ $beneficiary->id }}" {{ $interview->beneficiary->id == $beneficiary->id ? 'selected' : '' }}>{{ $beneficiary->name }}</option>
                         @endforeach
@@ -71,7 +71,7 @@
         <form id="interview-form" method="post" action="{{ route('interview.update', ['interview' => $accession->id])  }}">
             @csrf
             @method('PUT')
-
+            
         <div class="row mb-4 mt-4">
             <div class="col-3">
                 <label for="">Nome do Entrevistado</label>

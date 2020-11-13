@@ -151,7 +151,7 @@ class AccessionInterviewController extends Controller
         }
 
         if ($request->get('beneficiary_id') !== null && $request->get('interview_comments') !== null) {
-            
+            // dd($request->all());
             $interview = AccessionInterview::create([
                 'interviewed_name' => $request->get('beneficiary_id'), 
                 'interview_date' => $request->get('interview_date'), 
@@ -161,9 +161,17 @@ class AccessionInterviewController extends Controller
                 'user_id' => Auth::user()->id, 
                 'accession_id' => $accession_id,
                 'beneficiary_id' => $request->get('beneficiary_id'),
-                'height' => $request->get('height') ?? null,
-                'weight' => $request->get('weight') ?? null
             ]);
+
+            if ($request->get('height')) {
+                $interview->height = $request->get('height');
+                $interview->save();
+            }
+
+            if ($request->get('weight')) {
+                $interview->weight = $request->get('weight');
+                $interview->save();
+            }
             
             $msg = 'Entrevista do Processo de Adesão criada com sucesso!';
 
