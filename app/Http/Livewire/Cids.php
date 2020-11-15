@@ -40,7 +40,9 @@ class Cids extends Component
     public function searchCid($part) 
     {
         if ($part != "") {
-            $this->allCids = Cid::where('cid', 'LIKE', '%' . $part . '%')->limit(100)->get();
+            $this->allCids = Cid::where('cid', 'LIKE', '%' . $part . '%')
+                                ->orWhere('description', 'LIKE', '%' . $part . '%')
+                                ->limit(100)->get();
         } else {
             $this->initCids();
         }
