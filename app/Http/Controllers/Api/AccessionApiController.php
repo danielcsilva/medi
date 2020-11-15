@@ -281,10 +281,13 @@ class AccessionApiController extends Controller
      */
     public function getProcess()
     {
-        
+    
         $validator = Validator::make(request()->all(), [          
-            "propostas" => "required",
-            "empresa_id" => "required"
+            "process_number" => "required|numeric"
+        ], 
+        [   
+            'process_number.required' => 'O número do processo é obrigatório!',
+            'process_number.numeric' => 'O número do processo deve ser numérico!'
         ]);
 
         if ($validator->fails()) {
@@ -294,9 +297,8 @@ class AccessionApiController extends Controller
             );
         }
       
-        $results = Accession::with(['beneficiaries', 'company'])
-                            ->whereIn('proposal_number', explode(",", request()->get('propostas')))
-                            ->where('company_id', request()->get('empresa_id'))
+        $results = Accession::with(['beneficiaries', 'company'])                            
+                            ->where('id', request()->get('process_number'))
                             ->get();
         $answer = [];
         if ($results) {
@@ -331,12 +333,27 @@ class AccessionApiController extends Controller
                         $medicalAnalysisResume['sugestao'] = $medical->suggestion->suggestion;
                         $medicalAnalysisResume['cids'] = $cids;
                     }
+
                     
-                    $answer['data'][$index]['beneficiarios'][] = [
-                        'nome' => $beneficiary->name,
-                        'cpf' => $beneficiary->cpf,
-                        'analise_medica' => $medicalAnalysisResume
-                    ];
+                    if ($beneficiary->id === $result->holder_id) {
+
+                        $answer['data'][$index]['beneficiarios']['titular'] = [
+                            'nome' => $beneficiary->name,
+                            'tipo' => 'titular',
+                            'cpf' => $beneficiary->cpf,
+                            'analise_medica' => $medicalAnalysisResume
+                        ];
+
+                    } else {
+                        $answer['data'][$index]['beneficiarios']['dependentes'][] = [
+                            'nome' => $beneficiary->name,
+                            'tipo' => 'dependente',
+                            'cpf' => $beneficiary->cpf,
+                            'analise_medica' => $medicalAnalysisResume
+                        ];
+                    }
+                    
+                    
 
                 }
             }
