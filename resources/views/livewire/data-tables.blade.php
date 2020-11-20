@@ -13,7 +13,7 @@
                         @if ($fFilter['label'] == $label)
                             <br />
                             <select>
-                                <option>Selecione</option>
+                                <option>Filtrar</option>
                                 @foreach($fFilter['itens'] as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
