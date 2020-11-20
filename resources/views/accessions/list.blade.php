@@ -38,7 +38,10 @@
         'Cliente'
     ],
     'filter' => $filter,
-    'deleteRoute' => $deleteRoute ?? null
+    'deleteRoute' => $deleteRoute ?? null,
+    'filterField' => [
+        'companies' => ['label' => 'Cliente', 'field' => 'company_id', 'model' => 'App\Company', 'itens' => []]
+    ]
 ])
 
 @endsection

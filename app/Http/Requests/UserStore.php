@@ -33,7 +33,8 @@ class UserStore extends FormRequest
             'password' => 'confirmed',
             'roles.*' => '',
             'powerbi_url' => '',
-            'company_id' => ''
+            'company_id' => '',
+            'CRM_COREN' => ''
         ];
     }
 }

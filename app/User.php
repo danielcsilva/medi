@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'powerbi_url', 'company_id'
+        'name', 'email', 'password', 'powerbi_url', 'company_id', 'CRM_COREN'
     ];
 
     /**

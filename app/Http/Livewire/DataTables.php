@@ -22,6 +22,7 @@ class DataTables extends Component
     public $labels;
     public $booleans;
     public $process_count;
+    public $filterField;
 
     public $edit = true;
     public $delete = true;
@@ -29,7 +30,7 @@ class DataTables extends Component
     public $filter;
     
 
-    public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true, $filter = [], $deleteRoute = null)
+    public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true, $filter = [], $deleteRoute = null, $filterField = [])
     {
         $this->editRoute = $editRoute;
         $this->routeParam = $routeParam;
@@ -41,8 +42,21 @@ class DataTables extends Component
         $this->delete = $delete;
         $this->filter = $filter;
         $this->deleteRoute = $deleteRoute ?? $this->editRoute;
+        $this->filterField = $filterField;
         // $this->deleteRoute = $this->deleteRoute ?? $this->editRoute;
+
         $this->emit('rewriteTable', 'rewrite');
+    }
+
+    public function filterField() 
+    {
+        if (!empty($this->filterField)) {
+            
+            foreach($this->filterField as $k => $fField) {
+                $this->filterField[$k]['itens'] = $fField['model']::select('id', 'name')->get();                
+            }
+    
+        }
     }
 
     public function render()
@@ -53,6 +67,8 @@ class DataTables extends Component
         if (!empty($this->filter)) {
             $rows = $rows->where($this->filter);
         }
+
+        $this->filterField();
 
         if (strpos($this->editRoute, '.') === false) {
             $this->editRoute .= '.edit';
@@ -68,7 +84,8 @@ class DataTables extends Component
             'columns' => $this->columns,
             'booleans' => $this->booleans,
             'edit' => $this->edit,
-            'delete' => $this->delete
+            'delete' => $this->delete,
+            'filterField' => $this->filterField ?? false
         ]);
 
     }

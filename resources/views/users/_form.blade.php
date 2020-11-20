@@ -37,7 +37,6 @@
     </div>
 @endrole
 
-
 <div class="form-row mb-4 mt-4">
     <div class="col-4">
         <input type="password" name="password" class="form-control  @error('password') is-invalid @enderror" placeholder="Senha" value="">
@@ -60,6 +59,17 @@
         </span>
         @enderror
     </div>    
+</div>
+
+<div class="form-row mb-4 mt-4">
+    <div class="col-4">
+        <input type="CRM_COREN" name="CRM_COREN" class="form-control  @error('CRM_COREN') is-invalid @enderror" placeholder="CRM ou COREN (opcional)" value="{{ old('name', $user->CRM_COREN ?? null) }}">
+        @error('CRM_COREN')
+        <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+        </span>
+        @enderror
+        </div>    
 </div>
 
 @can('Editar Grupo de Usuários')

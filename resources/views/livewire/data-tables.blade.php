@@ -8,7 +8,19 @@
             <th scope="col">#</th>
             
             @foreach($labels as $label)
-                <th>{{ $label }}</th>
+                <th>{{ $label }}
+                    @foreach($filterField as $fFilter) 
+                        @if ($fFilter['label'] == $label)
+                            <br />
+                            <select>
+                                <option>Selecione</option>
+                                @foreach($fFilter['itens'] as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        @endif
+                    @endforeach
+                </th>
             @endforeach
 
             <th></th>
@@ -18,7 +30,9 @@
             @foreach($rows as $row)
             <tr wire:key="{{ $row->id }}">
                 @if(key($rows) == 0 && $edit)                    
-                    <th scope="row"><a href="{{ route( $editRoute, [$routeParam => $row->id]) }}"><i class="material-icons">edit</i></a></th>
+                    <th scope="row">
+                        <a href="{{ route( $editRoute, [$routeParam => $row->id]) }}"><i class="material-icons">edit</i></a>
+                    </th>
                 @endif
 
                 @foreach($columns as $col)
