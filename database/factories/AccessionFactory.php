@@ -34,7 +34,7 @@ $factory->define(Accession::class, function (Faker $faker) {
         'acomodation' => 'Apartamento',
         'plan_value' => $faker->randomFloat(2),
         'comments' => $faker->text,
-        'initial_validity' => date('d/m/Y', strtotime("-10 days")),
+        'initial_validity' => date('Y-m-d', strtotime("-10 days")),
         'admin_partner' => $faker->name
     ];
 

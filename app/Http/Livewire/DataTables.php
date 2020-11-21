@@ -52,8 +52,12 @@ class DataTables extends Component
 
     public function applySelectedFilter($value)
     {
-        $this->filter = explode(".", $value);
-        //$this->filter = 
+        $this->filter = [];
+        
+        if (strpos($value, ".") !== false) {
+            $filters = explode(".", $value);
+            $this->filter = [$filters[0] => $filters[1]];
+        }
     }
 
     public function filterField() 
@@ -70,7 +74,7 @@ class DataTables extends Component
     public function render()
     {
         $this->emit('rewriteTable', 'rewrite');
-                
+
         $rows = $this->model::whereLike($this->columns, $this->search);
         if (!empty($this->filter)) {
             $rows = $rows->where($this->filter);
