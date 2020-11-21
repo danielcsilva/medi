@@ -12,10 +12,10 @@
                     @foreach($filterField as $fFilter) 
                         @if ($fFilter['label'] == $label)
                             <br />
-                            <select>
+                            <select class="selectFilter">
                                 <option>Filtrar</option>
                                 @foreach($fFilter['itens'] as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $fFilter['field'] }}.{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         @endif
@@ -88,6 +88,14 @@
     @push('scripts')
         <script>
     
+        document.addEventListener("DOMContentLoaded", function(event) {
+
+            $('.selectFilter').on('change', (e) => {
+                window.livewire.emit('filterSelected', e.target.value)
+            })
+
+        })
+
         function setDeleteRoute(route)
         {
             document.getElementById('delete-form').action = route;

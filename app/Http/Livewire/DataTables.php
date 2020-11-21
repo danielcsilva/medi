@@ -29,6 +29,7 @@ class DataTables extends Component
 
     public $filter;
     
+    protected $listeners = ['filterSelected' => 'applySelectedFilter'];
 
     public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true, $filter = [], $deleteRoute = null, $filterField = [])
     {
@@ -46,6 +47,13 @@ class DataTables extends Component
         // $this->deleteRoute = $this->deleteRoute ?? $this->editRoute;
 
         $this->emit('rewriteTable', 'rewrite');
+    }
+
+
+    public function applySelectedFilter($value)
+    {
+        $this->filter = explode(".", $value);
+        //$this->filter = 
     }
 
     public function filterField() 
