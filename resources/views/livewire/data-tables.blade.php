@@ -34,7 +34,9 @@
             <tr wire:key="{{ $row->id }}">
                 @if(key($rows) == 0 && $edit)                    
                     <th scope="row">
-                        <input type="checkbox" name="accession_id_{{ $row->id }}" class="selectProcess" value="{{ $row->id }}">
+                        @if ($selectAble)
+                            <input type="checkbox" name="accession_id_{{ $row->id }}" class="selectProcess" value="{{ $row->id }}">
+                        @endif
                         <a href="{{ route( $editRoute, [$routeParam => $row->id]) }}"><i class="material-icons">edit</i></a>
                     </th>
                 @endif

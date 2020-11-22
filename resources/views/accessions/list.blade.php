@@ -41,6 +41,10 @@
     'deleteRoute' => $deleteRoute ?? null,
     'filterField' => [
         'companies' => ['label' => 'Cliente', 'field' => 'company_id', 'model' => 'App\Company', 'itens' => []]
+    ],
+    'selectAble' => true,
+    'action' => [
+        'Delegar' => ['method' => 'delegateToUser', 'model' => 'User']    
     ]
 ])
 

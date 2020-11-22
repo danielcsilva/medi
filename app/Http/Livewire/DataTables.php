@@ -23,6 +23,7 @@ class DataTables extends Component
     public $process_count;
     public $filterField;
     public $selectedAccessions;
+    public $selectAble;
 
     public $edit = true;
     public $delete = true;
@@ -34,7 +35,7 @@ class DataTables extends Component
         'selectProcess' => 'selectProcess'
     ];
 
-    public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true, $filter = [], $deleteRoute = null, $filterField = [])
+    public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true, $filter = [], $deleteRoute = null, $filterField = [], $selectAble = false)
     {
         $this->editRoute = $editRoute;
         $this->routeParam = $routeParam;
@@ -47,6 +48,7 @@ class DataTables extends Component
         $this->filter = $filter;
         $this->deleteRoute = $deleteRoute ?? $this->editRoute;
         $this->filterField = $filterField;
+        $this->selectAble = $selectAble;
         // $this->deleteRoute = $this->deleteRoute ?? $this->editRoute;
 
         $this->emit('rewriteTable', 'rewrite');
@@ -105,7 +107,8 @@ class DataTables extends Component
             'booleans' => $this->booleans,
             'edit' => $this->edit,
             'delete' => $this->delete,
-            'filterField' => $this->filterField ?? false
+            'filterField' => $this->filterField ?? false,
+            'selectAble' => $this->selectAble
         ]);
 
     }
