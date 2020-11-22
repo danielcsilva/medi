@@ -2,7 +2,8 @@
 
     <input type="text" wire:model="search" placeholder="pesquisar" class="form-control mb-2 mt-2">
     <div style="float: right;padding: 4px;">
-        {{-- {{ dd($selectedItems) }} --}}
+        {{ print_r($selectedItems) }}
+        
         @if(!empty($selectedItems))
             @foreach($actions as $action)
                 <a class="btn btn-primary btn-sm" href="{{ $action['route'] }}" style="margin-right: 30px;">{{ $action['name'] }}</a>
@@ -103,11 +104,11 @@
     
         document.addEventListener("DOMContentLoaded", function(event) {
 
-            $('.selectFilter').on('change', (e) => {
+            $(document).on('change', '.selectFilter', (e) => {
                 window.livewire.emit('filterSelected', e.target.value)
             })
 
-            $('.selectItem').on('click', (e) => {
+            $(document).on('click', '.selectItem', (e) => {
                 if ($(e.target).prop('checked')) {
                     window.livewire.emit('selectItem', $(e.target).val())
                 } else {
