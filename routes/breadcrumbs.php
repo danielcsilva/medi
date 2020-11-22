@@ -271,3 +271,11 @@ Breadcrumbs::for('dashboards', function ($trail, $content = null) {
     }
 
 });
+
+
+Breadcrumbs::for('delegation', function ($trail, $content = null) {
+
+    $trail->push('Dashboard', route('home'));
+    
+
+});

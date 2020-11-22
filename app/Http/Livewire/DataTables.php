@@ -25,9 +25,8 @@ class DataTables extends Component
     public $selectedItems;
     public $selectAble;
     public $actions;
-    // public $defaultFilter;
+    public $editable;
 
-    public $edit = true;
     public $delete = true;
 
     public $filter;
@@ -38,7 +37,7 @@ class DataTables extends Component
         'removeItem' => 'removeItem'
     ];
 
-    public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true, $filter = [], $deleteRoute = null, $filterField = [], $options = [])
+    public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $delete = true, $filter = [], $deleteRoute = null, $filterField = [], $options = [])
     {
         $this->editRoute = $editRoute;
         $this->routeParam = $routeParam;
@@ -46,14 +45,13 @@ class DataTables extends Component
         $this->columns = $columns;
         $this->labels = $labels;
         $this->booleans = $booleans;
-        $this->edit = $edit;
         $this->delete = $delete;
         $this->filter = $filter;
-        // $this->defaultFilter = $filter;
+        
         $this->deleteRoute = $deleteRoute ?? $this->editRoute;
         $this->filterField = $filterField;
         $this->selectAble = $options['selectAble'] ?? false;
-
+        $this->editable = $options['editable'] ?? true;
         $this->actions = $options['actions'] ?? false;
 
         $this->emit('rewriteTable', 'rewrite');
@@ -67,7 +65,6 @@ class DataTables extends Component
             $this->filter[$filters[0]] = $filters[1];
         } else {
             unset($this->filter[array_key_last($this->filter)]);
-            // dd($this->filter, count($this->filter));
         }
     }
 
@@ -99,8 +96,13 @@ class DataTables extends Component
         $this->emit('rewriteTable', 'rewrite');
 
         $rows = $this->model::whereLike($this->columns, $this->search);
+        
         if (!empty($this->filter)) {
-            $rows = $rows->where($this->filter);
+            if (isset($this->filter['in'])) {
+                $rows = $rows->whereIn('id', $this->filter['in']);
+            } else {
+                $rows = $rows->where($this->filter);
+            }
         }
 
         $this->filterField();
@@ -118,11 +120,11 @@ class DataTables extends Component
             'editRoute' => $this->editRoute,
             'columns' => $this->columns,
             'booleans' => $this->booleans,
-            'edit' => $this->edit,
+            'editable' => $this->editable,
             'delete' => $this->delete,
             'filterField' => $this->filterField ?? false,
             'selectAble' => $this->selectAble,
-            'selectedItems' => $this->selectedItems ?? false
+            'selectedItems' => $this->selectedItems ?? false,
         ]);
 
     }

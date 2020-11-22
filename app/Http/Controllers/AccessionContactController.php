@@ -33,6 +33,7 @@ class AccessionContactController extends Controller
                 'to_contact' => true,
                 'analysis_status' => false
             ],
+            'selectAble' => false,
             'editRoute' => 'tocontact',
             'routeParam' => 'tocontact',
             'breadcrumb' => 'Liberados para Contato'

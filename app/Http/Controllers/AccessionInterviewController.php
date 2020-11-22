@@ -37,6 +37,8 @@ class AccessionInterviewController extends Controller
                 'to_interview' => true,
                 'analysis_status' => false
             ],
+            'selectAble' => false,
+            'editable' => false,
             'editRoute' => 'interview',
             'routeParam' => 'interview',
             'breadcrumb' => 'Liberados para Entrevista'

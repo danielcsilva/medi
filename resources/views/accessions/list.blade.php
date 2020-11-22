@@ -43,7 +43,7 @@
         'companies' => ['label' => 'Cliente', 'field' => 'company_id', 'model' => 'App\Company', 'itens' => []]
     ],
     'options' => [
-        'selectAble' => true,
+        'selectAble' => $selectAble ?? true,
         'actions' => [
             ['name' => 'Delegar Processos', 'route' => '/delegation']
         ]

@@ -46,7 +46,8 @@ class AccessionController extends Controller
 
         return view('accessions.list', [
             'model' => Accession::class, 
-            'filter' => ['analysis_status' => $finished], 
+            'filter' => ['analysis_status' => $finished],
+            'selectAble' => !$finished, 
             'editRoute' => 'accessions',
             'routeParam' => 'accession'
         ]);
@@ -433,7 +434,8 @@ class AccessionController extends Controller
             'filter' => [
                 'to_medic_analysis' => true,
                 'analysis_status' => false
-            ], 
+            ],
+            'selectAble' => false, 
             'editRoute' => 'accessions.medicAnalysis',
             'routeParam' => 'accession',
             'deleteRoute' => 'accessions',

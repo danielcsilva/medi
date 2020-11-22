@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Accession;
+use App\User;
 use Illuminate\Http\Request;
 
 class DelegationController extends Controller
@@ -13,7 +15,17 @@ class DelegationController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        // dd(request()->all());
+        $items = explode(",", request()->get('items'));
+
+        return view('delegation.list', [
+            'users' => $users,
+            'model' => Accession::class, 
+            'filter' => ['analysis_status' => false, 'in' => $items], 
+            'editRoute' => 'accessions',
+            'routeParam' => 'accession'
+        ]);
     }
 
     /**

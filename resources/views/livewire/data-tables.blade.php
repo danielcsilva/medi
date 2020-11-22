@@ -2,11 +2,11 @@
 
     <input type="text" wire:model="search" placeholder="pesquisar" class="form-control mb-2 mt-2">
     <div style="float: right;padding: 4px;">
-        {{ print_r($selectedItems) }}
+        {{-- {{ print_r($selectedItems) }} --}}
         
         @if(!empty($selectedItems))
             @foreach($actions as $action)
-                <a class="btn btn-primary btn-sm" href="{{ $action['route'] }}" style="margin-right: 30px;">{{ $action['name'] }}</a>
+            <a class="btn btn-primary btn-sm" href="{{ $action['route'] }}?items={{ implode(",", $selectedItems) }}" style="margin-right: 30px;">{{ $action['name'] }}</a>
             @endforeach
         @endif
         <span>Total de processos: {{ $process_count }}</span> 
@@ -38,15 +38,17 @@
         <tbody>
             @foreach($rows as $row)
             <tr wire:key="{{ $row->id }}">
-                @if(key($rows) == 0 && $edit)                    
+                @if(key($rows) == 0 && $editable)                     
                     <th scope="row">
                         @if ($selectAble)
                             <input type="checkbox" name="item_{{ $row->id }}" class="selectItem"
                              {{ in_array($row->id, $this->selectedItems ?? []) ? 'checked="checked"' : '' }} 
                              value="{{ $row->id }}">
                         @endif
-                        {{ $row->id }}<a href="{{ route( $editRoute, [$routeParam => $row->id]) }}"><i class="material-icons">edit</i></a>
+                        <a href="{{ route( $editRoute, [$routeParam => $row->id]) }}"><i class="material-icons">edit</i></a>
                     </th>
+                @else
+                    <th>{{ $row->id }}</th>    
                 @endif
 
                 @foreach($columns as $col)
