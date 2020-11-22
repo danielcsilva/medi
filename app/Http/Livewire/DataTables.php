@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
 
 class DataTables extends Component
@@ -23,13 +22,17 @@ class DataTables extends Component
     public $booleans;
     public $process_count;
     public $filterField;
+    public $selectedAccessions;
 
     public $edit = true;
     public $delete = true;
 
     public $filter;
     
-    protected $listeners = ['filterSelected' => 'applySelectedFilter'];
+    protected $listeners = [
+        'filterSelected' => 'applySelectedFilter',
+        'selectProcess' => 'selectProcess'
+    ];
 
     public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true, $filter = [], $deleteRoute = null, $filterField = [])
     {
@@ -69,6 +72,11 @@ class DataTables extends Component
             }
     
         }
+    }
+
+    public function selectProcess($accession_id) 
+    {
+        $this->selectedAccessions[] = $accession_id;
     }
 
     public function render()

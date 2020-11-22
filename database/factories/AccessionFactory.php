@@ -3,6 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Accession;
+use App\Quiz;
 use Faker\Generator as Faker;
 
 $factory->define(Accession::class, function (Faker $faker) {
@@ -20,6 +21,12 @@ $factory->define(Accession::class, function (Faker $faker) {
         factory(App\HealthPlan::class, 1)->create();
         $health_plan = App\HealthPlan::all()->first();
     }   
+
+    $quiz = Quiz::all()->random();
+    if ($quiz && count($quiz->questions) == 0) {
+        $quiz = factory(Quiz::class)->states('quizWithHealthQuestions')->create();
+    }
+
     
     return [
         'proposal_number' => rand(1111, 9999),
@@ -35,7 +42,8 @@ $factory->define(Accession::class, function (Faker $faker) {
         'plan_value' => $faker->randomFloat(2),
         'comments' => $faker->text,
         'initial_validity' => date('Y-m-d', strtotime("-10 days")),
-        'admin_partner' => $faker->name
+        'admin_partner' => $faker->name,
+        'quiz_id' => $quiz->id
     ];
 
 });

@@ -1,7 +1,10 @@
 <div>
 
     <input type="text" wire:model="search" placeholder="pesquisar" class="form-control mb-2 mt-2">
-    <div style="float: right;">Total de processos: {{ $process_count }}</div>
+    <div style="float: right;padding: 4px;">
+        <button class="btn btn-primary btn-sm" style="margin-right: 30px;">Delegar</button>
+        <span>Total de processos: {{ $process_count }}</span> 
+    </div>
     <table class="table table-striped">
         <thead>
           <tr>
@@ -31,6 +34,7 @@
             <tr wire:key="{{ $row->id }}">
                 @if(key($rows) == 0 && $edit)                    
                     <th scope="row">
+                        <input type="checkbox" name="accession_id_{{ $row->id }}" class="selectProcess" value="{{ $row->id }}">
                         <a href="{{ route( $editRoute, [$routeParam => $row->id]) }}"><i class="material-icons">edit</i></a>
                     </th>
                 @endif
@@ -92,6 +96,10 @@
 
             $('.selectFilter').on('change', (e) => {
                 window.livewire.emit('filterSelected', e.target.value)
+            })
+
+            $('.selectProcess').on('click', (e) => {
+                window.livewire.emit('selectProcess', $(e.target).val())
             })
 
         })
