@@ -47,5 +47,7 @@ Route::group(['middleware' => ['role:SuperAdmin|Diretoria|Operacional|Médico|Co
 
     Route::resource('tocontact', 'AccessionContactController');
     Route::resource('interview', 'AccessionInterviewController');
+
+    Route::resource('delegation', 'DelegationController');
     
 });

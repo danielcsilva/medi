@@ -16,7 +16,6 @@ use App\ProcessType;
 use App\Quiz;
 use App\Telephone;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
 
 /**
  * @group Processos

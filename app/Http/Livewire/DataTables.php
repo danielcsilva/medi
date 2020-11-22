@@ -22,8 +22,10 @@ class DataTables extends Component
     public $booleans;
     public $process_count;
     public $filterField;
-    public $selectedAccessions;
+    public $selectedItems;
     public $selectAble;
+    public $actions;
+    // public $defaultFilter;
 
     public $edit = true;
     public $delete = true;
@@ -32,10 +34,11 @@ class DataTables extends Component
     
     protected $listeners = [
         'filterSelected' => 'applySelectedFilter',
-        'selectProcess' => 'selectProcess'
+        'selectItem' => 'selectItem',
+        'removeItem' => 'removeItem'
     ];
 
-    public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true, $filter = [], $deleteRoute = null, $filterField = [], $selectAble = false)
+    public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $edit = true, $delete = true, $filter = [], $deleteRoute = null, $filterField = [], $options = [])
     {
         $this->editRoute = $editRoute;
         $this->routeParam = $routeParam;
@@ -46,22 +49,25 @@ class DataTables extends Component
         $this->edit = $edit;
         $this->delete = $delete;
         $this->filter = $filter;
+        // $this->defaultFilter = $filter;
         $this->deleteRoute = $deleteRoute ?? $this->editRoute;
         $this->filterField = $filterField;
-        $this->selectAble = $selectAble;
-        // $this->deleteRoute = $this->deleteRoute ?? $this->editRoute;
+        $this->selectAble = $options['selectAble'] ?? false;
+
+        $this->actions = $options['actions'] ?? false;
 
         $this->emit('rewriteTable', 'rewrite');
     }
 
 
     public function applySelectedFilter($value)
-    {
-        $this->filter = [];
-        
+    {   
         if (strpos($value, ".") !== false) {
             $filters = explode(".", $value);
-            $this->filter = [$filters[0] => $filters[1]];
+            $this->filter[$filters[0]] = $filters[1];
+        } else {
+            unset($this->filter[array_key_last($this->filter)]);
+            // dd($this->filter, count($this->filter));
         }
     }
 
@@ -76,9 +82,16 @@ class DataTables extends Component
         }
     }
 
-    public function selectProcess($accession_id) 
+    public function selectItem($item_id) 
     {
-        $this->selectedAccessions[] = $accession_id;
+        $this->selectedItems[] = $item_id;
+    }
+
+    public function removeItem($item_id) 
+    {   
+        if (($key = array_search($item_id, $this->selectedItems)) !== false) {
+            unset($this->selectedItems[$key]);
+        }
     }
 
     public function render()
@@ -108,7 +121,8 @@ class DataTables extends Component
             'edit' => $this->edit,
             'delete' => $this->delete,
             'filterField' => $this->filterField ?? false,
-            'selectAble' => $this->selectAble
+            'selectAble' => $this->selectAble,
+            'selectedItems' => $this->selectedItems ?? false
         ]);
 
     }

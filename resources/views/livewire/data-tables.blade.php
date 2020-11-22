@@ -2,7 +2,12 @@
 
     <input type="text" wire:model="search" placeholder="pesquisar" class="form-control mb-2 mt-2">
     <div style="float: right;padding: 4px;">
-        <button class="btn btn-primary btn-sm" style="margin-right: 30px;">Delegar</button>
+        {{-- {{ dd($selectedItems) }} --}}
+        @if(!empty($selectedItems))
+            @foreach($actions as $action)
+                <a class="btn btn-primary btn-sm" href="{{ $action['route'] }}" style="margin-right: 30px;">{{ $action['name'] }}</a>
+            @endforeach
+        @endif
         <span>Total de processos: {{ $process_count }}</span> 
     </div>
     <table class="table table-striped">
@@ -16,7 +21,7 @@
                         @if ($fFilter['label'] == $label)
                             <br />
                             <select class="selectFilter">
-                                <option>Filtrar</option>
+                                <option>Filtro</option>
                                 @foreach($fFilter['itens'] as $item)
                                     <option value="{{ $fFilter['field'] }}.{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
@@ -35,9 +40,11 @@
                 @if(key($rows) == 0 && $edit)                    
                     <th scope="row">
                         @if ($selectAble)
-                            <input type="checkbox" name="accession_id_{{ $row->id }}" class="selectProcess" value="{{ $row->id }}">
+                            <input type="checkbox" name="item_{{ $row->id }}" class="selectItem"
+                             {{ in_array($row->id, $this->selectedItems ?? []) ? 'checked="checked"' : '' }} 
+                             value="{{ $row->id }}">
                         @endif
-                        <a href="{{ route( $editRoute, [$routeParam => $row->id]) }}"><i class="material-icons">edit</i></a>
+                        {{ $row->id }}<a href="{{ route( $editRoute, [$routeParam => $row->id]) }}"><i class="material-icons">edit</i></a>
                     </th>
                 @endif
 
@@ -100,8 +107,12 @@
                 window.livewire.emit('filterSelected', e.target.value)
             })
 
-            $('.selectProcess').on('click', (e) => {
-                window.livewire.emit('selectProcess', $(e.target).val())
+            $('.selectItem').on('click', (e) => {
+                if ($(e.target).prop('checked')) {
+                    window.livewire.emit('selectItem', $(e.target).val())
+                } else {
+                    window.livewire.emit('removeItem', $(e.target).val())
+                }
             })
 
         })
