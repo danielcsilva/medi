@@ -61,7 +61,11 @@
 
                 <td>
                     @if ($delete)
-                    <a href="#" data-toggle="modal" data-target="#deleteModal" onclick="setDeleteRoute('{{ route( $deleteRoute . '.destroy', [$routeParam => $row->id]) }}')"><i class="material-icons">delete_forever</i></a>
+                        @if ($deleteRoute === 'removeFromInItems')
+                            <a href="#" data-toggle="modal" data-target="#deleteModal" onclick="setItemFromInItems('{{ $row->id }}')"><i class="material-icons">delete_forever</i></a>
+                        @else
+                            <a href="#" data-toggle="modal" data-target="#deleteModal" onclick="setDeleteRoute('{{ route( $deleteRoute, [$routeParam => $row->id]) }}')"><i class="material-icons">delete_forever</i></a>
+                        @endif
                     @endif
                 </td>
             </tr>
@@ -89,7 +93,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary" onclick="submitDeleteForm()">Sim</button>
+                <button type="button" class="btn btn-primary" onclick="submitDelete()">Sim</button>
             </div>
             </div>
         </div>
@@ -103,7 +107,10 @@
     
     @push('scripts')
         <script>
-    
+
+        let deleteMethod = 'form';
+        let itemFromInItemToDelete = 0;
+            
         document.addEventListener("DOMContentLoaded", function(event) {
 
             $(document).on('change', '.selectFilter', (e) => {
@@ -120,14 +127,28 @@
 
         })
 
+        function setItemFromInItems(idItem)
+        {
+            itemFromInItemToDelete = idItem;
+            deleteMethod = 'removeInItem';
+        }
+
         function setDeleteRoute(route)
         {
             document.getElementById('delete-form').action = route;
         }
     
-        function submitDeleteForm()
+        function submitDelete()
         {
-            document.getElementById('delete-form').submit();
+            if (deleteMethod === 'form') {
+                document.getElementById('delete-form').submit();
+            } 
+
+            if (deleteMethod === 'removeInItem') {
+                window.livewire.emit('removeFromInItems', itemFromInItemToDelete);
+                itemFromInItemToDelete = 0;
+                $('#deleteModal').modal('hide');
+            }
         }
     
         window.livewire.on('rewriteTable', param => {

@@ -40,6 +40,7 @@ class AccessionInterviewController extends Controller
             'selectAble' => false,
             'editable' => false,
             'editRoute' => 'interview',
+            'filterField' => [],
             'routeParam' => 'interview',
             'breadcrumb' => 'Liberados para Entrevista'
         ]);

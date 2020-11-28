@@ -37,11 +37,10 @@
         'Financiamento', 
         'Cliente'
     ],
+    'delete' => $delete ?? true,
     'filter' => $filter,
     'deleteRoute' => $deleteRoute ?? null,
-    'filterField' => [
-        'companies' => ['label' => 'Cliente', 'field' => 'company_id', 'model' => 'App\Company', 'itens' => []]
-    ],
+    'filterField' => $filterField,
     'options' => [
         'selectAble' => $selectAble ?? true,
         'actions' => [

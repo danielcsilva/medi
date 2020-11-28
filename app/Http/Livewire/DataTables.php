@@ -27,14 +27,21 @@ class DataTables extends Component
     public $actions;
     public $editable;
 
+    public $items;
+
     public $delete = true;
 
     public $filter;
+
+    protected $updatesQueryString = [
+        'items'
+    ];
     
     protected $listeners = [
         'filterSelected' => 'applySelectedFilter',
         'selectItem' => 'selectItem',
-        'removeItem' => 'removeItem'
+        'removeItem' => 'removeItem',
+        'removeFromInItems' => 'removeFromInItems'
     ];
 
     public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $delete = true, $filter = [], $deleteRoute = null, $filterField = [], $options = [])
@@ -47,8 +54,13 @@ class DataTables extends Component
         $this->booleans = $booleans;
         $this->delete = $delete;
         $this->filter = $filter;
-        
-        $this->deleteRoute = $deleteRoute ?? $this->editRoute;
+
+        // Query String filter by items (specific IDs)
+        $this->items = request()->query('items', '');
+
+        // Default delete route from Laravel Resource controller
+        $this->deleteRoute = $deleteRoute ?? $this->editRoute . '.destroy';
+
         $this->filterField = $filterField;
         $this->selectAble = $options['selectAble'] ?? false;
         $this->editable = $options['editable'] ?? true;
@@ -91,6 +103,12 @@ class DataTables extends Component
         }
     }
 
+    public function removeFromInItems($idItem)
+    {   
+        $this->items = str_replace($idItem, "", $this->items);
+        $this->items = str_replace(",,", ",", $this->items);
+    }
+
     public function render()
     {
         $this->emit('rewriteTable', 'rewrite');
@@ -98,11 +116,11 @@ class DataTables extends Component
         $rows = $this->model::whereLike($this->columns, $this->search);
         
         if (!empty($this->filter)) {
-            if (isset($this->filter['in'])) {
-                $rows = $rows->whereIn('id', $this->filter['in']);
-            } else {
-                $rows = $rows->where($this->filter);
-            }
+            $rows = $rows->where($this->filter);
+        }
+      
+        if (!empty($this->items)) {
+            $rows = $rows->WhereIn('id', explode(",", $this->items));
         }
 
         $this->filterField();

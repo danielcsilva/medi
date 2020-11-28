@@ -26,6 +26,7 @@
         'Cliente'
     ],
     'filter' => $filter,
+    'deleteRoute' => 'removeFromInItems',
     'options' => [
         'editable' => false
     ]

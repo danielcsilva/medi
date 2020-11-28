@@ -35,6 +35,7 @@ class AccessionContactController extends Controller
             ],
             'selectAble' => false,
             'editRoute' => 'tocontact',
+            'filterField' => [],
             'routeParam' => 'tocontact',
             'breadcrumb' => 'Liberados para Contato'
         ]);

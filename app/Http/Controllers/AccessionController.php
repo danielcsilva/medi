@@ -43,11 +43,13 @@ class AccessionController extends Controller
             $finished = true;
         }
 
-
         return view('accessions.list', [
             'model' => Accession::class, 
             'filter' => ['analysis_status' => $finished],
-            'selectAble' => !$finished, 
+            'selectAble' => !$finished,
+            'filterField' => [
+                'companies' => ['label' => 'Cliente', 'field' => 'company_id', 'model' => 'App\Company', 'itens' => []]
+            ], 
             'editRoute' => 'accessions',
             'routeParam' => 'accession'
         ]);
@@ -436,9 +438,10 @@ class AccessionController extends Controller
                 'analysis_status' => false
             ],
             'selectAble' => false, 
+            'filterField' => [],
             'editRoute' => 'accessions.medicAnalysis',
             'routeParam' => 'accession',
-            'deleteRoute' => 'accessions',
+            'delete' => false,
             'breadcrumb' => 'Liberados para Análise Médica'
         ]);
 
