@@ -19,7 +19,7 @@
                 </select>
             </div>
             <div class="col">
-                <button class="btn btn-primary" wire:click="$emitTo('data-tables', 'delegation')">Delegar</button>
+                <button class="btn btn-primary" type="button" id="delegar">Delegar</button>
             </div>
         </div>
     </div>
@@ -50,9 +50,20 @@
 
 @endsection
 
-<script>
-    window.addEventListener('name-updated', event => {
-        console.log('teste')
-        alert('Name updated to: ' + event.detail.newName);
-    })
-</script>
+@section('jscontent')
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+            console.log('kalsjdas')
+            window.livewire.on('responseSelectedItems', (items) => {
+                console.log(items)
+            })
+
+            $(document).on('click', '#delegar', () => {
+                console.log('delegou')
+                window.livewire.emit('getSelectedItems')
+            })
+        })
+
+    </script>
+@endsection

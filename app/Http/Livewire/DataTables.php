@@ -41,7 +41,8 @@ class DataTables extends Component
         'filterSelected' => 'applySelectedFilter',
         'selectItem' => 'selectItem',
         'removeItem' => 'removeItem',
-        'removeFromInItems' => 'removeFromInItems'
+        'removeFromInItems' => 'removeFromInItems',
+        'getSelectedItems' => 'getSelectedItems'
     ];
 
     public function mount($editRoute, $routeParam, $model, $columns, $labels, $booleans = [], $delete = true, $filter = [], $deleteRoute = null, $filterField = [], $options = [])
@@ -107,6 +108,11 @@ class DataTables extends Component
     {   
         $this->items = str_replace($idItem, "", $this->items);
         $this->items = str_replace(",,", ",", $this->items);
+    }
+
+    public function getSelectedItems()
+    {
+        $this->emit('responseSelectedItems', json_encode($this->items));
     }
 
     public function render()
