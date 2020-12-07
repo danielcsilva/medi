@@ -19,6 +19,7 @@ use App\Suggestion;
 use App\Telephone;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
@@ -43,6 +44,12 @@ class AccessionController extends Controller
             $finished = true;
         }
 
+        // Delegation process
+        $dtActions = [];
+        if (Auth::user()->can('Delegar Processos')) {
+            $dtActions = ['name' => 'Delegar Processos', 'route' => '/delegation'];
+        }
+
         return view('accessions.list', [
             'model' => Accession::class, 
             'filter' => ['analysis_status' => $finished],
@@ -51,7 +58,9 @@ class AccessionController extends Controller
                 'companies' => ['label' => 'Cliente', 'field' => 'company_id', 'model' => 'App\Company', 'itens' => []]
             ], 
             'editRoute' => 'accessions',
-            'routeParam' => 'accession'
+            'routeParam' => 'accession',
+            'dataTablesActions' => $dtActions,
+            'selectAble' => Auth::user()->can('Delegar Processos')
         ]);
 
     }

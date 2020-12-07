@@ -6,7 +6,9 @@
         
         @if(!empty($selectedItems))
             @foreach($actions as $action)
-            <a class="btn btn-primary btn-sm" href="{{ $action['route'] }}?items={{ implode(",", $selectedItems) }}" style="margin-right: 30px;">{{ $action['name'] }}</a>
+                @if (isset($action['route']))
+                    <a class="btn btn-primary btn-sm" href="{{ $action['route'] }}?items={{ implode(",", $selectedItems) }}" style="margin-right: 30px;">{{ $action['name'] }}</a>
+                @endif
             @endforeach
         @endif
         <span>Total de processos: {{ $process_count }}</span> 

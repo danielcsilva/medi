@@ -29,6 +29,12 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'Avaliar Processos Clinicamente']);
         Permission::create(['name' => 'Visualizar Indicadores e Relatórios']);
 
+        //Delegar processos
+        Permission::create(['name' => 'Delegar Processos']);
+
+        //Fazer revisão de processos
+        Permission::create(['name' => 'Revisar Processos']);
+
         //Usuários
         Permission::create(['name' => 'Visualizar Usuários']);
         Permission::create(['name' => 'Editar Grupo de Usuários']);

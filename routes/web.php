@@ -21,7 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('users', 'UserController');
 Route::get('/dashboard/bi/{id}', 'HomeController@loadDashboard');
 
-Route::group(['middleware' => ['role:SuperAdmin|Diretoria|Operacional|Médico|Coordenação|Supervisão|Gerência']], function () {
+Route::group(['middleware' => ['auth']], function () {
     
     Route::resource('beneficiaries', 'BeneficiaryController');
     Route::resource('companies', 'CompanyController');

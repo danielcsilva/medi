@@ -27,7 +27,8 @@ class DelegationController extends Controller
             'editRoute' => 'accessions',
             'filterField' => [],
             'routeParam' => 'accession',
-            'users' => User::all()->except(['id' => 1])
+            'users' => User::all()->except(['id' => 1]),
+            'actions' => ['Contato', 'Entrevista', 'Revisão']
         ]);
     }
 

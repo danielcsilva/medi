@@ -42,9 +42,9 @@
     'deleteRoute' => $deleteRoute ?? null,
     'filterField' => $filterField,
     'options' => [
-        'selectAble' => $selectAble ?? true,
+        'selectAble' => $selectAble ?? false,
         'actions' => [
-            ['name' => 'Delegar Processos', 'route' => '/delegation']
+            $dataTablesActions ?? []
         ]
     ]
 ])
