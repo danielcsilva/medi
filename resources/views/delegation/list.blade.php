@@ -2,6 +2,10 @@
 
 @section('content')
 
+<form action="{{ route('delegation.store') }}" method="POST" id="form-delegation">
+@csrf
+@method('post')
+
 <div class="row">
     <div class="col">
         <div class="alert alert-danger" id="msg-alert" style="display: none;"></div>
@@ -17,20 +21,20 @@
     <div class="col">
         <div class="row">
             <div class="col">
-
-                <select name="users" id="user-delegated" class="form-control">
+                
+                <select name="user" id="user-delegated" class="form-control">
                     <option value="">Escolha usuário</option>
                     @foreach($users as $user)
-                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        <option value="{{ $user->id }}">{{ $user->name }}</option>
                     @endforeach
                 </select>
 
             </div>
             <div class="col">
-
+                <p style="margin-bottom:0;font-weight:bold;">Ações</p>
                 @foreach($actions as $index => $action)
                     <div class="form-check">
-                        <input type="checkbox" name="{{ $action }}" id="{{ $index }}" class="form-check-input actions">
+                        <input type="checkbox" name="actions[]" id="{{ $index }}" class="form-check-input actions" value="{{ $action }}">
                         <label class="form-check-label" for="{{ $action }}">{{ $action }}</label>
                     </div>
                 @endforeach
@@ -68,6 +72,7 @@
     ]
 ])
 
+</form>
 @endsection
 
 @section('jscontent')
@@ -102,6 +107,8 @@
 
 
                 window.livewire.emit('getSelectedItems')
+
+                $('#form-delegation').submit();
             })
 
             function showAlert(msg) {
@@ -109,6 +116,7 @@
                 $('#msg-alert').show()
                 setTimeout(() => $('#msg-alert').hide(), 3000)
             }
+
         })
 
     </script>

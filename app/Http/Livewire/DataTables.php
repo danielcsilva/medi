@@ -149,6 +149,7 @@ class DataTables extends Component
             'filterField' => $this->filterField ?? false,
             'selectAble' => $this->selectAble,
             'selectedItems' => $this->selectedItems ?? false,
+            'items', $this->items ?? false
         ]);
 
     }

@@ -17,8 +17,6 @@ class DelegationController extends Controller
     public function index()
     {
         $users = User::all();
-        // dd(request()->all());
-        // $items = explode(",", request()->get('items'));
 
         return view('delegation.list', [
             'users' => $users,
@@ -50,7 +48,26 @@ class DelegationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+    
+        $user = $request->get('user');
+        $actions = $request->get('actions'); //array
+        $items = explode(",", $request->get('selected_items')); //array
+        
+        foreach($items as $item) {
+            Delegation::firstOrCreate([
+                'user_id' => $user,
+                'action' => implode(',', $actions),
+                'accession_id' => $item
+            ],
+            [
+                'user_id' => $user,
+                'action' => implode(',', $actions),
+                'accession_id' => $item
+            ]);
+        }
+
+        return redirect()->route('delegation.index')->with('success', 'Processos delegados!');
+
     }
 
     /**

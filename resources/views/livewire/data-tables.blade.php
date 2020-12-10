@@ -43,8 +43,8 @@
                 @if(key($rows) == 0 && $editable)                     
                     <th scope="row">
                         @if ($selectAble)
-                            <input type="checkbox" name="item_{{ $row->id }}" class="selectItem"
-                             {{ in_array($row->id, $this->selectedItems ?? []) ? 'checked="checked"' : '' }} 
+                            <input type="checkbox" name="items[]" class="selectItem"
+                             {{ in_array($row->id, $selectedItems ?? []) ? 'checked="checked"' : '' }} 
                              value="{{ $row->id }}">
                         @endif
                         <a href="{{ route( $editRoute, [$routeParam => $row->id]) }}"><i class="material-icons">edit</i></a>
@@ -75,6 +75,8 @@
         </tbody>
     </table>
 
+    <input type="hidden" id="selected-items" name="selected_items" value="{{ $items }}">
+
     <div class="row">
         <div class="col">
             {{ $rows->links() }}
@@ -101,11 +103,13 @@
         </div>
     </div>
     
-    <form action="" method="post" id="delete-form">
-        @csrf
-        @method('DELETE')
-    
-    </form>
+    @if ($deleteRoute !== 'removeFromInItems')
+        <form action="" method="post" id="delete-form">
+            @csrf
+            @method('DELETE')
+        
+        </form>
+    @endif
     
     @push('scripts')
         <script>
