@@ -66,7 +66,7 @@ class DelegationController extends Controller
             ]);
         }
 
-        return redirect()->route('delegation.index')->with('success', 'Processos delegados!');
+        return redirect()->route('delegation.index', ['items' => $request->get('selected_items')])->with('success', 'Processos delegados!');
 
     }
 
