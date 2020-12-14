@@ -9,6 +9,7 @@ use App\Address;
 use App\Beneficiary;
 use App\Cid;
 use App\Company;
+use App\Delegation;
 use App\HealthDeclarationAnswer;
 use App\HealthDeclarationSpecific;
 use App\HealthPlan;
@@ -44,12 +45,17 @@ class AccessionController extends Controller
             $finished = true;
         }
 
+        $editable = true;
+        if ($finished && !Auth::user()->can('Editar Processos Finalizados')) {
+            $editable = false;
+        }
+
         // Delegation process
         $dtActions = [];
         if (Auth::user()->can('Delegar Processos')) {
             $dtActions = ['name' => 'Delegar Processos', 'route' => '/delegation'];
         }
-
+        
         return view('accessions.list', [
             'model' => Accession::class, 
             'filter' => ['analysis_status' => $finished],
@@ -60,7 +66,8 @@ class AccessionController extends Controller
             'editRoute' => 'accessions',
             'routeParam' => 'accession',
             'dataTablesActions' => $dtActions,
-            'selectAble' => Auth::user()->can('Delegar Processos')
+            'selectAble' => Auth::user()->can('Delegar Processos'),
+            'editable' => $editable
         ]);
 
     }
@@ -71,7 +78,11 @@ class AccessionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {   
+        if (!Auth::user()->can('Editar Processos')) {
+            return redirect()->route('home')->with('error', 'Este usuário não tem permissão para executar esta ação!');
+        }
+
         $customers = Company::all();
         $healthplans = HealthPlan::all();
         $quizzes = Quiz::all();
@@ -104,8 +115,8 @@ class AccessionController extends Controller
             'beneficiary_telephone.*' => 'required',
             'beneficiary_financier.*' => 'required',
             'beneficiary_age.*' => 'required',
-            'address_cep.*' => 'required',
-            'address_address.*' => 'required',
+            'address_cep.*' => '',
+            'address_address.*' => '',
             'address_city.*' => 'required',
             'address_state.*' => 'required',            
             'contacted_date' => '',
@@ -123,8 +134,8 @@ class AccessionController extends Controller
             'beneficiary_gender.*.required' => 'O campo sexo é obrigatório!',
             'beneficiary_telephone.*.required' => 'O Telefone é obrigatório!',
             'beneficiary_age.*.required' => 'Campo Idade é obrigatório!',
-            'address_cep.*.required' => 'Cep obrigatório!',
-            'address_address.*.required' => 'Endereço obrigatório!',
+            // 'address_cep.*.required' => 'Cep obrigatório!',
+            // 'address_address.*.required' => 'Endereço obrigatório!',
             'address_city.*.required' => 'Cidade obrigatório!',
             'address_state.*.required' => 'Estado (UF) obrigatório!'           
         ])->validate();
@@ -139,6 +150,10 @@ class AccessionController extends Controller
      */
     public function store(Request $request)
     {        
+        if (!Auth::user()->can('Editar Processos')) {
+            return redirect()->route('home')->with('error', 'Este usuário não tem permissão para executar esta ação!');
+        }
+
 
         $this->accessionValidate($request);
 
@@ -178,6 +193,11 @@ class AccessionController extends Controller
      */
     public function edit($accession)
     {
+
+        if (!Auth::user()->can('Editar Processos')) {
+            return redirect()->route('home')->with('error', 'Este usuário não tem permissão para executar esta ação!');
+        }
+
         $customers = Company::all();
         $healthplans = HealthPlan::all();
         $quizzes = Quiz::all();
@@ -216,7 +236,12 @@ class AccessionController extends Controller
      */
     public function update(Request $request, $accession_id)
     {
+       
         
+        if (!Auth::user()->can('Editar Processos')) {
+            return redirect()->route('home')->with('error', 'Este usuário não tem permissão para executar esta ação!');
+        }
+
         $this->accessionValidate($request);
 
         $beneficiaries = $request->get('beneficiary_cpf');
@@ -284,6 +309,8 @@ class AccessionController extends Controller
                     'broker_partner' => $request->get('broker_partner'),
                     'entity' => $request->get('entity'),
                     'to_contact' => $to_contact,
+                    'registered_by' => Auth::user()->id,
+                    'registered_date' => date('Y-m-d H:i:s'),
                     'holder_id' => 9999
                 ]);
                
@@ -439,6 +466,16 @@ class AccessionController extends Controller
      */
     public function medicAnalysisList()
     {
+
+        $items = Delegation::where('user_id', Auth::user()->id)
+                            ->where('action', 'LIKE', '%Análise Médica%')
+                            ->get();
+
+        if (count($items) > 0) {
+            $items = implode(",", $items->pluck('accession_id')->toArray());
+        } else {
+            $items = "";
+        }
 
         return view('accessions.list', [
             'model' => Accession::class, 

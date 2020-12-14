@@ -35,6 +35,9 @@ class PermissionsTableSeeder extends Seeder
         //Fazer revisão de processos
         Permission::create(['name' => 'Revisar Processos']);
 
+        //Editar processos após finalizados (edit fisnished process)
+        Permission::create(['name' => 'Editar Processos Finalizados']);
+
         //Usuários
         Permission::create(['name' => 'Visualizar Usuários']);
         Permission::create(['name' => 'Editar Grupo de Usuários']);

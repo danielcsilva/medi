@@ -45,7 +45,9 @@
         'selectAble' => $selectAble ?? false,
         'actions' => [
             $dataTablesActions ?? []
-        ]
+        ],
+        'editable' => $editable ?? true,
+        'items' => $items ?? ""
     ]
 ])
 

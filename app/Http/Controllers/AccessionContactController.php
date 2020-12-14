@@ -15,6 +15,7 @@ use App\Telephone;
 use Illuminate\Http\Request;
 
 use App\AccessionContact;
+use App\Delegation;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,6 +28,16 @@ class AccessionContactController extends Controller
      */
     public function index()
     {
+        $items = Delegation::where('user_id', Auth::user()->id)
+                            ->where('action', 'LIKE', '%Contato%')
+                            ->get();
+
+        if (count($items) > 0) {
+            $items = implode(",", $items->pluck('accession_id')->toArray());
+        } else {
+            $items = "";
+        }
+        
         return view('accessions.list', [
             'model' => Accession::class, 
             'filter' => [
@@ -37,7 +48,8 @@ class AccessionContactController extends Controller
             'editRoute' => 'tocontact',
             'filterField' => [],
             'routeParam' => 'tocontact',
-            'breadcrumb' => 'Liberados para Contato'
+            'breadcrumb' => 'Liberados para Contato',
+            'items' => $items
         ]);
     }
 

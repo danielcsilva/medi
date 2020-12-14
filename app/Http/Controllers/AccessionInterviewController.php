@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Accession;
 use App\Cid;
+use App\Delegation;
 use Illuminate\Http\Request;
 
 class AccessionInterviewController extends Controller
@@ -31,6 +32,21 @@ class AccessionInterviewController extends Controller
      */
     public function index()
     {
+
+        if (!Auth::user()->can('Visualizar Entrevistas')) {
+            return redirect()->route('home')->with('error', 'Este usuário não tem permissão para executar esta ação!');
+        }
+
+        $items = Delegation::where('user_id', Auth::user()->id)
+        ->where('action', 'LIKE', '%Entrevista%')
+        ->get();
+
+        if (count($items) > 0) {
+            $items = implode(",", $items->pluck('accession_id')->toArray());
+        } else {
+            $items = "";
+        }
+
         return view('accessions.list', [
             'model' => Accession::class, 
             'filter' => [
@@ -38,12 +54,14 @@ class AccessionInterviewController extends Controller
                 'analysis_status' => false
             ],
             'selectAble' => false,
-            'editable' => false,
+            'editable' => true,
             'editRoute' => 'interview',
             'filterField' => [],
             'routeParam' => 'interview',
-            'breadcrumb' => 'Liberados para Entrevista'
+            'breadcrumb' => 'Liberados para Entrevista',
+            'items' => $items
         ]);
+
     }
 
     /**
@@ -86,6 +104,10 @@ class AccessionInterviewController extends Controller
      */
     public function edit($id)
     {
+
+        if (!Auth::user()->can('Editar Entrevistas')) {
+            return redirect()->route('home')->with('error', 'Este usuário não tem permissão para executar esta ação!');
+        }
         
         $customers = Company::all();
         $healthplans = HealthPlan::all();
@@ -127,6 +149,11 @@ class AccessionInterviewController extends Controller
      */
     public function update(Request $request, $accession_id)
     {   
+
+        if (!Auth::user()->can('Editar Entrevistas')) {
+            return redirect()->route('home')->with('error', 'Este usuário não tem permissão para executar esta ação!');
+        }
+
         $accession = Accession::findOrFail($accession_id);
 
         $msg = "";
@@ -222,6 +249,11 @@ class AccessionInterviewController extends Controller
      */
     public function destroy($id)
     {
+
+        if (!Auth::user()->can('Editar Entrevistas')) {
+            return redirect()->route('home')->with('error', 'Este usuário não tem permissão para executar esta ação!');
+        }
+
         if (Accession::findOrFail($id)->to_interview === 1) {
             return redirect()->route('interview.index')->with('error', 'Processo de Adesão não pode ser excluído quando liberado para Entrevista!'); 
         }

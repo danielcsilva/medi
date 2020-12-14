@@ -59,6 +59,10 @@ class DataTables extends Component
         // Query String filter by items (specific IDs)
         $this->items = request()->query('items', '');
 
+        if (empty($this->items) && !empty($options['items'])) {
+            $this->items = $options['items'];
+        }
+        
         // Default delete route from Laravel Resource controller
         $this->deleteRoute = $deleteRoute ?? $this->editRoute . '.destroy';
 
