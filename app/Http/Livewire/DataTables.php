@@ -26,6 +26,7 @@ class DataTables extends Component
     public $selectAble;
     public $actions;
     public $editable;
+    public $options;
 
     public $items;
 
@@ -70,6 +71,8 @@ class DataTables extends Component
         $this->selectAble = $options['selectAble'] ?? false;
         $this->editable = $options['editable'] ?? true;
         $this->actions = $options['actions'] ?? false;
+
+        $this->options = $options;
 
         $this->emit('rewriteTable', 'rewrite');
     }
@@ -128,7 +131,7 @@ class DataTables extends Component
         if (!empty($this->filter)) {
             $rows = $rows->where($this->filter);
         }
-      
+        
         if (!empty($this->items)) {
             $rows = $rows->WhereIn('id', explode(",", $this->items));
         }
