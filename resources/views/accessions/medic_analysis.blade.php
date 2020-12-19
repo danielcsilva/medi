@@ -111,7 +111,17 @@
 
             <div class="d-flex flex-row mt-4">
                 <div class="p-2"><a class="btn btn-primary" id="save-medic-analysis">Salvar Avaliação Médica</a></div>
-                <div class="p-2"><a class="btn btn-danger" id="finish-process">Finalizar Processo</a></div>
+                
+                @if (!$accession->analysis_status)
+                    @can('Avaliar Processos Clinicamente')
+                        <div class="p-2"><a class="btn btn-danger" id="finish-process">Finalizar Avaliação Médica</a></div>
+                    @endcan 
+                @endif
+
+                @can('Revisar Processos')
+                    <div class="p-2"><a class="btn btn-danger" id="finish-review-process">Marcar Processo como Revisado</a></div>
+                    <input type="hidden" name="reviewed_process" value="true">
+                @endcan
             </div>
 
             <input type="hidden" name="finish_process" id="finish-now" value="0">
@@ -140,7 +150,19 @@
                     
                     e.preventDefault()
 
-                    if(confirm('Deseja realmente finalizar o Processo? \r\n ATENÇÃO: O PROCESSO NÃO PODERÁ SER MODIFICADO APÓS ESTA AÇÃO!')) {
+                    if(confirm('Deseja realmente finalizar o a Avaliação Médica? \r\n ATENÇÃO: O PROCESSO NÃO PODERÁ SER MODIFICADO APÓS ESTA AÇÃO!')) {
+                        $('#finish-now').val(1);
+                        $('form').submit();
+                    }
+
+                }) 
+
+
+                $('#finish-review-process').click(function(e){
+                    
+                    e.preventDefault()
+
+                    if(confirm('Deseja realmente finalizar a Revisão? \r\n ATENÇÃO: O PROCESSO NÃO PODERÁ SER MODIFICADO APÓS ESTA AÇÃO!')) {
                         $('#finish-now').val(1);
                         $('form').submit();
                     }

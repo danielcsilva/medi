@@ -48,6 +48,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('tocontact', 'AccessionContactController');
     Route::resource('interview', 'AccessionInterviewController');
 
+    Route::get('/toreview', 'AccessionController@toReview');
+
     Route::resource('delegation', 'DelegationController');
     
 });

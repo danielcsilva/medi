@@ -474,11 +474,11 @@ class AccessionController extends Controller
 
 
     /**
-     * Nedic Analysis
+     * Medic Analysis
      */
     public function medicAnalysisList()
     {
-        if (!Auth::user()->can('Avaliar Processos Clinicamente')) {
+        if (!Auth::user()->can('Avaliar Processos Clinicamente') || !Auth::user()->can('Revisar Processos')) {
             return redirect()->route('home')->with('error', 'Este usuário não tem permissão para executar esta ação!');
         }
 
@@ -511,7 +511,7 @@ class AccessionController extends Controller
 
     public function preparingMedicalAnalysis($accession)
     {
-        if (!Auth::user()->can('Avaliar Processos Clinicamente')) {
+        if (!Auth::user()->can('Avaliar Processos Clinicamente') || !Auth::user()->can('Revisar Processos')) {
             return redirect()->route('home')->with('error', 'Este usuário não tem permissão para executar esta ação!');
         }
 
@@ -553,7 +553,7 @@ class AccessionController extends Controller
      */
     public function setAnalysis($accession_id)
     {
-        if (!Auth::user()->can('Avaliar Processos Clinicamente')) {
+        if (!Auth::user()->can('Avaliar Processos Clinicamente') || !Auth::user()->can('Revisar Processos')) {
             return redirect()->route('home')->with('error', 'Este usuário não tem permissão para executar esta ação!');
         }
 
@@ -602,7 +602,53 @@ class AccessionController extends Controller
             $accession->save();
         }
 
+        if ($request->get('reviewed_process')) {
+            $accession = Accession::findOrFail($accession_id);
+            $accession->to_review = false;
+            $accession->reviewed_at = date('Y-m-d');
+            $accession->save();
+        }
+
         return redirect('/medicanalysis/list')->with('success', 'Análise Médica gravada com sucesso!'); 
+
+    }
+
+
+    /**
+     * To Review
+     */
+    public function toReview()
+    {
+        if (!Auth::user()->can('Revisar Processos')) {
+            return redirect()->route('home')->with('error', 'Este usuário não tem permissão para executar esta ação!');
+        }
+
+        $items = Delegation::where('user_id', Auth::user()->id)
+                            ->where('action', 'LIKE', '%Revisão%')
+                            ->get();
+
+        if (count($items) > 0) {
+            $items = implode(",", $items->pluck('accession_id')->toArray());
+        } else {
+            $items = "";
+        }
+        
+        return view('accessions.list', [
+            'model' => Accession::class, 
+            'filter' => [
+                'to_review' => false,
+                'analysis_status' => true,
+                'reviewed_at' => null
+            ],
+            'selectAble' => false, 
+            'filterField' => [],
+            'editRoute' => 'accessions.medicAnalysis',
+            'routeParam' => 'accession',
+            'delete' => false,
+            'breadcrumb' => 'Aguardando Revisão',
+            'items' => $items,
+            'editable' => true 
+        ]);
 
     }
 }

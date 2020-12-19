@@ -73,9 +73,13 @@
                                     @can('Avaliar Processos Clinicamente')                                        
                                         <a class="dropdown-item" href="{{ url('/medicanalysis/list') }}">Avaliar Grau de Risco</a>
                                     @endcan
+
+                                    @can('Revisar Processos')                                        
+                                        <a class="dropdown-item" href="{{ url('/toreview') }}">Aguardando Revisão</a>
+                                    @endcan
                                     
                                     @can('Editar Processos')
-                                    <a class="dropdown-item" href="{{ route('accessions.index', ['finished' => 1]) }}">Finalizados</a>
+                                        <a class="dropdown-item" href="{{ route('accessions.index', ['finished' => 1]) }}">Finalizados</a>
                                     @endcan
                                 </div>
                             </li>    
