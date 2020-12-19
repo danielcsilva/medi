@@ -242,6 +242,11 @@ class AccessionController extends Controller
             return redirect()->route('home')->with('error', 'Este usuário não tem permissão para executar esta ação!');
         }
 
+        // $accession = AccessionInterview::where('accession_id', $accession_id)->first();
+        // if ($accession !== null) {
+        //      return back()->withInput()->with('error', config('medi.tech_error_msg') . $t->getMessage());
+        // }
+
         $this->accessionValidate($request);
 
         $beneficiaries = $request->get('beneficiary_cpf');
@@ -285,15 +290,14 @@ class AccessionController extends Controller
             
                 Accession::where('id', $accession_id)->update(['financier_id' => null]);
                 
+                $interviews = AccessionInterview::with('beneficiary')->where('accession_id', $accession_id)->get();
+                AccessionInterview::where('accession_id', $accession_id)->update(['beneficiary_id' => null]);
+                
                 HealthDeclarationSpecific::where('accession_id', $accession_id)->delete(); 
                 HealthDeclarationAnswer::where('accession_id', $accession_id)->delete();
                 Address::where('accession_id', $accession_id)->delete();
                 Beneficiary::where('accession_id', $accession_id)->delete();
                 Telephone::where('accession_id', $accession_id)->delete();
-
-                // Detach inconsistencies
-                // $oldAccession = Accession::find($accession_id);
-                // $oldAccession->inconsistencies()->detach();
 
                 $accession = Accession::where('id', $accession_id)->first();
                 $accession->fill([
@@ -366,11 +370,19 @@ class AccessionController extends Controller
                     $accession->holder_id = $beneficiary->id;                
                 }
 
+                // Update Interviews with new Beneficiary ID
+                foreach($interviews as $interview) {
+                    if (isset($interview->beneficiary->cpf) && $interview->beneficiary->cpf == $beneficiary->cpf) {
+                        $interview->beneficiary_id = $beneficiary->id;
+                        $interview->save();
+                    }
+                }
+
                 Address::create([
-                    'cep' => $request->get('address_cep')[$k],
-                    'address' => $request->get('address_address')[$k],
-                    'number' => $request->get('address_number')[$k],
-                    'complement' => $request->get('address_complement')[$k],
+                    // 'cep' => $request->get('address_cep')[$k],
+                    // 'address' => $request->get('address_address')[$k],
+                    // 'number' => $request->get('address_number')[$k],
+                    // 'complement' => $request->get('address_complement')[$k],
                     'accession_id' => $accession->id,
                     'city' => $request->get('address_city')[$k],
                     'state' => $request->get('address_state')[$k]

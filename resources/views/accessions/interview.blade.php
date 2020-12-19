@@ -48,9 +48,9 @@
             </div>
             <div class="col">
                 <label for="">Altura</label>
-                <input type="text" name="height" class="form-control height" value="{{ $interview->height ?? null }}">
+                <input type="text" name="height" class="form-control height-interview" value="{{ $interview->height ?? null }}">
                 <label for="">Peso</label>
-                <input type="text" name="weight" class="form-control weight" value="{{ $interview->weight ?? null }}">
+                <input type="text" name="weight" class="form-control weight-interview" value="{{ $interview->weight ?? null }}">
                 <label for="">IMC</label>
                 <input type="text" class="form-control imc-calc" readonly name="" id="">
             </div>
@@ -104,9 +104,9 @@
             </div>
             <div class="col">
                 <label for="">Altura</label>
-                <input type="text" name="height" class="form-control height" value="">
+                <input type="text" name="height" class="form-control height-interview" value="">
                 <label for="">Peso</label>
-                <input type="text" name="weight" class="form-control weight" value="">
+                <input type="text" name="weight" class="form-control weight-interview" value="">
                 <label for="">IMC</label>
                 <input type="text" class="form-control imc-calc" readonly name="" id="">
             </div>
@@ -164,29 +164,33 @@
     
                 }) 
 
-                $(document).find('input.weight').each(function(i,o) {
+                $(document).find('input.weight-interview').each(function(i,o) {
+                    // console.log(o);
                    resolveImc(o)
+                   
                 })
 
-                $(document).on('change', '.weight', function(e) {
+                $(document).on('change', '.weight-interview', function(e) {
                     console.log('calcula...')
                    resolveImc(e.target)
                 })
 
-                $(document).on('change', '.height', function(e) {
-                   $(e.target).nextAll('input', '.weight').trigger('change')
+                $(document).on('change', '.height-interview', function(e) {
+                   $(e.target).nextAll('input', '.weight-interview').trigger('change')
                 })
                 
             })
 
             function resolveImc(objectWeight)
             {
-                if ($(objectWeight).val() != '' && $(objectWeight).prevAll('input', '.weight:first').val() != '') {
+
+                if ($(objectWeight).val() != '' && $(objectWeight).prevAll('input', '.height-interview:first').val() != '') {
 
                     let weight = parseFloat($(objectWeight).val().replace(",", "."))
-                    let height = parseFloat($(objectWeight).prevAll('input', '.weight:first').val().replace(",", "."))
+                    let height = parseFloat($(objectWeight).prevAll('input', '.height-interview:first').val().replace(",", "."))
                     
                     if (weight > 0 && height > 0) {
+                        // console.log('calcular', height, weight);
                         $(objectWeight).nextAll('input.imc-calc:first').val(imcCalc(weight, height).toFixed(2))
                     }
                 }

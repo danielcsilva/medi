@@ -126,32 +126,32 @@
 
     
 
-    <div class="form-row mb-4 mt-4 address">
+    <!-- <div class="form-row mb-4 mt-4 address">
         <div class="col-2">
-            <input type="text" name="address_cep[]" value="{{ old('address_cep.0', $addresses[0]->cep ?? null) }}" id="address-cep" class="form-control cep" placeholder="CEP">
-            @if($errors->has('address_cep.0'))
+            {{-- <input type="text" name="address_cep[]" value="{{ old('address_cep.0', $addresses[0]->cep ?? null) }}" id="address-cep" class="form-control cep" placeholder="CEP"> --}}
+            {{-- @if($errors->has('address_cep.0'))
                 <div class="alert alert-danger small">{{ $errors->first('address_cep.0') }}</div>
-            @endif
+            @endif --}}
         </div>
         <div class="col-6">
-            <input type="text" name="address_address[]" value="{{ old('address_address.0', $addresses[0]->address ?? null) }}" class="form-control" placeholder="rua de exemplo...">
-            @if($errors->has('address_address.0'))
+            {{-- <input type="text" name="address_address[]" value="{{ old('address_address.0', $addresses[0]->address ?? null) }}" class="form-control" placeholder="rua de exemplo..."> --}}
+            {{-- @if($errors->has('address_address.0'))
                 <div class="alert alert-danger small">{{ $errors->first('address_address.0') }}</div>
-            @endif
+            @endif --}}
         </div>
         <div class="col">
-            <input type="number" name="address_number[]" value="{{ old('address_number.0', $addresses[0]->number ?? null) }}" class="form-control" placeholder="número...">
-            @if($errors->has('address_number.0'))
+            {{-- <input type="number" name="address_number[]" value="{{ old('address_number.0', $addresses[0]->number ?? null) }}" class="form-control" placeholder="número..."> --}}
+            {{-- @if($errors->has('address_number.0'))
                 <div class="alert alert-danger small">{{ $errors->first('address_number.0') }}</div>
-            @endif
+            @endif --}}
         </div>
         <div class="col">
-            <input type="text" name="address_complement[]" value="{{ old('address_complement.0', $addresses[0]->complement ?? null) }}" class="form-control" placeholder="complemento...">
-            @if($errors->has('address_complement.0'))
+            {{-- <input type="text" name="address_complement[]" value="{{ old('address_complement.0', $addresses[0]->complement ?? null) }}" class="form-control" placeholder="complemento..."> --}}
+            {{-- @if($errors->has('address_complement.0'))
                 <div class="alert alert-danger small">{{ $errors->first('address_complement.0') }}</div>
-            @endif
+            @endif --}}
         </div>
-    </div>
+    </div> -->
 
     <div class="form-row mb-4 mt-4 address-city-state">
         <div class="col-4">
@@ -303,35 +303,35 @@
 
                 
 
-                <div class="form-row mb-4 mt-4 address">
+                <!-- <div class="form-row mb-4 mt-4 address">
                     <div class="col-2">
             
-                        <input type="hidden" name="address_id[]" value="{{ old('address_cep.' . $k, $addresses[$k]->id ?? null) }}">
+                        {{-- <input type="hidden" name="address_id[]" value="{{ old('address_cep.' . $k, $addresses[$k]->id ?? null) }}"> --}}
 
-                        <input type="text" name="address_cep[]" value="{{ old('address_cep.' . $k, $addresses[$k]->cep ?? null) }}" id="address-cep" class="form-control cep" placeholder="CEP">
-                        @if($errors->has('address_cep.'.$k))
+                        {{-- <input type="text" name="address_cep[]" value="{{ old('address_cep.' . $k, $addresses[$k]->cep ?? null) }}" id="address-cep" class="form-control cep" placeholder="CEP"> --}}
+                        {{-- @if($errors->has('address_cep.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('address_cep.'.$k) }}</div>
-                        @endif
+                        @endif --}}
                     </div>
                     <div class="col-6">
-                        <input type="text" name="address_address[]" value="{{ old('address_address.' . $k, $addresses[$k]->address ?? null) }}" class="form-control" placeholder="rua de exemplo...">
-                        @if($errors->has('address_address.'.$k))
+                        {{-- <input type="text" name="address_address[]" value="{{ old('address_address.' . $k, $addresses[$k]->address ?? null) }}" class="form-control" placeholder="rua de exemplo..."> --}}
+                        {{-- @if($errors->has('address_address.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('address_address.'.$k) }}</div>
-                        @endif
+                        @endif --}}
                     </div>
                     <div class="col">
-                        <input type="number" name="address_number[]" value="{{ old('address_number.' . $k, $addresses[$k]->number ?? null) }}" class="form-control" placeholder="número...">
-                        @if($errors->has('address_number.'.$k))
+                        {{-- <input type="number" name="address_number[]" value="{{ old('address_number.' . $k, $addresses[$k]->number ?? null) }}" class="form-control" placeholder="número..."> --}}
+                        {{-- @if($errors->has('address_number.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('address_number.'.$k) }}</div>
-                        @endif
+                        @endif --}}
                     </div>
                     <div class="col">
-                        <input type="text" name="address_complement[]" value="{{ old('address_complement.' . $k, $addresses[$k]->complement ?? null) }}" class="form-control" placeholder="complemento...">
-                        @if($errors->has('address_complement.'.$k))
+                        {{-- <input type="text" name="address_complement[]" value="{{ old('address_complement.' . $k, $addresses[$k]->complement ?? null) }}" class="form-control" placeholder="complemento..."> --}}
+                        {{-- @if($errors->has('address_complement.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('address_complement.'.$k) }}</div>
-                        @endif
+                        @endif --}}
                     </div>
-                </div>
+                </div> -->
 
                 <div class="form-row mb-4 mt-4 address-city-state">
                     <div class="col-4">
