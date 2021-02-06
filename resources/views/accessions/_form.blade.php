@@ -1,5 +1,12 @@
 @if($errors->any())
-    <div class="alert alert-danger small">Seu formulário contém erros!</div>
+    <div class="alert alert-danger small">
+        <p>Seu formulário contém erros!</p>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
 @endif
 
 @can('Editar Processos')
@@ -273,7 +280,7 @@
                 <div class="form-row mb-4 mt-4">
                     <div class="col">
                         <label for="">Data de Nascimento</label>
-                        <input type="text" name="beneficiary_birth_date[]" value="{{ old('beneficiary_birth_date.' . $k, $v->birth_date ?? null) }}" class="form-control date-br" placeholder="Data de Nasc." required>
+                        <input type="text" name="beneficiary_birth_date[]" value="{{ old('beneficiary_birth_date.' . $k, $v->birth_date ?? null) }}" class="form-control date-br birth-date" placeholder="Data de Nasc." required>
                         @if($errors->has('beneficiary_birth_date.'.$k))
                             <div class="alert alert-danger small">{{ $errors->first('beneficiary_birth_date.'.$k) }}</div>
                         @endif

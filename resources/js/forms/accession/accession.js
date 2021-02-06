@@ -111,7 +111,7 @@ $(document).ready(function($){
     })
 
     $('.birth-date').each(function(i,o){
-         $(o).blur()
+         $(o).trigger('blur')
     })
 
     $(document).on('click', '.financier', function(e) {

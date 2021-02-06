@@ -11060,7 +11060,7 @@ $(document).ready(function ($) {
     _calculateAge(e);
   });
   $('.birth-date').each(function (i, o) {
-    $(o).blur();
+    $(o).trigger('blur');
   });
   $(document).on('click', '.financier', function (e) {
     var idade = $(e.target).parents('.form-row:first').find('.idade:first').val();
