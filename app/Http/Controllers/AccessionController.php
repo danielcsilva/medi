@@ -162,7 +162,7 @@ class AccessionController extends Controller
         $specifics = $request->get('specific_comment_number');
     
         try {
-
+            
             $this->accessionTransaction($request, $beneficiaries, $telephones, null, $specifics);
             
         } catch(Throwable $t) {
@@ -371,11 +371,15 @@ class AccessionController extends Controller
                 }
 
                 // Update Interviews with new Beneficiary ID
-                foreach($interviews as $interview) {
-                    if (isset($interview->beneficiary->cpf) && $interview->beneficiary->cpf == $beneficiary->cpf) {
-                        $interview->beneficiary_id = $beneficiary->id;
-                        $interview->save();
+                if (isset($interviews)) {
+
+                    foreach($interviews as $interview) {
+                        if (isset($interview->beneficiary->cpf) && $interview->beneficiary->cpf == $beneficiary->cpf) {
+                            $interview->beneficiary_id = $beneficiary->id;
+                            $interview->save();
+                        }
                     }
+                    
                 }
 
                 Address::create([
