@@ -53,6 +53,7 @@
                             @endif
                         @else
                             
+                            @can('Visualizar Processos')
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     Processos <span class="caret"></span>
@@ -82,8 +83,10 @@
                                         <a class="dropdown-item" href="{{ route('accessions.index', ['finished' => 1]) }}">Finalizados</a>
                                     @endcan
                                 </div>
-                            </li>    
+                            </li>  
+                            @endcan  
                             
+                            @can('Editar Processos')
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     Cadastros <span class="caret"></span>
@@ -101,6 +104,7 @@
                                     <a class="dropdown-item" href="{{ route('processtypes.index') }}">Tipos de Movimentação</a>
                                 </div>
                             </li>
+                            @endcan
                             
                             @can('Editar Usuários')
                             <li class="nav-item dropdown">
