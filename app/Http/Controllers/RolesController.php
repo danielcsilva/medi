@@ -90,7 +90,9 @@ class RolesController extends Controller
         $role->name = $validationData['name'];
         $role->save();
 
-        $role->syncPermissions($validationData['permissions']);
+        if (isset($validationData['permissions'])) {
+            $role->syncPermissions($validationData['permissions']);
+        }
 
         return redirect()->route('roles.index')->with('success', 'Grupo editado com sucesso!');
 
