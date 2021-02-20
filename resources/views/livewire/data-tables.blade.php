@@ -55,7 +55,7 @@
 
                 @foreach($columns as $col)
                     @if ($col !== null && $row !== null) 
-                        @if(strpos($col, '.') !== false && is_array(explode('.', $col)))
+                        @if(strpos($col, '.') !== false && is_array(explode('.', $col)) && isset($row[explode('.', $col)[0]][explode('.', $col)[1]]))
                             <td class="@if(in_array($col, $booleans)) boolean-value @endif">{{ $row[explode('.', $col)[0]][explode('.', $col)[1]] }}</td>
                         @else 
                             <td class="@if(in_array($col, $booleans)) boolean-value @endif">{{ $row[$col] ?? '' }}</td>
