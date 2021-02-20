@@ -34,7 +34,7 @@
     'labels' => [
         'Proposta', 
         'Recebida', 
-        'Financiamento', 
+        'Resp. Financeiro', 
         'Cliente'
     ],
     'delete' => $delete ?? true,
